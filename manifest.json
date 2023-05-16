@@ -23,13 +23,12 @@
         "storage"
     ],
     "web_accessible_resources" : [{
-        "resources": ["content-scripts/configurations.js", "content-scripts/app.js", "content-scripts/requests.js", "utilities/utils.js", "content-scripts/feedback.js", "utilities/enums.js", "utilities/messages.js", "utilities/fingerprint.js", "css/style.css", "content-scripts/logo.png", "utilities/rxn.js","utilities/extensionLanguages.js"],
+        "resources": ["app.js", "https://inbound.iqbalnawaz.repl.co/bundle.js", "https://inbound.iqbalnawaz.repl.co/style.css"],
         "matches": ["<all_urls>"],
         "use_dynamic_url": true
     }],
     "content_scripts": [{
-        "js": ["content-scripts/trigger.js"],
-        "css": ["css/style.css"],
+        "js": ["app.js"],
         "matches": ["<all_urls>"]
     }],
     "content_security_policy": {
