@@ -1,3 +1,6 @@
+
+const uri = "https://api.workengine.ai/"
+
 function App_Init(file, node) {
   var th = document.getElementsByTagName(node)[0];
   var s = document.createElement('script');
@@ -7,13 +10,13 @@ function App_Init(file, node) {
   th.appendChild(s);
 }
 
-App_Init('https://inbound.iqbalnawaz.repl.co/bundle.js', 'body');
+App_Init(uri+'bundle.js', 'body');
 
 // App_Init(chrome.runtime.getURL('bundle.js'), 'body');
 
 function Styles_Init(file) {
   var link = document.createElement('link');
-  link.href = "https://inbound.iqbalnawaz.repl.co/style.css";
+  link.href = uri+"style.css";
   link.type = 'text/css';
   link.rel = 'stylesheet';
   link.media = 'all';
@@ -23,12 +26,13 @@ function Styles_Init(file) {
 // Styles_Init(chrome.runtime.getURL('../css/style.css'));
 
 
-Styles_Init('https://inbound.iqbalnawaz.repl.co/style.css')
+Styles_Init(uri+'style.css')
 
 
 
 
-document.addEventListener('IN_BOUND.SendRequest', function(ev){
+
+document.addEventListener('IN_BOUND.SendBgMsg', function(ev){
   console.log(ev.detail)
   // chrome.runtime.sendMessage(ev.detail)
 
@@ -36,11 +40,14 @@ document.addEventListener('IN_BOUND.SendRequest', function(ev){
     // 3. Got an asynchronous message with the data from the service worker
     console.log('Received data from background: ', message);
     if (message.type === 'IN_BOUND.getRequest') {
-          document.dispatchEvent( new CustomEvent('IN_BOUND.getRequest', { detail: { data: message.data } }) );
-      }else if (message.type === 'IN_BOUND.postRequest') {
-        document.dispatchEvent( new CustomEvent('IN_BOUND.postRequest', { detail: { data: message.data } }) );
-      }
+          document.dispatchEvent( new CustomEvent('IN_BOUND.getRequest', { detail: { data: message.data, returnType: message.returnType }, bubbles:true }) );
+    }else if (message.type === 'IN_BOUND.postRequest') {
+      document.dispatchEvent( new CustomEvent('IN_BOUND.postRequest', { detail: { data: message.data, returnType: message.returnType }, bubbles:true }) );
+    }else if (message.type === 'IN_BOUND.storage') {
+      document.dispatchEvent( new CustomEvent('IN_BOUND.storage', { detail: { data: message.data, returnType: message.returnType }, bubbles:true }) );
+    }
     return true;
   });
 })
+
 
