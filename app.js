@@ -1,10 +1,12 @@
 
 const uri = "https://api.workengine.ai/"
+// const uri = 'http://127.0.0.1:3000/';
+
 
 function App_Init(file, node) {
   var th = document.getElementsByTagName(node)[0];
   var s = document.createElement('script');
-  // s.setAttribute('type', 'text/javascript');
+  s.setAttribute('type', 'text/javascript');
   s.setAttribute('src', file);
   s.setAttribute('type', 'module')
   th.appendChild(s);

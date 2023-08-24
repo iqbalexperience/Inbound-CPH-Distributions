@@ -108,15 +108,6 @@
     BLACKLIST_NO_PUBLIC: 16,
   };
 
-  /**
-   * FingerprintJS v3.4.0 - Copyright (c) FingerprintJS, Inc, 2023 (https://fingerprint.com)
-   * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
-   *
-   * This software contains code from open-source projects:
-   * MurmurHash3 by Karan Lyons (https://github.com/karanlyons/murmurHash3.js)
-   */
-  var e=function(){return e=Object.assign||function(e){for(var n,t=1,r=arguments.length;t<r;t++)for(var o in n=arguments[t])Object.prototype.hasOwnProperty.call(n,o)&&(e[o]=n[o]);return e},e.apply(this,arguments)};function n(e,n,t,r){return new(t||(t=Promise))((function(o,a){function i(e){try{u(r.next(e));}catch(n){a(n);}}function c(e){try{u(r.throw(e));}catch(n){a(n);}}function u(e){var n;e.done?o(e.value):(n=e.value,n instanceof t?n:new t((function(e){e(n);}))).then(i,c);}u((r=r.apply(e,n||[])).next());}))}function t(e,n){var t,r,o,a,i={label:0,sent:function(){if(1&o[0])throw o[1];return o[1]},trys:[],ops:[]};return a={next:c(0),throw:c(1),return:c(2)},"function"==typeof Symbol&&(a[Symbol.iterator]=function(){return this}),a;function c(c){return function(u){return function(c){if(t)throw new TypeError("Generator is already executing.");for(;a&&(a=0,c[0]&&(i=0)),i;)try{if(t=1,r&&(o=2&c[0]?r.return:c[0]?r.throw||((o=r.return)&&o.call(r),0):r.next)&&!(o=o.call(r,c[1])).done)return o;switch(r=0,o&&(c=[2&c[0],o.value]),c[0]){case 0:case 1:o=c;break;case 4:return i.label++,{value:c[1],done:!1};case 5:i.label++,r=c[1],c=[0];continue;case 7:c=i.ops.pop(),i.trys.pop();continue;default:if(!(o=i.trys,(o=o.length>0&&o[o.length-1])||6!==c[0]&&2!==c[0])){i=0;continue}if(3===c[0]&&(!o||c[1]>o[0]&&c[1]<o[3])){i.label=c[1];break}if(6===c[0]&&i.label<o[1]){i.label=o[1],o=c;break}if(o&&i.label<o[2]){i.label=o[2],i.ops.push(c);break}o[2]&&i.ops.pop(),i.trys.pop();continue}c=n.call(e,i);}catch(u){c=[6,u],r=0;}finally{t=o=0;}if(5&c[0])throw c[1];return {value:c[0]?c[1]:void 0,done:!0}}([c,u])}}}function r(e,n,t){if(t||2===arguments.length)for(var r,o=0,a=n.length;o<a;o++)!r&&o in n||(r||(r=Array.prototype.slice.call(n,0,o)),r[o]=n[o]);return e.concat(r||Array.prototype.slice.call(n))}function o(e,n){return new Promise((function(t){return setTimeout(t,e,n)}))}function a(e){return !!e&&"function"==typeof e.then}function i(e,n){try{var t=e();a(t)?t.then((function(e){return n(!0,e)}),(function(e){return n(!1,e)})):n(!0,t);}catch(r){n(!1,r);}}function c(e,r,a){return void 0===a&&(a=16),n(this,void 0,void 0,(function(){var n,i,c;return t(this,(function(t){switch(t.label){case 0:n=Date.now(),i=0,t.label=1;case 1:return i<e.length?(r(e[i],i),(c=Date.now())>=n+a?(n=c,[4,o(0)]):[3,3]):[3,4];case 2:t.sent(),t.label=3;case 3:return ++i,[3,1];case 4:return [2]}}))}))}function u(e){e.then(void 0,(function(){}));}function l(e,n){e=[e[0]>>>16,65535&e[0],e[1]>>>16,65535&e[1]],n=[n[0]>>>16,65535&n[0],n[1]>>>16,65535&n[1]];var t=[0,0,0,0];return t[3]+=e[3]+n[3],t[2]+=t[3]>>>16,t[3]&=65535,t[2]+=e[2]+n[2],t[1]+=t[2]>>>16,t[2]&=65535,t[1]+=e[1]+n[1],t[0]+=t[1]>>>16,t[1]&=65535,t[0]+=e[0]+n[0],t[0]&=65535,[t[0]<<16|t[1],t[2]<<16|t[3]]}function s(e,n){e=[e[0]>>>16,65535&e[0],e[1]>>>16,65535&e[1]],n=[n[0]>>>16,65535&n[0],n[1]>>>16,65535&n[1]];var t=[0,0,0,0];return t[3]+=e[3]*n[3],t[2]+=t[3]>>>16,t[3]&=65535,t[2]+=e[2]*n[3],t[1]+=t[2]>>>16,t[2]&=65535,t[2]+=e[3]*n[2],t[1]+=t[2]>>>16,t[2]&=65535,t[1]+=e[1]*n[3],t[0]+=t[1]>>>16,t[1]&=65535,t[1]+=e[2]*n[2],t[0]+=t[1]>>>16,t[1]&=65535,t[1]+=e[3]*n[1],t[0]+=t[1]>>>16,t[1]&=65535,t[0]+=e[0]*n[3]+e[1]*n[2]+e[2]*n[1]+e[3]*n[0],t[0]&=65535,[t[0]<<16|t[1],t[2]<<16|t[3]]}function d(e,n){return 32===(n%=64)?[e[1],e[0]]:n<32?[e[0]<<n|e[1]>>>32-n,e[1]<<n|e[0]>>>32-n]:(n-=32,[e[1]<<n|e[0]>>>32-n,e[0]<<n|e[1]>>>32-n])}function m(e,n){return 0===(n%=64)?e:n<32?[e[0]<<n|e[1]>>>32-n,e[1]<<n]:[e[1]<<n-32,0]}function f(e,n){return [e[0]^n[0],e[1]^n[1]]}function v(e){return e=f(e,[0,e[0]>>>1]),e=f(e=s(e,[4283543511,3981806797]),[0,e[0]>>>1]),e=f(e=s(e,[3301882366,444984403]),[0,e[0]>>>1])}function h(e,n){n=n||0;var t,r=(e=e||"").length%16,o=e.length-r,a=[0,n],i=[0,n],c=[0,0],u=[0,0],h=[2277735313,289559509],b=[1291169091,658871167];for(t=0;t<o;t+=16)c=[255&e.charCodeAt(t+4)|(255&e.charCodeAt(t+5))<<8|(255&e.charCodeAt(t+6))<<16|(255&e.charCodeAt(t+7))<<24,255&e.charCodeAt(t)|(255&e.charCodeAt(t+1))<<8|(255&e.charCodeAt(t+2))<<16|(255&e.charCodeAt(t+3))<<24],u=[255&e.charCodeAt(t+12)|(255&e.charCodeAt(t+13))<<8|(255&e.charCodeAt(t+14))<<16|(255&e.charCodeAt(t+15))<<24,255&e.charCodeAt(t+8)|(255&e.charCodeAt(t+9))<<8|(255&e.charCodeAt(t+10))<<16|(255&e.charCodeAt(t+11))<<24],c=d(c=s(c,h),31),a=l(a=d(a=f(a,c=s(c,b)),27),i),a=l(s(a,[0,5]),[0,1390208809]),u=d(u=s(u,b),33),i=l(i=d(i=f(i,u=s(u,h)),31),a),i=l(s(i,[0,5]),[0,944331445]);switch(c=[0,0],u=[0,0],r){case 15:u=f(u,m([0,e.charCodeAt(t+14)],48));case 14:u=f(u,m([0,e.charCodeAt(t+13)],40));case 13:u=f(u,m([0,e.charCodeAt(t+12)],32));case 12:u=f(u,m([0,e.charCodeAt(t+11)],24));case 11:u=f(u,m([0,e.charCodeAt(t+10)],16));case 10:u=f(u,m([0,e.charCodeAt(t+9)],8));case 9:u=s(u=f(u,[0,e.charCodeAt(t+8)]),b),i=f(i,u=s(u=d(u,33),h));case 8:c=f(c,m([0,e.charCodeAt(t+7)],56));case 7:c=f(c,m([0,e.charCodeAt(t+6)],48));case 6:c=f(c,m([0,e.charCodeAt(t+5)],40));case 5:c=f(c,m([0,e.charCodeAt(t+4)],32));case 4:c=f(c,m([0,e.charCodeAt(t+3)],24));case 3:c=f(c,m([0,e.charCodeAt(t+2)],16));case 2:c=f(c,m([0,e.charCodeAt(t+1)],8));case 1:c=s(c=f(c,[0,e.charCodeAt(t)]),h),a=f(a,c=s(c=d(c,31),b));}return a=l(a=f(a,[0,e.length]),i=f(i,[0,e.length])),i=l(i,a),a=l(a=v(a),i=v(i)),i=l(i,a),("00000000"+(a[0]>>>0).toString(16)).slice(-8)+("00000000"+(a[1]>>>0).toString(16)).slice(-8)+("00000000"+(i[0]>>>0).toString(16)).slice(-8)+("00000000"+(i[1]>>>0).toString(16)).slice(-8)}function b(e){return parseInt(e)}function p(e){return parseFloat(e)}function y(e,n){return "number"==typeof e&&isNaN(e)?n:e}function g(e){return e.reduce((function(e,n){return e+(n?1:0)}),0)}function w(e,n){if(void 0===n&&(n=1),Math.abs(n)>=1)return Math.round(e/n)*n;var t=1/n;return Math.round(e*t)/t}function L(e){return e&&"object"==typeof e&&"message"in e?e:{message:e}}function k(e){return "function"!=typeof e}function V(e,r,a){var l=Object.keys(e).filter((function(e){return !function(e,n){for(var t=0,r=e.length;t<r;++t)if(e[t]===n)return !0;return !1}(a,e)})),s=Array(l.length);return c(l,(function(n,t){s[t]=function(e,n){var t=new Promise((function(t){var r=Date.now();i(e.bind(null,n),(function(){for(var e=[],n=0;n<arguments.length;n++)e[n]=arguments[n];var o=Date.now()-r;if(!e[0])return t((function(){return {error:L(e[1]),duration:o}}));var a=e[1];if(k(a))return t((function(){return {value:a,duration:o}}));t((function(){return new Promise((function(e){var n=Date.now();i(a,(function(){for(var t=[],r=0;r<arguments.length;r++)t[r]=arguments[r];var a=o+Date.now()-n;if(!t[0])return e({error:L(t[1]),duration:a});e({value:t[1],duration:a});}));}))}));}));}));return u(t),function(){return t.then((function(e){return e()}))}}(e[n],r);})),function(){return n(this,void 0,void 0,(function(){var e,n,r,a,i,d;return t(this,(function(m){switch(m.label){case 0:for(e={},n=0,r=l;n<r.length;n++)a=r[n],e[a]=void 0;i=Array(l.length),d=function(){var n;return t(this,(function(t){switch(t.label){case 0:return n=!0,[4,c(l,(function(t,r){if(!i[r])if(s[r]){var o=s[r]().then((function(n){return e[t]=n}));u(o),i[r]=o;}else n=!1;}))];case 1:return t.sent(),n?[2,"break"]:[4,o(1)];case 2:return t.sent(),[2]}}))},m.label=1;case 1:return [5,d()];case 2:if("break"===m.sent())return [3,4];m.label=3;case 3:return [3,1];case 4:return [4,Promise.all(i)];case 5:return m.sent(),[2,e]}}))}))}}function Z(){var e=window,n=navigator;return g(["MSCSSMatrix"in e,"msSetImmediate"in e,"msIndexedDB"in e,"msMaxTouchPoints"in n,"msPointerEnabled"in n])>=4}function S(){var e=window,n=navigator;return g(["msWriteProfilerMark"in e,"MSStream"in e,"msLaunchUri"in n,"msSaveBlob"in n])>=3&&!Z()}function X(){var e=window,n=navigator;return g(["webkitPersistentStorage"in n,"webkitTemporaryStorage"in n,0===n.vendor.indexOf("Google"),"webkitResolveLocalFileSystemURL"in e,"BatteryManager"in e,"webkitMediaStream"in e,"webkitSpeechGrammar"in e])>=5}function x(){var e=window,n=navigator;return g(["ApplePayError"in e,"CSSPrimitiveValue"in e,"Counter"in e,0===n.vendor.indexOf("Apple"),"getStorageUpdates"in n,"WebKitMediaKeys"in e])>=4}function F(){var e=window;return g(["safari"in e,!("DeviceMotionEvent"in e),!("ongestureend"in e),!("standalone"in navigator)])>=3}function Y(){var e,n,t=window;return g(["buildID"in navigator,"MozAppearance"in(null!==(n=null===(e=document.documentElement)||void 0===e?void 0:e.style)&&void 0!==n?n:{}),"onmozfullscreenchange"in t,"mozInnerScreenX"in t,"CSSMozDocumentRule"in t,"CanvasCaptureMediaStream"in t])>=4}function C(){var e=document;return e.fullscreenElement||e.msFullscreenElement||e.mozFullScreenElement||e.webkitFullscreenElement||null}function R(){var e=X(),n=Y();if(!e&&!n)return !1;var t=window;return g(["onorientationchange"in t,"orientation"in t,e&&!("SharedWorker"in t),n&&/android/i.test(navigator.appVersion)])>=2}function G(e){var n=new Error(e);return n.name=e,n}function M(e,r,a){var i,c,u;return void 0===a&&(a=50),n(this,void 0,void 0,(function(){var n,l;return t(this,(function(t){switch(t.label){case 0:n=document,t.label=1;case 1:return n.body?[3,3]:[4,o(a)];case 2:return t.sent(),[3,1];case 3:l=n.createElement("iframe"),t.label=4;case 4:return t.trys.push([4,,10,11]),[4,new Promise((function(e,t){var o=!1,a=function(){o=!0,e();};l.onload=a,l.onerror=function(e){o=!0,t(e);};var i=l.style;i.setProperty("display","block","important"),i.position="absolute",i.top="0",i.left="0",i.visibility="hidden",r&&"srcdoc"in l?l.srcdoc=r:l.src="about:blank",n.body.appendChild(l);var c=function(){var e,n;o||("complete"===(null===(n=null===(e=l.contentWindow)||void 0===e?void 0:e.document)||void 0===n?void 0:n.readyState)?a():setTimeout(c,10));};c();}))];case 5:t.sent(),t.label=6;case 6:return (null===(c=null===(i=l.contentWindow)||void 0===i?void 0:i.document)||void 0===c?void 0:c.body)?[3,8]:[4,o(a)];case 7:return t.sent(),[3,6];case 8:return [4,e(l,l.contentWindow)];case 9:return [2,t.sent()];case 10:return null===(u=l.parentNode)||void 0===u||u.removeChild(l),[7];case 11:return [2]}}))}))}function I(e){for(var n=function(e){for(var n,t,r="Unexpected syntax '".concat(e,"'"),o=/^\s*([a-z-]*)(.*)$/i.exec(e),a=o[1]||void 0,i={},c=/([.:#][\w-]+|\[.+?\])/gi,u=function(e,n){i[e]=i[e]||[],i[e].push(n);};;){var l=c.exec(o[2]);if(!l)break;var s=l[0];switch(s[0]){case".":u("class",s.slice(1));break;case"#":u("id",s.slice(1));break;case"[":var d=/^\[([\w-]+)([~|^$*]?=("(.*?)"|([\w-]+)))?(\s+[is])?\]$/.exec(s);if(!d)throw new Error(r);u(d[1],null!==(t=null!==(n=d[4])&&void 0!==n?n:d[5])&&void 0!==t?t:"");break;default:throw new Error(r)}}return [a,i]}(e),t=n[0],r=n[1],o=document.createElement(null!=t?t:"div"),a=0,i=Object.keys(r);a<i.length;a++){var c=i[a],u=r[c].join(" ");"style"===c?j(o.style,u):o.setAttribute(c,u);}return o}function j(e,n){for(var t=0,r=n.split(";");t<r.length;t++){var o=r[t],a=/^\s*([\w-]+)\s*:\s*(.+?)(\s*!([\w-]+))?\s*$/.exec(o);if(a){var i=a[1],c=a[2],u=a[4];e.setProperty(i,c,u||"");}}}var A=["monospace","sans-serif","serif"],J=["sans-serif-thin","ARNO PRO","Agency FB","Arabic Typesetting","Arial Unicode MS","AvantGarde Bk BT","BankGothic Md BT","Batang","Bitstream Vera Sans Mono","Calibri","Century","Century Gothic","Clarendon","EUROSTILE","Franklin Gothic","Futura Bk BT","Futura Md BT","GOTHAM","Gill Sans","HELV","Haettenschweiler","Helvetica Neue","Humanst521 BT","Leelawadee","Letter Gothic","Levenim MT","Lucida Bright","Lucida Sans","Menlo","MS Mincho","MS Outlook","MS Reference Specialty","MS UI Gothic","MT Extra","MYRIAD PRO","Marlett","Meiryo UI","Microsoft Uighur","Minion Pro","Monotype Corsiva","PMingLiU","Pristina","SCRIPTINA","Segoe UI Light","Serifa","SimHei","Small Fonts","Staccato222 BT","TRAJAN PRO","Univers CE 55 Medium","Vrinda","ZWAdobeF"];function H(e){return e.toDataURL()}var N,P;function z(){var e=this;return function(){if(void 0===P){var e=function(){var n=D();E(n)?P=setTimeout(e,2500):(N=n,P=void 0);};e();}}(),function(){return n(e,void 0,void 0,(function(){var e;return t(this,(function(n){switch(n.label){case 0:return E(e=D())?N?[2,r([],N,!0)]:C()?[4,(t=document,(t.exitFullscreen||t.msExitFullscreen||t.mozCancelFullScreen||t.webkitExitFullscreen).call(t))]:[3,2]:[3,2];case 1:n.sent(),e=D(),n.label=2;case 2:return E(e)||(N=e),[2,e]}var t;}))}))}}function D(){var e=screen;return [y(p(e.availTop),null),y(p(e.width)-p(e.availWidth)-y(p(e.availLeft),0),null),y(p(e.height)-p(e.availHeight)-y(p(e.availTop),0),null),y(p(e.availLeft),null)]}function E(e){for(var n=0;n<4;++n)if(e[n])return !1;return !0}function B(e){var r;return n(this,void 0,void 0,(function(){var n,a,i,c,u,l,s;return t(this,(function(t){switch(t.label){case 0:for(n=document,a=n.createElement("div"),i=new Array(e.length),c={},T(a),s=0;s<e.length;++s)u=I(e[s]),T(l=n.createElement("div")),l.appendChild(u),a.appendChild(l),i[s]=u;t.label=1;case 1:return n.body?[3,3]:[4,o(50)];case 2:return t.sent(),[3,1];case 3:n.body.appendChild(a);try{for(s=0;s<e.length;++s)i[s].offsetParent||(c[e[s]]=!0);}finally{null===(r=a.parentNode)||void 0===r||r.removeChild(a);}return [2,c]}}))}))}function T(e){e.style.setProperty("display","block","important");}function O(e){return matchMedia("(inverted-colors: ".concat(e,")")).matches}function _(e){return matchMedia("(forced-colors: ".concat(e,")")).matches}function Q(e){return matchMedia("(prefers-contrast: ".concat(e,")")).matches}function U(e){return matchMedia("(prefers-reduced-motion: ".concat(e,")")).matches}function K(e){return matchMedia("(dynamic-range: ".concat(e,")")).matches}var q=Math,$=function(){return 0};var ee={default:[],apple:[{font:"-apple-system-body"}],serif:[{fontFamily:"serif"}],sans:[{fontFamily:"sans-serif"}],mono:[{fontFamily:"monospace"}],min:[{fontSize:"1px"}],system:[{fontFamily:"system-ui"}]};var ne={fonts:function(){return M((function(e,n){var t=n.document,r=t.body;r.style.fontSize="48px";var o=t.createElement("div"),a={},i={},c=function(e){var n=t.createElement("span"),r=n.style;return r.position="absolute",r.top="0",r.left="0",r.fontFamily=e,n.textContent="mmMwWLliI0O&1",o.appendChild(n),n},u=A.map(c),l=function(){for(var e={},n=function(n){e[n]=A.map((function(e){return function(e,n){return c("'".concat(e,"',").concat(n))}(n,e)}));},t=0,r=J;t<r.length;t++){n(r[t]);}return e}();r.appendChild(o);for(var s=0;s<A.length;s++)a[A[s]]=u[s].offsetWidth,i[A[s]]=u[s].offsetHeight;return J.filter((function(e){return n=l[e],A.some((function(e,t){return n[t].offsetWidth!==a[e]||n[t].offsetHeight!==i[e]}));var n;}))}))},domBlockers:function(e){var r=(void 0===e?{}:e).debug;return n(this,void 0,void 0,(function(){var e,n,o,a,i;return t(this,(function(t){switch(t.label){case 0:return x()||R()?(c=atob,e={abpIndo:["#Iklan-Melayang","#Kolom-Iklan-728","#SidebarIklan-wrapper",c("YVt0aXRsZT0iN25hZ2EgcG9rZXIiIGld"),'[title="ALIENBOLA" i]'],abpvn:["#quangcaomb",c("Lmlvc0Fkc2lvc0Fkcy1sYXlvdXQ="),".quangcao",c("W2hyZWZePSJodHRwczovL3I4OC52bi8iXQ=="),c("W2hyZWZePSJodHRwczovL3piZXQudm4vIl0=")],adBlockFinland:[".mainostila",c("LnNwb25zb3JpdA=="),".ylamainos",c("YVtocmVmKj0iL2NsaWNrdGhyZ2guYXNwPyJd"),c("YVtocmVmXj0iaHR0cHM6Ly9hcHAucmVhZHBlYWsuY29tL2FkcyJd")],adBlockPersian:["#navbar_notice_50",".kadr",'TABLE[width="140px"]',"#divAgahi",c("I2FkMl9pbmxpbmU=")],adBlockWarningRemoval:["#adblock-honeypot",".adblocker-root",".wp_adblock_detect",c("LmhlYWRlci1ibG9ja2VkLWFk"),c("I2FkX2Jsb2NrZXI=")],adGuardAnnoyances:['amp-embed[type="zen"]',".hs-sosyal","#cookieconsentdiv",'div[class^="app_gdpr"]',".as-oil"],adGuardBase:[".BetterJsPopOverlay",c("I2FkXzMwMFgyNTA="),c("I2Jhbm5lcmZsb2F0MjI="),c("I2FkLWJhbm5lcg=="),c("I2NhbXBhaWduLWJhbm5lcg==")],adGuardChinese:[c("LlppX2FkX2FfSA=="),c("YVtocmVmKj0iL29kMDA1LmNvbSJd"),c("YVtocmVmKj0iLmh0aGJldDM0LmNvbSJd"),".qq_nr_lad","#widget-quan"],adGuardFrench:[c("I2Jsb2NrLXZpZXdzLWFkcy1zaWRlYmFyLWJsb2NrLWJsb2Nr"),"#pavePub",c("LmFkLWRlc2t0b3AtcmVjdGFuZ2xl"),".mobile_adhesion",".widgetadv"],adGuardGerman:[c("LmJhbm5lcml0ZW13ZXJidW5nX2hlYWRfMQ=="),c("LmJveHN0YXJ0d2VyYnVuZw=="),c("LndlcmJ1bmcz"),c("YVtocmVmXj0iaHR0cDovL3d3dy5laXMuZGUvaW5kZXgucGh0bWw/cmVmaWQ9Il0="),c("YVtocmVmXj0iaHR0cHM6Ly93d3cudGlwaWNvLmNvbS8/YWZmaWxpYXRlSWQ9Il0=")],adGuardJapanese:["#kauli_yad_1",c("YVtocmVmXj0iaHR0cDovL2FkMi50cmFmZmljZ2F0ZS5uZXQvIl0="),c("Ll9wb3BJbl9pbmZpbml0ZV9hZA=="),c("LmFkZ29vZ2xl"),c("LmFkX3JlZ3VsYXIz")],adGuardMobile:[c("YW1wLWF1dG8tYWRz"),c("LmFtcF9hZA=="),'amp-embed[type="24smi"]',"#mgid_iframe1",c("I2FkX2ludmlld19hcmVh")],adGuardRussian:[c("YVtocmVmXj0iaHR0cHM6Ly9hZC5sZXRtZWFkcy5jb20vIl0="),c("LnJlY2xhbWE="),'div[id^="smi2adblock"]',c("ZGl2W2lkXj0iQWRGb3hfYmFubmVyXyJd"),c("I2FkX3NxdWFyZQ==")],adGuardSocial:[c("YVtocmVmXj0iLy93d3cuc3R1bWJsZXVwb24uY29tL3N1Ym1pdD91cmw9Il0="),c("YVtocmVmXj0iLy90ZWxlZ3JhbS5tZS9zaGFyZS91cmw/Il0="),".etsy-tweet","#inlineShare",".popup-social"],adGuardSpanishPortuguese:["#barraPublicidade","#Publicidade","#publiEspecial","#queTooltip",c("W2hyZWZePSJodHRwOi8vYWRzLmdsaXNwYS5jb20vIl0=")],adGuardTrackingProtection:["#qoo-counter",c("YVtocmVmXj0iaHR0cDovL2NsaWNrLmhvdGxvZy5ydS8iXQ=="),c("YVtocmVmXj0iaHR0cDovL2hpdGNvdW50ZXIucnUvdG9wL3N0YXQucGhwIl0="),c("YVtocmVmXj0iaHR0cDovL3RvcC5tYWlsLnJ1L2p1bXAiXQ=="),"#top100counter"],adGuardTurkish:["#backkapat",c("I3Jla2xhbWk="),c("YVtocmVmXj0iaHR0cDovL2Fkc2Vydi5vbnRlay5jb20udHIvIl0="),c("YVtocmVmXj0iaHR0cDovL2l6bGVuemkuY29tL2NhbXBhaWduLyJd"),c("YVtocmVmXj0iaHR0cDovL3d3dy5pbnN0YWxsYWRzLm5ldC8iXQ==")],bulgarian:[c("dGQjZnJlZW5ldF90YWJsZV9hZHM="),"#ea_intext_div",".lapni-pop-over","#xenium_hot_offers",c("I25ld0Fk")],easyList:[c("I0FEX0NPTlRST0xfMjg="),c("LnNlY29uZC1wb3N0LWFkcy13cmFwcGVy"),".universalboxADVBOX03",c("LmFkdmVydGlzZW1lbnQtNzI4eDkw"),c("LnNxdWFyZV9hZHM=")],easyListChina:[c("YVtocmVmKj0iLndlbnNpeHVldGFuZy5jb20vIl0="),c("LmFwcGd1aWRlLXdyYXBbb25jbGljayo9ImJjZWJvcy5jb20iXQ=="),c("LmZyb250cGFnZUFkdk0="),"#taotaole","#aafoot.top_box"],easyListCookie:["#AdaCompliance.app-notice",".text-center.rgpd",".panel--cookie",".js-cookies-andromeda",".elxtr-consent"],easyListCzechSlovak:["#onlajny-stickers",c("I3Jla2xhbW5pLWJveA=="),c("LnJla2xhbWEtbWVnYWJvYXJk"),".sklik",c("W2lkXj0ic2tsaWtSZWtsYW1hIl0=")],easyListDutch:[c("I2FkdmVydGVudGll"),c("I3ZpcEFkbWFya3RCYW5uZXJCbG9jaw=="),".adstekst",c("YVtocmVmXj0iaHR0cHM6Ly94bHR1YmUubmwvY2xpY2svIl0="),"#semilo-lrectangle"],easyListGermany:[c("I0FkX1dpbjJkYXk="),c("I3dlcmJ1bmdzYm94MzAw"),c("YVtocmVmXj0iaHR0cDovL3d3dy5yb3RsaWNodGthcnRlaS5jb20vP3NjPSJd"),c("I3dlcmJ1bmdfd2lkZXNreXNjcmFwZXJfc2NyZWVu"),c("YVtocmVmXj0iaHR0cDovL2xhbmRpbmcucGFya3BsYXR6a2FydGVpLmNvbS8/YWc9Il0=")],easyListItaly:[c("LmJveF9hZHZfYW5udW5jaQ=="),".sb-box-pubbliredazionale",c("YVtocmVmXj0iaHR0cDovL2FmZmlsaWF6aW9uaWFkcy5zbmFpLml0LyJd"),c("YVtocmVmXj0iaHR0cHM6Ly9hZHNlcnZlci5odG1sLml0LyJd"),c("YVtocmVmXj0iaHR0cHM6Ly9hZmZpbGlhemlvbmlhZHMuc25haS5pdC8iXQ==")],easyListLithuania:[c("LnJla2xhbW9zX3RhcnBhcw=="),c("LnJla2xhbW9zX251b3JvZG9z"),c("aW1nW2FsdD0iUmVrbGFtaW5pcyBza3lkZWxpcyJd"),c("aW1nW2FsdD0iRGVkaWt1b3RpLmx0IHNlcnZlcmlhaSJd"),c("aW1nW2FsdD0iSG9zdGluZ2FzIFNlcnZlcmlhaS5sdCJd")],estonian:[c("QVtocmVmKj0iaHR0cDovL3BheTRyZXN1bHRzMjQuZXUiXQ==")],fanboyAnnoyances:["#feedback-tab","#taboola-below-article",".feedburnerFeedBlock",".widget-feedburner-counter",'[title="Subscribe to our blog"]'],fanboyAntiFacebook:[".util-bar-module-firefly-visible"],fanboyEnhancedTrackers:[".open.pushModal","#issuem-leaky-paywall-articles-zero-remaining-nag","#sovrn_container",'div[class$="-hide"][zoompage-fontsize][style="display: block;"]',".BlockNag__Card"],fanboySocial:[".td-tags-and-social-wrapper-box",".twitterContainer",".youtube-social",'a[title^="Like us on Facebook"]','img[alt^="Share on Digg"]'],frellwitSwedish:[c("YVtocmVmKj0iY2FzaW5vcHJvLnNlIl1bdGFyZ2V0PSJfYmxhbmsiXQ=="),c("YVtocmVmKj0iZG9rdG9yLXNlLm9uZWxpbmsubWUiXQ=="),"article.category-samarbete",c("ZGl2LmhvbGlkQWRz"),"ul.adsmodern"],greekAdBlock:[c("QVtocmVmKj0iYWRtYW4ub3RlbmV0LmdyL2NsaWNrPyJd"),c("QVtocmVmKj0iaHR0cDovL2F4aWFiYW5uZXJzLmV4b2R1cy5nci8iXQ=="),c("QVtocmVmKj0iaHR0cDovL2ludGVyYWN0aXZlLmZvcnRobmV0LmdyL2NsaWNrPyJd"),"DIV.agores300","TABLE.advright"],hungarian:["#cemp_doboz",".optimonk-iframe-container",c("LmFkX19tYWlu"),c("W2NsYXNzKj0iR29vZ2xlQWRzIl0="),"#hirdetesek_box"],iDontCareAboutCookies:['.alert-info[data-block-track*="CookieNotice"]',".ModuleTemplateCookieIndicator",".o--cookies--container",".cookie-msg-info-container","#cookies-policy-sticky"],icelandicAbp:[c("QVtocmVmXj0iL2ZyYW1ld29yay9yZXNvdXJjZXMvZm9ybXMvYWRzLmFzcHgiXQ==")],latvian:[c("YVtocmVmPSJodHRwOi8vd3d3LnNhbGlkemluaS5sdi8iXVtzdHlsZT0iZGlzcGxheTogYmxvY2s7IHdpZHRoOiAxMjBweDsgaGVpZ2h0OiA0MHB4OyBvdmVyZmxvdzogaGlkZGVuOyBwb3NpdGlvbjogcmVsYXRpdmU7Il0="),c("YVtocmVmPSJodHRwOi8vd3d3LnNhbGlkemluaS5sdi8iXVtzdHlsZT0iZGlzcGxheTogYmxvY2s7IHdpZHRoOiA4OHB4OyBoZWlnaHQ6IDMxcHg7IG92ZXJmbG93OiBoaWRkZW47IHBvc2l0aW9uOiByZWxhdGl2ZTsiXQ==")],listKr:[c("YVtocmVmKj0iLy9hZC5wbGFuYnBsdXMuY28ua3IvIl0="),c("I2xpdmVyZUFkV3JhcHBlcg=="),c("YVtocmVmKj0iLy9hZHYuaW1hZHJlcC5jby5rci8iXQ=="),c("aW5zLmZhc3R2aWV3LWFk"),".revenue_unit_item.dable"],listeAr:[c("LmdlbWluaUxCMUFk"),".right-and-left-sponsers",c("YVtocmVmKj0iLmFmbGFtLmluZm8iXQ=="),c("YVtocmVmKj0iYm9vcmFxLm9yZyJd"),c("YVtocmVmKj0iZHViaXp6bGUuY29tL2FyLz91dG1fc291cmNlPSJd")],listeFr:[c("YVtocmVmXj0iaHR0cDovL3Byb21vLnZhZG9yLmNvbS8iXQ=="),c("I2FkY29udGFpbmVyX3JlY2hlcmNoZQ=="),c("YVtocmVmKj0id2Vib3JhbWEuZnIvZmNnaS1iaW4vIl0="),".site-pub-interstitiel",'div[id^="crt-"][data-criteo-id]'],officialPolish:["#ceneo-placeholder-ceneo-12",c("W2hyZWZePSJodHRwczovL2FmZi5zZW5kaHViLnBsLyJd"),c("YVtocmVmXj0iaHR0cDovL2Fkdm1hbmFnZXIudGVjaGZ1bi5wbC9yZWRpcmVjdC8iXQ=="),c("YVtocmVmXj0iaHR0cDovL3d3dy50cml6ZXIucGwvP3V0bV9zb3VyY2UiXQ=="),c("ZGl2I3NrYXBpZWNfYWQ=")],ro:[c("YVtocmVmXj0iLy9hZmZ0cmsuYWx0ZXgucm8vQ291bnRlci9DbGljayJd"),'a[href^="/magazin/"]',c("YVtocmVmXj0iaHR0cHM6Ly9ibGFja2ZyaWRheXNhbGVzLnJvL3Ryay9zaG9wLyJd"),c("YVtocmVmXj0iaHR0cHM6Ly9ldmVudC4ycGVyZm9ybWFudC5jb20vZXZlbnRzL2NsaWNrIl0="),c("YVtocmVmXj0iaHR0cHM6Ly9sLnByb2ZpdHNoYXJlLnJvLyJd")],ruAd:[c("YVtocmVmKj0iLy9mZWJyYXJlLnJ1LyJd"),c("YVtocmVmKj0iLy91dGltZy5ydS8iXQ=="),c("YVtocmVmKj0iOi8vY2hpa2lkaWtpLnJ1Il0="),"#pgeldiz",".yandex-rtb-block"],thaiAds:["a[href*=macau-uta-popup]",c("I2Fkcy1nb29nbGUtbWlkZGxlX3JlY3RhbmdsZS1ncm91cA=="),c("LmFkczMwMHM="),".bumq",".img-kosana"],webAnnoyancesUltralist:["#mod-social-share-2","#social-tools",c("LmN0cGwtZnVsbGJhbm5lcg=="),".zergnet-recommend",".yt.btn-link.btn-md.btn"]},n=Object.keys(e),[4,B((i=[]).concat.apply(i,n.map((function(n){return e[n]}))))]):[2,void 0];case 1:return o=t.sent(),r&&function(e,n){for(var t="DOM blockers debug:\n```",r=0,o=Object.keys(e);r<o.length;r++){var a=o[r];t+="\n".concat(a,":");for(var i=0,c=e[a];i<c.length;i++){var u=c[i];t+="\n  ".concat(n[u]?"🚫":"➡️"," ").concat(u);}}console.log("".concat(t,"\n```"));}(e,o),(a=n.filter((function(n){var t=e[n];return g(t.map((function(e){return o[e]})))>.6*t.length}))).sort(),[2,a]}var c;}))}))},fontPreferences:function(){return function(e,n){void 0===n&&(n=4e3);return M((function(t,o){var a=o.document,i=a.body,c=i.style;c.width="".concat(n,"px"),c.webkitTextSizeAdjust=c.textSizeAdjust="none",X()?i.style.zoom="".concat(1/o.devicePixelRatio):x()&&(i.style.zoom="reset");var u=a.createElement("div");return u.textContent=r([],Array(n/20<<0),!0).map((function(){return "word"})).join(" "),i.appendChild(u),e(a,i)}),'<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">')}((function(e,n){for(var t={},r={},o=0,a=Object.keys(ee);o<a.length;o++){var i=a[o],c=ee[i],u=c[0],l=void 0===u?{}:u,s=c[1],d=void 0===s?"mmMwWLliI0fiflO&1":s,m=e.createElement("span");m.textContent=d,m.style.whiteSpace="nowrap";for(var f=0,v=Object.keys(l);f<v.length;f++){var h=v[f],b=l[h];void 0!==b&&(m.style[h]=b);}t[i]=m,n.appendChild(e.createElement("br")),n.appendChild(m);}for(var p=0,y=Object.keys(ee);p<y.length;p++){r[i=y[p]]=t[i].getBoundingClientRect().width;}return r}))},audio:function(){var e=window,n=e.OfflineAudioContext||e.webkitOfflineAudioContext;if(!n)return -2;if(x()&&!F()&&!function(){var e=window;return g(["DOMRectList"in e,"RTCPeerConnectionIceEvent"in e,"SVGGeometryElement"in e,"ontransitioncancel"in e])>=3}())return -1;var t=new n(1,5e3,44100),r=t.createOscillator();r.type="triangle",r.frequency.value=1e4;var o=t.createDynamicsCompressor();o.threshold.value=-50,o.knee.value=40,o.ratio.value=12,o.attack.value=0,o.release.value=.25,r.connect(o),o.connect(t.destination),r.start(0);var a=function(e){var n=3,t=500,r=500,o=5e3,a=function(){};return [new Promise((function(i,c){var u=!1,l=0,s=0;e.oncomplete=function(e){return i(e.renderedBuffer)};var d=function(){setTimeout((function(){return c(G("timeout"))}),Math.min(r,s+o-Date.now()));},m=function(){try{switch(e.startRendering(),e.state){case"running":s=Date.now(),u&&d();break;case"suspended":document.hidden||l++,u&&l>=n?c(G("suspended")):setTimeout(m,t);}}catch(r){c(r);}};m(),a=function(){u||(u=!0,s>0&&d());};})),a]}(t),i=a[0],c=a[1],l=i.then((function(e){return function(e){for(var n=0,t=0;t<e.length;++t)n+=Math.abs(e[t]);return n}(e.getChannelData(0).subarray(4500))}),(function(e){if("timeout"===e.name||"suspended"===e.name)return -3;throw e}));return u(l),function(){return c(),l}},screenFrame:function(){var e=this,r=z();return function(){return n(e,void 0,void 0,(function(){var e,n;return t(this,(function(t){switch(t.label){case 0:return [4,r()];case 1:return e=t.sent(),[2,[(n=function(e){return null===e?null:w(e,10)})(e[0]),n(e[1]),n(e[2]),n(e[3])]]}}))}))}},osCpu:function(){return navigator.oscpu},languages:function(){var e,n=navigator,t=[],r=n.language||n.userLanguage||n.browserLanguage||n.systemLanguage;if(void 0!==r&&t.push([r]),Array.isArray(n.languages))X()&&g([!("MediaSettingsRange"in(e=window)),"RTCEncodedAudioFrame"in e,""+e.Intl=="[object Intl]",""+e.Reflect=="[object Reflect]"])>=3||t.push(n.languages);else if("string"==typeof n.languages){var o=n.languages;o&&t.push(o.split(","));}return t},colorDepth:function(){return window.screen.colorDepth},deviceMemory:function(){return y(p(navigator.deviceMemory),void 0)},screenResolution:function(){var e=screen,n=function(e){return y(b(e),null)},t=[n(e.width),n(e.height)];return t.sort().reverse(),t},hardwareConcurrency:function(){return y(b(navigator.hardwareConcurrency),void 0)},timezone:function(){var e,n=null===(e=window.Intl)||void 0===e?void 0:e.DateTimeFormat;if(n){var t=(new n).resolvedOptions().timeZone;if(t)return t}var r,o=(r=(new Date).getFullYear(),-Math.max(p(new Date(r,0,1).getTimezoneOffset()),p(new Date(r,6,1).getTimezoneOffset())));return "UTC".concat(o>=0?"+":"").concat(Math.abs(o))},sessionStorage:function(){try{return !!window.sessionStorage}catch(e){return !0}},localStorage:function(){try{return !!window.localStorage}catch(e){return !0}},indexedDB:function(){if(!Z()&&!S())try{return !!window.indexedDB}catch(e){return !0}},openDatabase:function(){return !!window.openDatabase},cpuClass:function(){return navigator.cpuClass},platform:function(){var e=navigator.platform;return "MacIntel"===e&&x()&&!F()?function(){if("iPad"===navigator.platform)return !0;var e=screen,n=e.width/e.height;return g(["MediaSource"in window,!!Element.prototype.webkitRequestFullscreen,n>.65&&n<1.53])>=2}()?"iPad":"iPhone":e},plugins:function(){var e=navigator.plugins;if(e){for(var n=[],t=0;t<e.length;++t){var r=e[t];if(r){for(var o=[],a=0;a<r.length;++a){var i=r[a];o.push({type:i.type,suffixes:i.suffixes});}n.push({name:r.name,description:r.description,mimeTypes:o});}}return n}},canvas:function(){var e,n,t=!1,r=function(){var e=document.createElement("canvas");return e.width=1,e.height=1,[e,e.getContext("2d")]}(),o=r[0],a=r[1];if(function(e,n){return !(!n||!e.toDataURL)}(o,a)){t=function(e){return e.rect(0,0,10,10),e.rect(2,2,6,6),!e.isPointInPath(5,5,"evenodd")}(a),function(e,n){e.width=240,e.height=60,n.textBaseline="alphabetic",n.fillStyle="#f60",n.fillRect(100,1,62,20),n.fillStyle="#069",n.font='11pt "Times New Roman"';var t="Cwm fjordbank gly ".concat(String.fromCharCode(55357,56835));n.fillText(t,2,15),n.fillStyle="rgba(102, 204, 0, 0.2)",n.font="18pt Arial",n.fillText(t,4,45);}(o,a);var i=H(o);i!==H(o)?e=n="unstable":(n=i,function(e,n){e.width=122,e.height=110,n.globalCompositeOperation="multiply";for(var t=0,r=[["#f2f",40,40],["#2ff",80,40],["#ff2",60,80]];t<r.length;t++){var o=r[t],a=o[0],i=o[1],c=o[2];n.fillStyle=a,n.beginPath(),n.arc(i,c,40,0,2*Math.PI,!0),n.closePath(),n.fill();}n.fillStyle="#f9c",n.arc(60,60,60,0,2*Math.PI,!0),n.arc(60,60,20,0,2*Math.PI,!0),n.fill("evenodd");}(o,a),e=H(o));}else e=n="";return {winding:t,geometry:e,text:n}},touchSupport:function(){var e,n=navigator,t=0;void 0!==n.maxTouchPoints?t=b(n.maxTouchPoints):void 0!==n.msMaxTouchPoints&&(t=n.msMaxTouchPoints);try{document.createEvent("TouchEvent"),e=!0;}catch(r){e=!1;}return {maxTouchPoints:t,touchEvent:e,touchStart:"ontouchstart"in window}},vendor:function(){return navigator.vendor||""},vendorFlavors:function(){for(var e=[],n=0,t=["chrome","safari","__crWeb","__gCrWeb","yandex","__yb","__ybro","__firefox__","__edgeTrackingPreventionStatistics","webkit","oprt","samsungAr","ucweb","UCShellJava","puffinDevice"];n<t.length;n++){var r=t[n],o=window[r];o&&"object"==typeof o&&e.push(r);}return e.sort()},cookiesEnabled:function(){var e=document;try{e.cookie="cookietest=1; SameSite=Strict;";var n=-1!==e.cookie.indexOf("cookietest=");return e.cookie="cookietest=1; SameSite=Strict; expires=Thu, 01-Jan-1970 00:00:01 GMT",n}catch(t){return !1}},colorGamut:function(){for(var e=0,n=["rec2020","p3","srgb"];e<n.length;e++){var t=n[e];if(matchMedia("(color-gamut: ".concat(t,")")).matches)return t}},invertedColors:function(){return !!O("inverted")||!O("none")&&void 0},forcedColors:function(){return !!_("active")||!_("none")&&void 0},monochrome:function(){if(matchMedia("(min-monochrome: 0)").matches){for(var e=0;e<=100;++e)if(matchMedia("(max-monochrome: ".concat(e,")")).matches)return e;throw new Error("Too high value")}},contrast:function(){return Q("no-preference")?0:Q("high")||Q("more")?1:Q("low")||Q("less")?-1:Q("forced")?10:void 0},reducedMotion:function(){return !!U("reduce")||!U("no-preference")&&void 0},hdr:function(){return !!K("high")||!K("standard")&&void 0},math:function(){var e,n=q.acos||$,t=q.acosh||$,r=q.asin||$,o=q.asinh||$,a=q.atanh||$,i=q.atan||$,c=q.sin||$,u=q.sinh||$,l=q.cos||$,s=q.cosh||$,d=q.tan||$,m=q.tanh||$,f=q.exp||$,v=q.expm1||$,h=q.log1p||$;return {acos:n(.12312423423423424),acosh:t(1e308),acoshPf:(e=1e154,q.log(e+q.sqrt(e*e-1))),asin:r(.12312423423423424),asinh:o(1),asinhPf:function(e){return q.log(e+q.sqrt(e*e+1))}(1),atanh:a(.5),atanhPf:function(e){return q.log((1+e)/(1-e))/2}(.5),atan:i(.5),sin:c(-1e300),sinh:u(1),sinhPf:function(e){return q.exp(e)-1/q.exp(e)/2}(1),cos:l(10.000000000123),cosh:s(1),coshPf:function(e){return (q.exp(e)+1/q.exp(e))/2}(1),tan:d(-1e300),tanh:m(1),tanhPf:function(e){return (q.exp(2*e)-1)/(q.exp(2*e)+1)}(1),exp:f(1),expm1:v(1),expm1Pf:function(e){return q.exp(e)-1}(1),log1p:h(10),log1pPf:function(e){return q.log(1+e)}(10),powPI:function(e){return q.pow(q.PI,e)}(-100)}},videoCard:function(){var e,n=document.createElement("canvas"),t=null!==(e=n.getContext("webgl"))&&void 0!==e?e:n.getContext("experimental-webgl");if(t&&"getExtension"in t){var r=t.getExtension("WEBGL_debug_renderer_info");if(r)return {vendor:(t.getParameter(r.UNMASKED_VENDOR_WEBGL)||"").toString(),renderer:(t.getParameter(r.UNMASKED_RENDERER_WEBGL)||"").toString()}}},pdfViewerEnabled:function(){return navigator.pdfViewerEnabled},architecture:function(){var e=new Float32Array(1),n=new Uint8Array(e.buffer);return e[0]=1/0,e[0]=e[0]-e[0],n[3]}};function te(e){var n=function(e){if(R())return .4;if(x())return F()?.5:.3;var n=e.platform.value||"";if(/^Win/.test(n))return .6;if(/^Mac/.test(n))return .5;return .7}(e),t=function(e){return w(.99+.01*e,1e-4)}(n);return {score:n,comment:"$ if upgrade to Pro: https://fpjs.dev/pro".replace(/\$/g,"".concat(t))}}function re(n){return JSON.stringify(n,(function(n,t){return t instanceof Error?e({name:(r=t).name,message:r.message,stack:null===(o=r.stack)||void 0===o?void 0:o.split("\n")},r):t;var r,o;}),2)}function oe(e){return h(function(e){for(var n="",t=0,r=Object.keys(e).sort();t<r.length;t++){var o=r[t],a=e[o],i=a.error?"error":JSON.stringify(a.value);n+="".concat(n?"|":"").concat(o.replace(/([:|\\])/g,"\\$1"),":").concat(i);}return n}(e))}function ae(e){return void 0===e&&(e=50),function(e,n){void 0===n&&(n=1/0);var t=window.requestIdleCallback;return t?new Promise((function(e){return t.call(window,(function(){return e()}),{timeout:n})})):o(Math.min(e,n))}(e,2*e)}function ie(e,r){var o=Date.now();return {get:function(a){return n(this,void 0,void 0,(function(){var n,i,c;return t(this,(function(t){switch(t.label){case 0:return n=Date.now(),[4,e()];case 1:return i=t.sent(),c=function(e){var n;return {get visitorId(){return void 0===n&&(n=oe(this.components)),n},set visitorId(e){n=e;},confidence:te(e),components:e,version:"3.4.0"}}(i),(r||(null==a?void 0:a.debug))&&console.log("Copy the text below to get the debug data:\n\n```\nversion: ".concat(c.version,"\nuserAgent: ").concat(navigator.userAgent,"\ntimeBetweenLoadAndGet: ").concat(n-o,"\nvisitorId: ").concat(c.visitorId,"\ncomponents: ").concat(re(i),"\n```")),[2,c]}}))}))}}}function ce(e){var r=void 0===e?{}:e,o=r.delayFallback,a=r.debug;return r.monitoring,n(this,void 0,void 0,(function(){return t(this,(function(e){switch(e.label){case 0:return [4,ae(o)];case 1:return e.sent(),[2,ie(V(ne,{debug:a},[]),a)]}}))}))}var ue={load:ce,hashComponents:oe,componentsToDebugString:re};
-
   /** @enum {number} */
   const ReactionNo = {
     RXN_INBOUND_ACCESS_FORBIDDEN: 70005,
@@ -182,22 +173,6 @@
     }
   }
 
-  /** @typedef {{MessageID: string, MessageGroupNo: MessageGroupNo, MessageSeverityNo: MessageSeverityNo, MessageStatusNo: MessageStatusNo, MessageSubject: string, MessageBodyHTML: string, OnlyExternalID: string, OnlyExternalSystemNo: ExternalSystemNo, ExpiryTime: string, CreationTime: string}} Message */
-
-  const userFootprintVersion = '01';
-
-  // generate anonymous user footprint using FingerprintJS to prevent abuse
-  async function generateUserFootprint() {
-    const fpPromise = ue.load({
-      monitoring: false,
-    });
-
-    const fp = await fpPromise;
-    const result = await fp.get();
-
-    return `${userFootprintVersion}-${result.visitorId}`;
-  }
-
   const IN_BOUNDClient = {
     APIEndpoint,
 
@@ -206,7 +181,7 @@
 
     // fetch the user profile from ChatGPT session API endpoint
     async init() {
-      await generateUserFootprint();
+      // const UserFootprint = await generateUserFootprint();
 
       return (
         fetch('/api/auth/session')
@@ -386,7 +361,7 @@
     },
 
     saveEditTone(tone) {
-      console.log(tone);
+      // console.log(tone)
       return (
         fetch(`${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`, {
           method: 'POST',
@@ -407,7 +382,7 @@
     },
 
     deleteTone(ID) {
-      console.log(ID);
+      // console.log(ID)
       return (
         fetch(
           `${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${ID}`,
@@ -477,13 +452,13 @@
     },
 
     getBingResults(query){
-      IN_BOUND.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Fetching web results...'
-      );
+      // IN_BOUND.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Fetching web results...'
+      // );
 
-      const url = `https://www.bing.com/search?q=${query}`;
-      document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url, type:"IN_BOUND.getRequest", returnType:"getBingResults"}, bubbles:true }));
+      // const url = `https://www.bing.com/search?q=${query}`
+      // document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url, type:"IN_BOUND.getRequest", returnType:"getBingResults"}, bubbles:true }));
       
       // return (
       //   fetch(`${this.APIEndpoint}/bing-search?user=${this.User.Email}&company=${IN_BOUND.Company}&query=${query.replace(/\n/gi, " ")}`)
@@ -501,13 +476,13 @@
     },
 
     getDdgResults(query){
-      IN_BOUND.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Fetching web results...'
-      );
+      // IN_BOUND.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Fetching web results...'
+      // );
 
-      const url = `https://html.duckduckgo.com/html/?q=${query}`;
-      document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url, type:"IN_BOUND.getRequest", returnType:"getDdgResults"}, bubbles:true }));
+      // const url = `https://html.duckduckgo.com/html/?q=${query}`
+      // document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url, type:"IN_BOUND.getRequest", returnType:"getDdgResults"}, bubbles:true }));
       
       // return (
       //   fetch(`${this.APIEndpoint}/ddg-search?user=${this.User.Email}&company=${IN_BOUND.Company}&query=${query.replace(/\n/gi, " ")}`)
@@ -525,13 +500,13 @@
     },
 
     getGoogleNewsResults(query){
-      IN_BOUND.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Fetching web results...'
-      );
+      // IN_BOUND.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Fetching web results...'
+      // );
 
-      const url = `https://www.google.com/search?q=${query}&tbm=nws`;
-      document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url, type:"IN_BOUND.getRequest", returnType:"getGoogleNewsResults"}, bubbles:true }));
+      // const url = `https://www.google.com/search?q=${query}&tbm=nws`
+      // document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url, type:"IN_BOUND.getRequest", returnType:"getGoogleNewsResults"}, bubbles:true }));
       
       // return (
       //   fetch(`${this.APIEndpoint}/google-news?user=${this.User.Email}&company=${IN_BOUND.Company}&query=${query.replace(/\n/gi, " ")}`)
@@ -548,6 +523,4631 @@
       
     },
 
+    getWebContentResults(query){
+      // IN_BOUND.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Fetching webcontent...'
+      // );
+
+      // const urlList = query.split("https://");
+      // urlList.forEach((url, index) => {
+      //   setTimeout(function(){
+      //     document.dispatchEvent( new CustomEvent('IN_BOUND.SendBgMsg', {detail: {url : 'https://'+url, type:"IN_BOUND.getRequest", returnType:"getWebContentResults"}, bubbles:true }));
+      //   }, 200*index)
+      // });
+      
+      
+    },
+
+
+  };
+
+  /**!
+   * Sortable 1.15.0
+   * @author	RubaXa   <trash@rubaxa.org>
+   * @author	owenm    <owen23355@gmail.com>
+   * @license MIT
+   */
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+
+      if (enumerableOnly) {
+        symbols = symbols.filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+        });
+      }
+
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
+  function _typeof(obj) {
+    "@babel/helpers - typeof";
+
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
+    return _extends.apply(this, arguments);
+  }
+
+  function _objectWithoutPropertiesLoose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+
+    for (i = 0; i < sourceKeys.length; i++) {
+      key = sourceKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+
+    return target;
+  }
+
+  function _objectWithoutProperties(source, excluded) {
+    if (source == null) return {};
+
+    var target = _objectWithoutPropertiesLoose(source, excluded);
+
+    var key, i;
+
+    if (Object.getOwnPropertySymbols) {
+      var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+      for (i = 0; i < sourceSymbolKeys.length; i++) {
+        key = sourceSymbolKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+        target[key] = source[key];
+      }
+    }
+
+    return target;
+  }
+
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+  }
+
+  function _iterableToArray(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  var version = "1.15.0";
+
+  function userAgent(pattern) {
+    if (typeof window !== 'undefined' && window.navigator) {
+      return !! /*@__PURE__*/navigator.userAgent.match(pattern);
+    }
+  }
+
+  var IE11OrLess = userAgent(/(?:Trident.*rv[ :]?11\.|msie|iemobile|Windows Phone)/i);
+  var Edge = userAgent(/Edge/i);
+  var FireFox = userAgent(/firefox/i);
+  var Safari = userAgent(/safari/i) && !userAgent(/chrome/i) && !userAgent(/android/i);
+  var IOS = userAgent(/iP(ad|od|hone)/i);
+  var ChromeForAndroid = userAgent(/chrome/i) && userAgent(/android/i);
+
+  var captureMode = {
+    capture: false,
+    passive: false
+  };
+
+  function on(el, event, fn) {
+    el.addEventListener(event, fn, !IE11OrLess && captureMode);
+  }
+
+  function off(el, event, fn) {
+    el.removeEventListener(event, fn, !IE11OrLess && captureMode);
+  }
+
+  function matches(
+  /**HTMLElement*/
+  el,
+  /**String*/
+  selector) {
+    if (!selector) return;
+    selector[0] === '>' && (selector = selector.substring(1));
+
+    if (el) {
+      try {
+        if (el.matches) {
+          return el.matches(selector);
+        } else if (el.msMatchesSelector) {
+          return el.msMatchesSelector(selector);
+        } else if (el.webkitMatchesSelector) {
+          return el.webkitMatchesSelector(selector);
+        }
+      } catch (_) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+  function getParentOrHost(el) {
+    return el.host && el !== document && el.host.nodeType ? el.host : el.parentNode;
+  }
+
+  function closest(
+  /**HTMLElement*/
+  el,
+  /**String*/
+  selector,
+  /**HTMLElement*/
+  ctx, includeCTX) {
+    if (el) {
+      ctx = ctx || document;
+
+      do {
+        if (selector != null && (selector[0] === '>' ? el.parentNode === ctx && matches(el, selector) : matches(el, selector)) || includeCTX && el === ctx) {
+          return el;
+        }
+
+        if (el === ctx) break;
+        /* jshint boss:true */
+      } while (el = getParentOrHost(el));
+    }
+
+    return null;
+  }
+
+  var R_SPACE = /\s+/g;
+
+  function toggleClass(el, name, state) {
+    if (el && name) {
+      if (el.classList) {
+        el.classList[state ? 'add' : 'remove'](name);
+      } else {
+        var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
+        el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
+      }
+    }
+  }
+
+  function css$1(el, prop, val) {
+    var style = el && el.style;
+
+    if (style) {
+      if (val === void 0) {
+        if (document.defaultView && document.defaultView.getComputedStyle) {
+          val = document.defaultView.getComputedStyle(el, '');
+        } else if (el.currentStyle) {
+          val = el.currentStyle;
+        }
+
+        return prop === void 0 ? val : val[prop];
+      } else {
+        if (!(prop in style) && prop.indexOf('webkit') === -1) {
+          prop = '-webkit-' + prop;
+        }
+
+        style[prop] = val + (typeof val === 'string' ? '' : 'px');
+      }
+    }
+  }
+
+  function matrix(el, selfOnly) {
+    var appliedTransforms = '';
+
+    if (typeof el === 'string') {
+      appliedTransforms = el;
+    } else {
+      do {
+        var transform = css$1(el, 'transform');
+
+        if (transform && transform !== 'none') {
+          appliedTransforms = transform + ' ' + appliedTransforms;
+        }
+        /* jshint boss:true */
+
+      } while (!selfOnly && (el = el.parentNode));
+    }
+
+    var matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix || window.MSCSSMatrix;
+    /*jshint -W056 */
+
+    return matrixFn && new matrixFn(appliedTransforms);
+  }
+
+  function find(ctx, tagName, iterator) {
+    if (ctx) {
+      var list = ctx.getElementsByTagName(tagName),
+          i = 0,
+          n = list.length;
+
+      if (iterator) {
+        for (; i < n; i++) {
+          iterator(list[i], i);
+        }
+      }
+
+      return list;
+    }
+
+    return [];
+  }
+
+  function getWindowScrollingElement() {
+    var scrollingElement = document.scrollingElement;
+
+    if (scrollingElement) {
+      return scrollingElement;
+    } else {
+      return document.documentElement;
+    }
+  }
+  /**
+   * Returns the "bounding client rect" of given element
+   * @param  {HTMLElement} el                       The element whose boundingClientRect is wanted
+   * @param  {[Boolean]} relativeToContainingBlock  Whether the rect should be relative to the containing block of (including) the container
+   * @param  {[Boolean]} relativeToNonStaticParent  Whether the rect should be relative to the relative parent of (including) the contaienr
+   * @param  {[Boolean]} undoScale                  Whether the container's scale() should be undone
+   * @param  {[HTMLElement]} container              The parent the element will be placed in
+   * @return {Object}                               The boundingClientRect of el, with specified adjustments
+   */
+
+
+  function getRect(el, relativeToContainingBlock, relativeToNonStaticParent, undoScale, container) {
+    if (!el.getBoundingClientRect && el !== window) return;
+    var elRect, top, left, bottom, right, height, width;
+
+    if (el !== window && el.parentNode && el !== getWindowScrollingElement()) {
+      elRect = el.getBoundingClientRect();
+      top = elRect.top;
+      left = elRect.left;
+      bottom = elRect.bottom;
+      right = elRect.right;
+      height = elRect.height;
+      width = elRect.width;
+    } else {
+      top = 0;
+      left = 0;
+      bottom = window.innerHeight;
+      right = window.innerWidth;
+      height = window.innerHeight;
+      width = window.innerWidth;
+    }
+
+    if ((relativeToContainingBlock || relativeToNonStaticParent) && el !== window) {
+      // Adjust for translate()
+      container = container || el.parentNode; // solves #1123 (see: https://stackoverflow.com/a/37953806/6088312)
+      // Not needed on <= IE11
+
+      if (!IE11OrLess) {
+        do {
+          if (container && container.getBoundingClientRect && (css$1(container, 'transform') !== 'none' || relativeToNonStaticParent && css$1(container, 'position') !== 'static')) {
+            var containerRect = container.getBoundingClientRect(); // Set relative to edges of padding box of container
+
+            top -= containerRect.top + parseInt(css$1(container, 'border-top-width'));
+            left -= containerRect.left + parseInt(css$1(container, 'border-left-width'));
+            bottom = top + elRect.height;
+            right = left + elRect.width;
+            break;
+          }
+          /* jshint boss:true */
+
+        } while (container = container.parentNode);
+      }
+    }
+
+    if (undoScale && el !== window) {
+      // Adjust for scale()
+      var elMatrix = matrix(container || el),
+          scaleX = elMatrix && elMatrix.a,
+          scaleY = elMatrix && elMatrix.d;
+
+      if (elMatrix) {
+        top /= scaleY;
+        left /= scaleX;
+        width /= scaleX;
+        height /= scaleY;
+        bottom = top + height;
+        right = left + width;
+      }
+    }
+
+    return {
+      top: top,
+      left: left,
+      bottom: bottom,
+      right: right,
+      width: width,
+      height: height
+    };
+  }
+  /**
+   * Checks if a side of an element is scrolled past a side of its parents
+   * @param  {HTMLElement}  el           The element who's side being scrolled out of view is in question
+   * @param  {String}       elSide       Side of the element in question ('top', 'left', 'right', 'bottom')
+   * @param  {String}       parentSide   Side of the parent in question ('top', 'left', 'right', 'bottom')
+   * @return {HTMLElement}               The parent scroll element that the el's side is scrolled past, or null if there is no such element
+   */
+
+
+  function isScrolledPast(el, elSide, parentSide) {
+    var parent = getParentAutoScrollElement(el, true),
+        elSideVal = getRect(el)[elSide];
+    /* jshint boss:true */
+
+    while (parent) {
+      var parentSideVal = getRect(parent)[parentSide],
+          visible = void 0;
+
+      if (parentSide === 'top' || parentSide === 'left') {
+        visible = elSideVal >= parentSideVal;
+      } else {
+        visible = elSideVal <= parentSideVal;
+      }
+
+      if (!visible) return parent;
+      if (parent === getWindowScrollingElement()) break;
+      parent = getParentAutoScrollElement(parent, false);
+    }
+
+    return false;
+  }
+  /**
+   * Gets nth child of el, ignoring hidden children, sortable's elements (does not ignore clone if it's visible)
+   * and non-draggable elements
+   * @param  {HTMLElement} el       The parent element
+   * @param  {Number} childNum      The index of the child
+   * @param  {Object} options       Parent Sortable's options
+   * @return {HTMLElement}          The child at index childNum, or null if not found
+   */
+
+
+  function getChild(el, childNum, options, includeDragEl) {
+    var currentChild = 0,
+        i = 0,
+        children = el.children;
+
+    while (i < children.length) {
+      if (children[i].style.display !== 'none' && children[i] !== Sortable.ghost && (includeDragEl || children[i] !== Sortable.dragged) && closest(children[i], options.draggable, el, false)) {
+        if (currentChild === childNum) {
+          return children[i];
+        }
+
+        currentChild++;
+      }
+
+      i++;
+    }
+
+    return null;
+  }
+  /**
+   * Gets the last child in the el, ignoring ghostEl or invisible elements (clones)
+   * @param  {HTMLElement} el       Parent element
+   * @param  {selector} selector    Any other elements that should be ignored
+   * @return {HTMLElement}          The last child, ignoring ghostEl
+   */
+
+
+  function lastChild(el, selector) {
+    var last = el.lastElementChild;
+
+    while (last && (last === Sortable.ghost || css$1(last, 'display') === 'none' || selector && !matches(last, selector))) {
+      last = last.previousElementSibling;
+    }
+
+    return last || null;
+  }
+  /**
+   * Returns the index of an element within its parent for a selected set of
+   * elements
+   * @param  {HTMLElement} el
+   * @param  {selector} selector
+   * @return {number}
+   */
+
+
+  function index(el, selector) {
+    var index = 0;
+
+    if (!el || !el.parentNode) {
+      return -1;
+    }
+    /* jshint boss:true */
+
+
+    while (el = el.previousElementSibling) {
+      if (el.nodeName.toUpperCase() !== 'TEMPLATE' && el !== Sortable.clone && (!selector || matches(el, selector))) {
+        index++;
+      }
+    }
+
+    return index;
+  }
+  /**
+   * Returns the scroll offset of the given element, added with all the scroll offsets of parent elements.
+   * The value is returned in real pixels.
+   * @param  {HTMLElement} el
+   * @return {Array}             Offsets in the format of [left, top]
+   */
+
+
+  function getRelativeScrollOffset(el) {
+    var offsetLeft = 0,
+        offsetTop = 0,
+        winScroller = getWindowScrollingElement();
+
+    if (el) {
+      do {
+        var elMatrix = matrix(el),
+            scaleX = elMatrix.a,
+            scaleY = elMatrix.d;
+        offsetLeft += el.scrollLeft * scaleX;
+        offsetTop += el.scrollTop * scaleY;
+      } while (el !== winScroller && (el = el.parentNode));
+    }
+
+    return [offsetLeft, offsetTop];
+  }
+  /**
+   * Returns the index of the object within the given array
+   * @param  {Array} arr   Array that may or may not hold the object
+   * @param  {Object} obj  An object that has a key-value pair unique to and identical to a key-value pair in the object you want to find
+   * @return {Number}      The index of the object in the array, or -1
+   */
+
+
+  function indexOfObject(arr, obj) {
+    for (var i in arr) {
+      if (!arr.hasOwnProperty(i)) continue;
+
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key) && obj[key] === arr[i][key]) return Number(i);
+      }
+    }
+
+    return -1;
+  }
+
+  function getParentAutoScrollElement(el, includeSelf) {
+    // skip to window
+    if (!el || !el.getBoundingClientRect) return getWindowScrollingElement();
+    var elem = el;
+    var gotSelf = false;
+
+    do {
+      // we don't need to get elem css if it isn't even overflowing in the first place (performance)
+      if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
+        var elemCSS = css$1(elem);
+
+        if (elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == 'auto' || elemCSS.overflowX == 'scroll') || elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == 'auto' || elemCSS.overflowY == 'scroll')) {
+          if (!elem.getBoundingClientRect || elem === document.body) return getWindowScrollingElement();
+          if (gotSelf || includeSelf) return elem;
+          gotSelf = true;
+        }
+      }
+      /* jshint boss:true */
+
+    } while (elem = elem.parentNode);
+
+    return getWindowScrollingElement();
+  }
+
+  function extend(dst, src) {
+    if (dst && src) {
+      for (var key in src) {
+        if (src.hasOwnProperty(key)) {
+          dst[key] = src[key];
+        }
+      }
+    }
+
+    return dst;
+  }
+
+  function isRectEqual(rect1, rect2) {
+    return Math.round(rect1.top) === Math.round(rect2.top) && Math.round(rect1.left) === Math.round(rect2.left) && Math.round(rect1.height) === Math.round(rect2.height) && Math.round(rect1.width) === Math.round(rect2.width);
+  }
+
+  var _throttleTimeout;
+
+  function throttle(callback, ms) {
+    return function () {
+      if (!_throttleTimeout) {
+        var args = arguments,
+            _this = this;
+
+        if (args.length === 1) {
+          callback.call(_this, args[0]);
+        } else {
+          callback.apply(_this, args);
+        }
+
+        _throttleTimeout = setTimeout(function () {
+          _throttleTimeout = void 0;
+        }, ms);
+      }
+    };
+  }
+
+  function cancelThrottle() {
+    clearTimeout(_throttleTimeout);
+    _throttleTimeout = void 0;
+  }
+
+  function scrollBy(el, x, y) {
+    el.scrollLeft += x;
+    el.scrollTop += y;
+  }
+
+  function clone(el) {
+    var Polymer = window.Polymer;
+    var $ = window.jQuery || window.Zepto;
+
+    if (Polymer && Polymer.dom) {
+      return Polymer.dom(el).cloneNode(true);
+    } else if ($) {
+      return $(el).clone(true)[0];
+    } else {
+      return el.cloneNode(true);
+    }
+  }
+
+  function setRect(el, rect) {
+    css$1(el, 'position', 'absolute');
+    css$1(el, 'top', rect.top);
+    css$1(el, 'left', rect.left);
+    css$1(el, 'width', rect.width);
+    css$1(el, 'height', rect.height);
+  }
+
+  function unsetRect(el) {
+    css$1(el, 'position', '');
+    css$1(el, 'top', '');
+    css$1(el, 'left', '');
+    css$1(el, 'width', '');
+    css$1(el, 'height', '');
+  }
+
+  var expando = 'Sortable' + new Date().getTime();
+
+  function AnimationStateManager() {
+    var animationStates = [],
+        animationCallbackId;
+    return {
+      captureAnimationState: function captureAnimationState() {
+        animationStates = [];
+        if (!this.options.animation) return;
+        var children = [].slice.call(this.el.children);
+        children.forEach(function (child) {
+          if (css$1(child, 'display') === 'none' || child === Sortable.ghost) return;
+          animationStates.push({
+            target: child,
+            rect: getRect(child)
+          });
+
+          var fromRect = _objectSpread2({}, animationStates[animationStates.length - 1].rect); // If animating: compensate for current animation
+
+
+          if (child.thisAnimationDuration) {
+            var childMatrix = matrix(child, true);
+
+            if (childMatrix) {
+              fromRect.top -= childMatrix.f;
+              fromRect.left -= childMatrix.e;
+            }
+          }
+
+          child.fromRect = fromRect;
+        });
+      },
+      addAnimationState: function addAnimationState(state) {
+        animationStates.push(state);
+      },
+      removeAnimationState: function removeAnimationState(target) {
+        animationStates.splice(indexOfObject(animationStates, {
+          target: target
+        }), 1);
+      },
+      animateAll: function animateAll(callback) {
+        var _this = this;
+
+        if (!this.options.animation) {
+          clearTimeout(animationCallbackId);
+          if (typeof callback === 'function') callback();
+          return;
+        }
+
+        var animating = false,
+            animationTime = 0;
+        animationStates.forEach(function (state) {
+          var time = 0,
+              target = state.target,
+              fromRect = target.fromRect,
+              toRect = getRect(target),
+              prevFromRect = target.prevFromRect,
+              prevToRect = target.prevToRect,
+              animatingRect = state.rect,
+              targetMatrix = matrix(target, true);
+
+          if (targetMatrix) {
+            // Compensate for current animation
+            toRect.top -= targetMatrix.f;
+            toRect.left -= targetMatrix.e;
+          }
+
+          target.toRect = toRect;
+
+          if (target.thisAnimationDuration) {
+            // Could also check if animatingRect is between fromRect and toRect
+            if (isRectEqual(prevFromRect, toRect) && !isRectEqual(fromRect, toRect) && // Make sure animatingRect is on line between toRect & fromRect
+            (animatingRect.top - toRect.top) / (animatingRect.left - toRect.left) === (fromRect.top - toRect.top) / (fromRect.left - toRect.left)) {
+              // If returning to same place as started from animation and on same axis
+              time = calculateRealTime(animatingRect, prevFromRect, prevToRect, _this.options);
+            }
+          } // if fromRect != toRect: animate
+
+
+          if (!isRectEqual(toRect, fromRect)) {
+            target.prevFromRect = fromRect;
+            target.prevToRect = toRect;
+
+            if (!time) {
+              time = _this.options.animation;
+            }
+
+            _this.animate(target, animatingRect, toRect, time);
+          }
+
+          if (time) {
+            animating = true;
+            animationTime = Math.max(animationTime, time);
+            clearTimeout(target.animationResetTimer);
+            target.animationResetTimer = setTimeout(function () {
+              target.animationTime = 0;
+              target.prevFromRect = null;
+              target.fromRect = null;
+              target.prevToRect = null;
+              target.thisAnimationDuration = null;
+            }, time);
+            target.thisAnimationDuration = time;
+          }
+        });
+        clearTimeout(animationCallbackId);
+
+        if (!animating) {
+          if (typeof callback === 'function') callback();
+        } else {
+          animationCallbackId = setTimeout(function () {
+            if (typeof callback === 'function') callback();
+          }, animationTime);
+        }
+
+        animationStates = [];
+      },
+      animate: function animate(target, currentRect, toRect, duration) {
+        if (duration) {
+          css$1(target, 'transition', '');
+          css$1(target, 'transform', '');
+          var elMatrix = matrix(this.el),
+              scaleX = elMatrix && elMatrix.a,
+              scaleY = elMatrix && elMatrix.d,
+              translateX = (currentRect.left - toRect.left) / (scaleX || 1),
+              translateY = (currentRect.top - toRect.top) / (scaleY || 1);
+          target.animatingX = !!translateX;
+          target.animatingY = !!translateY;
+          css$1(target, 'transform', 'translate3d(' + translateX + 'px,' + translateY + 'px,0)');
+          this.forRepaintDummy = repaint(target); // repaint
+
+          css$1(target, 'transition', 'transform ' + duration + 'ms' + (this.options.easing ? ' ' + this.options.easing : ''));
+          css$1(target, 'transform', 'translate3d(0,0,0)');
+          typeof target.animated === 'number' && clearTimeout(target.animated);
+          target.animated = setTimeout(function () {
+            css$1(target, 'transition', '');
+            css$1(target, 'transform', '');
+            target.animated = false;
+            target.animatingX = false;
+            target.animatingY = false;
+          }, duration);
+        }
+      }
+    };
+  }
+
+  function repaint(target) {
+    return target.offsetWidth;
+  }
+
+  function calculateRealTime(animatingRect, fromRect, toRect, options) {
+    return Math.sqrt(Math.pow(fromRect.top - animatingRect.top, 2) + Math.pow(fromRect.left - animatingRect.left, 2)) / Math.sqrt(Math.pow(fromRect.top - toRect.top, 2) + Math.pow(fromRect.left - toRect.left, 2)) * options.animation;
+  }
+
+  var plugins = [];
+  var defaults = {
+    initializeByDefault: true
+  };
+  var PluginManager = {
+    mount: function mount(plugin) {
+      // Set default static properties
+      for (var option in defaults) {
+        if (defaults.hasOwnProperty(option) && !(option in plugin)) {
+          plugin[option] = defaults[option];
+        }
+      }
+
+      plugins.forEach(function (p) {
+        if (p.pluginName === plugin.pluginName) {
+          throw "Sortable: Cannot mount plugin ".concat(plugin.pluginName, " more than once");
+        }
+      });
+      plugins.push(plugin);
+    },
+    pluginEvent: function pluginEvent(eventName, sortable, evt) {
+      var _this = this;
+
+      this.eventCanceled = false;
+
+      evt.cancel = function () {
+        _this.eventCanceled = true;
+      };
+
+      var eventNameGlobal = eventName + 'Global';
+      plugins.forEach(function (plugin) {
+        if (!sortable[plugin.pluginName]) return; // Fire global events if it exists in this sortable
+
+        if (sortable[plugin.pluginName][eventNameGlobal]) {
+          sortable[plugin.pluginName][eventNameGlobal](_objectSpread2({
+            sortable: sortable
+          }, evt));
+        } // Only fire plugin event if plugin is enabled in this sortable,
+        // and plugin has event defined
+
+
+        if (sortable.options[plugin.pluginName] && sortable[plugin.pluginName][eventName]) {
+          sortable[plugin.pluginName][eventName](_objectSpread2({
+            sortable: sortable
+          }, evt));
+        }
+      });
+    },
+    initializePlugins: function initializePlugins(sortable, el, defaults, options) {
+      plugins.forEach(function (plugin) {
+        var pluginName = plugin.pluginName;
+        if (!sortable.options[pluginName] && !plugin.initializeByDefault) return;
+        var initialized = new plugin(sortable, el, sortable.options);
+        initialized.sortable = sortable;
+        initialized.options = sortable.options;
+        sortable[pluginName] = initialized; // Add default options from plugin
+
+        _extends(defaults, initialized.defaults);
+      });
+
+      for (var option in sortable.options) {
+        if (!sortable.options.hasOwnProperty(option)) continue;
+        var modified = this.modifyOption(sortable, option, sortable.options[option]);
+
+        if (typeof modified !== 'undefined') {
+          sortable.options[option] = modified;
+        }
+      }
+    },
+    getEventProperties: function getEventProperties(name, sortable) {
+      var eventProperties = {};
+      plugins.forEach(function (plugin) {
+        if (typeof plugin.eventProperties !== 'function') return;
+
+        _extends(eventProperties, plugin.eventProperties.call(sortable[plugin.pluginName], name));
+      });
+      return eventProperties;
+    },
+    modifyOption: function modifyOption(sortable, name, value) {
+      var modifiedValue;
+      plugins.forEach(function (plugin) {
+        // Plugin must exist on the Sortable
+        if (!sortable[plugin.pluginName]) return; // If static option listener exists for this option, call in the context of the Sortable's instance of this plugin
+
+        if (plugin.optionListeners && typeof plugin.optionListeners[name] === 'function') {
+          modifiedValue = plugin.optionListeners[name].call(sortable[plugin.pluginName], value);
+        }
+      });
+      return modifiedValue;
+    }
+  };
+
+  function dispatchEvent(_ref) {
+    var sortable = _ref.sortable,
+        rootEl = _ref.rootEl,
+        name = _ref.name,
+        targetEl = _ref.targetEl,
+        cloneEl = _ref.cloneEl,
+        toEl = _ref.toEl,
+        fromEl = _ref.fromEl,
+        oldIndex = _ref.oldIndex,
+        newIndex = _ref.newIndex,
+        oldDraggableIndex = _ref.oldDraggableIndex,
+        newDraggableIndex = _ref.newDraggableIndex,
+        originalEvent = _ref.originalEvent,
+        putSortable = _ref.putSortable,
+        extraEventProperties = _ref.extraEventProperties;
+    sortable = sortable || rootEl && rootEl[expando];
+    if (!sortable) return;
+    var evt,
+        options = sortable.options,
+        onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1); // Support for new CustomEvent feature
+
+    if (window.CustomEvent && !IE11OrLess && !Edge) {
+      evt = new CustomEvent(name, {
+        bubbles: true,
+        cancelable: true
+      });
+    } else {
+      evt = document.createEvent('Event');
+      evt.initEvent(name, true, true);
+    }
+
+    evt.to = toEl || rootEl;
+    evt.from = fromEl || rootEl;
+    evt.item = targetEl || rootEl;
+    evt.clone = cloneEl;
+    evt.oldIndex = oldIndex;
+    evt.newIndex = newIndex;
+    evt.oldDraggableIndex = oldDraggableIndex;
+    evt.newDraggableIndex = newDraggableIndex;
+    evt.originalEvent = originalEvent;
+    evt.pullMode = putSortable ? putSortable.lastPutMode : undefined;
+
+    var allEventProperties = _objectSpread2(_objectSpread2({}, extraEventProperties), PluginManager.getEventProperties(name, sortable));
+
+    for (var option in allEventProperties) {
+      evt[option] = allEventProperties[option];
+    }
+
+    if (rootEl) {
+      rootEl.dispatchEvent(evt);
+    }
+
+    if (options[onName]) {
+      options[onName].call(sortable, evt);
+    }
+  }
+
+  var _excluded = ["evt"];
+
+  var pluginEvent = function pluginEvent(eventName, sortable) {
+    var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+        originalEvent = _ref.evt,
+        data = _objectWithoutProperties(_ref, _excluded);
+
+    PluginManager.pluginEvent.bind(Sortable)(eventName, sortable, _objectSpread2({
+      dragEl: dragEl,
+      parentEl: parentEl,
+      ghostEl: ghostEl,
+      rootEl: rootEl,
+      nextEl: nextEl,
+      lastDownEl: lastDownEl,
+      cloneEl: cloneEl,
+      cloneHidden: cloneHidden,
+      dragStarted: moved,
+      putSortable: putSortable,
+      activeSortable: Sortable.active,
+      originalEvent: originalEvent,
+      oldIndex: oldIndex,
+      oldDraggableIndex: oldDraggableIndex,
+      newIndex: newIndex,
+      newDraggableIndex: newDraggableIndex,
+      hideGhostForTarget: _hideGhostForTarget,
+      unhideGhostForTarget: _unhideGhostForTarget,
+      cloneNowHidden: function cloneNowHidden() {
+        cloneHidden = true;
+      },
+      cloneNowShown: function cloneNowShown() {
+        cloneHidden = false;
+      },
+      dispatchSortableEvent: function dispatchSortableEvent(name) {
+        _dispatchEvent({
+          sortable: sortable,
+          name: name,
+          originalEvent: originalEvent
+        });
+      }
+    }, data));
+  };
+
+  function _dispatchEvent(info) {
+    dispatchEvent(_objectSpread2({
+      putSortable: putSortable,
+      cloneEl: cloneEl,
+      targetEl: dragEl,
+      rootEl: rootEl,
+      oldIndex: oldIndex,
+      oldDraggableIndex: oldDraggableIndex,
+      newIndex: newIndex,
+      newDraggableIndex: newDraggableIndex
+    }, info));
+  }
+
+  var dragEl,
+      parentEl,
+      ghostEl,
+      rootEl,
+      nextEl,
+      lastDownEl,
+      cloneEl,
+      cloneHidden,
+      oldIndex,
+      newIndex,
+      oldDraggableIndex,
+      newDraggableIndex,
+      activeGroup,
+      putSortable,
+      awaitingDragStarted = false,
+      ignoreNextClick = false,
+      sortables = [],
+      tapEvt,
+      touchEvt,
+      lastDx,
+      lastDy,
+      tapDistanceLeft,
+      tapDistanceTop,
+      moved,
+      lastTarget,
+      lastDirection,
+      pastFirstInvertThresh = false,
+      isCircumstantialInvert = false,
+      targetMoveDistance,
+      // For positioning ghost absolutely
+  ghostRelativeParent,
+      ghostRelativeParentInitialScroll = [],
+      // (left, top)
+  _silent = false,
+      savedInputChecked = [];
+  /** @const */
+
+  var documentExists = typeof document !== 'undefined',
+      PositionGhostAbsolutely = IOS,
+      CSSFloatProperty = Edge || IE11OrLess ? 'cssFloat' : 'float',
+      // This will not pass for IE9, because IE9 DnD only works on anchors
+  supportDraggable = documentExists && !ChromeForAndroid && !IOS && 'draggable' in document.createElement('div'),
+      supportCssPointerEvents = function () {
+    if (!documentExists) return; // false when <= IE11
+
+    if (IE11OrLess) {
+      return false;
+    }
+
+    var el = document.createElement('x');
+    el.style.cssText = 'pointer-events:auto';
+    return el.style.pointerEvents === 'auto';
+  }(),
+      _detectDirection = function _detectDirection(el, options) {
+    var elCSS = css$1(el),
+        elWidth = parseInt(elCSS.width) - parseInt(elCSS.paddingLeft) - parseInt(elCSS.paddingRight) - parseInt(elCSS.borderLeftWidth) - parseInt(elCSS.borderRightWidth),
+        child1 = getChild(el, 0, options),
+        child2 = getChild(el, 1, options),
+        firstChildCSS = child1 && css$1(child1),
+        secondChildCSS = child2 && css$1(child2),
+        firstChildWidth = firstChildCSS && parseInt(firstChildCSS.marginLeft) + parseInt(firstChildCSS.marginRight) + getRect(child1).width,
+        secondChildWidth = secondChildCSS && parseInt(secondChildCSS.marginLeft) + parseInt(secondChildCSS.marginRight) + getRect(child2).width;
+
+    if (elCSS.display === 'flex') {
+      return elCSS.flexDirection === 'column' || elCSS.flexDirection === 'column-reverse' ? 'vertical' : 'horizontal';
+    }
+
+    if (elCSS.display === 'grid') {
+      return elCSS.gridTemplateColumns.split(' ').length <= 1 ? 'vertical' : 'horizontal';
+    }
+
+    if (child1 && firstChildCSS["float"] && firstChildCSS["float"] !== 'none') {
+      var touchingSideChild2 = firstChildCSS["float"] === 'left' ? 'left' : 'right';
+      return child2 && (secondChildCSS.clear === 'both' || secondChildCSS.clear === touchingSideChild2) ? 'vertical' : 'horizontal';
+    }
+
+    return child1 && (firstChildCSS.display === 'block' || firstChildCSS.display === 'flex' || firstChildCSS.display === 'table' || firstChildCSS.display === 'grid' || firstChildWidth >= elWidth && elCSS[CSSFloatProperty] === 'none' || child2 && elCSS[CSSFloatProperty] === 'none' && firstChildWidth + secondChildWidth > elWidth) ? 'vertical' : 'horizontal';
+  },
+      _dragElInRowColumn = function _dragElInRowColumn(dragRect, targetRect, vertical) {
+    var dragElS1Opp = vertical ? dragRect.left : dragRect.top,
+        dragElS2Opp = vertical ? dragRect.right : dragRect.bottom,
+        dragElOppLength = vertical ? dragRect.width : dragRect.height,
+        targetS1Opp = vertical ? targetRect.left : targetRect.top,
+        targetS2Opp = vertical ? targetRect.right : targetRect.bottom,
+        targetOppLength = vertical ? targetRect.width : targetRect.height;
+    return dragElS1Opp === targetS1Opp || dragElS2Opp === targetS2Opp || dragElS1Opp + dragElOppLength / 2 === targetS1Opp + targetOppLength / 2;
+  },
+
+  /**
+   * Detects first nearest empty sortable to X and Y position using emptyInsertThreshold.
+   * @param  {Number} x      X position
+   * @param  {Number} y      Y position
+   * @return {HTMLElement}   Element of the first found nearest Sortable
+   */
+  _detectNearestEmptySortable = function _detectNearestEmptySortable(x, y) {
+    var ret;
+    sortables.some(function (sortable) {
+      var threshold = sortable[expando].options.emptyInsertThreshold;
+      if (!threshold || lastChild(sortable)) return;
+      var rect = getRect(sortable),
+          insideHorizontally = x >= rect.left - threshold && x <= rect.right + threshold,
+          insideVertically = y >= rect.top - threshold && y <= rect.bottom + threshold;
+
+      if (insideHorizontally && insideVertically) {
+        return ret = sortable;
+      }
+    });
+    return ret;
+  },
+      _prepareGroup = function _prepareGroup(options) {
+    function toFn(value, pull) {
+      return function (to, from, dragEl, evt) {
+        var sameGroup = to.options.group.name && from.options.group.name && to.options.group.name === from.options.group.name;
+
+        if (value == null && (pull || sameGroup)) {
+          // Default pull value
+          // Default pull and put value if same group
+          return true;
+        } else if (value == null || value === false) {
+          return false;
+        } else if (pull && value === 'clone') {
+          return value;
+        } else if (typeof value === 'function') {
+          return toFn(value(to, from, dragEl, evt), pull)(to, from, dragEl, evt);
+        } else {
+          var otherGroup = (pull ? to : from).options.group.name;
+          return value === true || typeof value === 'string' && value === otherGroup || value.join && value.indexOf(otherGroup) > -1;
+        }
+      };
+    }
+
+    var group = {};
+    var originalGroup = options.group;
+
+    if (!originalGroup || _typeof(originalGroup) != 'object') {
+      originalGroup = {
+        name: originalGroup
+      };
+    }
+
+    group.name = originalGroup.name;
+    group.checkPull = toFn(originalGroup.pull, true);
+    group.checkPut = toFn(originalGroup.put);
+    group.revertClone = originalGroup.revertClone;
+    options.group = group;
+  },
+      _hideGhostForTarget = function _hideGhostForTarget() {
+    if (!supportCssPointerEvents && ghostEl) {
+      css$1(ghostEl, 'display', 'none');
+    }
+  },
+      _unhideGhostForTarget = function _unhideGhostForTarget() {
+    if (!supportCssPointerEvents && ghostEl) {
+      css$1(ghostEl, 'display', '');
+    }
+  }; // #1184 fix - Prevent click event on fallback if dragged but item not changed position
+
+
+  if (documentExists && !ChromeForAndroid) {
+    document.addEventListener('click', function (evt) {
+      if (ignoreNextClick) {
+        evt.preventDefault();
+        evt.stopPropagation && evt.stopPropagation();
+        evt.stopImmediatePropagation && evt.stopImmediatePropagation();
+        ignoreNextClick = false;
+        return false;
+      }
+    }, true);
+  }
+
+  var nearestEmptyInsertDetectEvent = function nearestEmptyInsertDetectEvent(evt) {
+    if (dragEl) {
+      evt = evt.touches ? evt.touches[0] : evt;
+
+      var nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
+
+      if (nearest) {
+        // Create imitation event
+        var event = {};
+
+        for (var i in evt) {
+          if (evt.hasOwnProperty(i)) {
+            event[i] = evt[i];
+          }
+        }
+
+        event.target = event.rootEl = nearest;
+        event.preventDefault = void 0;
+        event.stopPropagation = void 0;
+
+        nearest[expando]._onDragOver(event);
+      }
+    }
+  };
+
+  var _checkOutsideTargetEl = function _checkOutsideTargetEl(evt) {
+    if (dragEl) {
+      dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
+    }
+  };
+  /**
+   * @class  Sortable
+   * @param  {HTMLElement}  el
+   * @param  {Object}       [options]
+   */
+
+
+  function Sortable(el, options) {
+    if (!(el && el.nodeType && el.nodeType === 1)) {
+      throw "Sortable: `el` must be an HTMLElement, not ".concat({}.toString.call(el));
+    }
+
+    this.el = el; // root element
+
+    this.options = options = _extends({}, options); // Export instance
+
+    el[expando] = this;
+    var defaults = {
+      group: null,
+      sort: true,
+      disabled: false,
+      store: null,
+      handle: null,
+      draggable: /^[uo]l$/i.test(el.nodeName) ? '>li' : '>*',
+      swapThreshold: 1,
+      // percentage; 0 <= x <= 1
+      invertSwap: false,
+      // invert always
+      invertedSwapThreshold: null,
+      // will be set to same as swapThreshold if default
+      removeCloneOnHide: true,
+      direction: function direction() {
+        return _detectDirection(el, this.options);
+      },
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen',
+      dragClass: 'sortable-drag',
+      ignore: 'a, img',
+      filter: null,
+      preventOnFilter: true,
+      animation: 0,
+      easing: null,
+      setData: function setData(dataTransfer, dragEl) {
+        dataTransfer.setData('Text', dragEl.textContent);
+      },
+      dropBubble: false,
+      dragoverBubble: false,
+      dataIdAttr: 'data-id',
+      delay: 0,
+      delayOnTouchOnly: false,
+      touchStartThreshold: (Number.parseInt ? Number : window).parseInt(window.devicePixelRatio, 10) || 1,
+      forceFallback: false,
+      fallbackClass: 'sortable-fallback',
+      fallbackOnBody: false,
+      fallbackTolerance: 0,
+      fallbackOffset: {
+        x: 0,
+        y: 0
+      },
+      supportPointer: Sortable.supportPointer !== false && 'PointerEvent' in window && !Safari,
+      emptyInsertThreshold: 5
+    };
+    PluginManager.initializePlugins(this, el, defaults); // Set default options
+
+    for (var name in defaults) {
+      !(name in options) && (options[name] = defaults[name]);
+    }
+
+    _prepareGroup(options); // Bind all private methods
+
+
+    for (var fn in this) {
+      if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
+        this[fn] = this[fn].bind(this);
+      }
+    } // Setup drag mode
+
+
+    this.nativeDraggable = options.forceFallback ? false : supportDraggable;
+
+    if (this.nativeDraggable) {
+      // Touch start threshold cannot be greater than the native dragstart threshold
+      this.options.touchStartThreshold = 1;
+    } // Bind events
+
+
+    if (options.supportPointer) {
+      on(el, 'pointerdown', this._onTapStart);
+    } else {
+      on(el, 'mousedown', this._onTapStart);
+      on(el, 'touchstart', this._onTapStart);
+    }
+
+    if (this.nativeDraggable) {
+      on(el, 'dragover', this);
+      on(el, 'dragenter', this);
+    }
+
+    sortables.push(this.el); // Restore sorting
+
+    options.store && options.store.get && this.sort(options.store.get(this) || []); // Add animation state manager
+
+    _extends(this, AnimationStateManager());
+  }
+
+  Sortable.prototype =
+  /** @lends Sortable.prototype */
+  {
+    constructor: Sortable,
+    _isOutsideThisEl: function _isOutsideThisEl(target) {
+      if (!this.el.contains(target) && target !== this.el) {
+        lastTarget = null;
+      }
+    },
+    _getDirection: function _getDirection(evt, target) {
+      return typeof this.options.direction === 'function' ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
+    },
+    _onTapStart: function _onTapStart(
+    /** Event|TouchEvent */
+    evt) {
+      if (!evt.cancelable) return;
+
+      var _this = this,
+          el = this.el,
+          options = this.options,
+          preventOnFilter = options.preventOnFilter,
+          type = evt.type,
+          touch = evt.touches && evt.touches[0] || evt.pointerType && evt.pointerType === 'touch' && evt,
+          target = (touch || evt).target,
+          originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0] || evt.composedPath && evt.composedPath()[0]) || target,
+          filter = options.filter;
+
+      _saveInputCheckedState(el); // Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
+
+
+      if (dragEl) {
+        return;
+      }
+
+      if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
+        return; // only left button and enabled
+      } // cancel dnd if original target is content editable
+
+
+      if (originalTarget.isContentEditable) {
+        return;
+      } // Safari ignores further event handling after mousedown
+
+
+      if (!this.nativeDraggable && Safari && target && target.tagName.toUpperCase() === 'SELECT') {
+        return;
+      }
+
+      target = closest(target, options.draggable, el, false);
+
+      if (target && target.animated) {
+        return;
+      }
+
+      if (lastDownEl === target) {
+        // Ignoring duplicate `down`
+        return;
+      } // Get the index of the dragged element within its parent
+
+
+      oldIndex = index(target);
+      oldDraggableIndex = index(target, options.draggable); // Check filter
+
+      if (typeof filter === 'function') {
+        if (filter.call(this, evt, target, this)) {
+          _dispatchEvent({
+            sortable: _this,
+            rootEl: originalTarget,
+            name: 'filter',
+            targetEl: target,
+            toEl: el,
+            fromEl: el
+          });
+
+          pluginEvent('filter', _this, {
+            evt: evt
+          });
+          preventOnFilter && evt.cancelable && evt.preventDefault();
+          return; // cancel dnd
+        }
+      } else if (filter) {
+        filter = filter.split(',').some(function (criteria) {
+          criteria = closest(originalTarget, criteria.trim(), el, false);
+
+          if (criteria) {
+            _dispatchEvent({
+              sortable: _this,
+              rootEl: criteria,
+              name: 'filter',
+              targetEl: target,
+              fromEl: el,
+              toEl: el
+            });
+
+            pluginEvent('filter', _this, {
+              evt: evt
+            });
+            return true;
+          }
+        });
+
+        if (filter) {
+          preventOnFilter && evt.cancelable && evt.preventDefault();
+          return; // cancel dnd
+        }
+      }
+
+      if (options.handle && !closest(originalTarget, options.handle, el, false)) {
+        return;
+      } // Prepare `dragstart`
+
+
+      this._prepareDragStart(evt, touch, target);
+    },
+    _prepareDragStart: function _prepareDragStart(
+    /** Event */
+    evt,
+    /** Touch */
+    touch,
+    /** HTMLElement */
+    target) {
+      var _this = this,
+          el = _this.el,
+          options = _this.options,
+          ownerDocument = el.ownerDocument,
+          dragStartFn;
+
+      if (target && !dragEl && target.parentNode === el) {
+        var dragRect = getRect(target);
+        rootEl = el;
+        dragEl = target;
+        parentEl = dragEl.parentNode;
+        nextEl = dragEl.nextSibling;
+        lastDownEl = target;
+        activeGroup = options.group;
+        Sortable.dragged = dragEl;
+        tapEvt = {
+          target: dragEl,
+          clientX: (touch || evt).clientX,
+          clientY: (touch || evt).clientY
+        };
+        tapDistanceLeft = tapEvt.clientX - dragRect.left;
+        tapDistanceTop = tapEvt.clientY - dragRect.top;
+        this._lastX = (touch || evt).clientX;
+        this._lastY = (touch || evt).clientY;
+        dragEl.style['will-change'] = 'all';
+
+        dragStartFn = function dragStartFn() {
+          pluginEvent('delayEnded', _this, {
+            evt: evt
+          });
+
+          if (Sortable.eventCanceled) {
+            _this._onDrop();
+
+            return;
+          } // Delayed drag has been triggered
+          // we can re-enable the events: touchmove/mousemove
+
+
+          _this._disableDelayedDragEvents();
+
+          if (!FireFox && _this.nativeDraggable) {
+            dragEl.draggable = true;
+          } // Bind the events: dragstart/dragend
+
+
+          _this._triggerDragStart(evt, touch); // Drag start event
+
+
+          _dispatchEvent({
+            sortable: _this,
+            name: 'choose',
+            originalEvent: evt
+          }); // Chosen item
+
+
+          toggleClass(dragEl, options.chosenClass, true);
+        }; // Disable "draggable"
+
+
+        options.ignore.split(',').forEach(function (criteria) {
+          find(dragEl, criteria.trim(), _disableDraggable);
+        });
+        on(ownerDocument, 'dragover', nearestEmptyInsertDetectEvent);
+        on(ownerDocument, 'mousemove', nearestEmptyInsertDetectEvent);
+        on(ownerDocument, 'touchmove', nearestEmptyInsertDetectEvent);
+        on(ownerDocument, 'mouseup', _this._onDrop);
+        on(ownerDocument, 'touchend', _this._onDrop);
+        on(ownerDocument, 'touchcancel', _this._onDrop); // Make dragEl draggable (must be before delay for FireFox)
+
+        if (FireFox && this.nativeDraggable) {
+          this.options.touchStartThreshold = 4;
+          dragEl.draggable = true;
+        }
+
+        pluginEvent('delayStart', this, {
+          evt: evt
+        }); // Delay is impossible for native DnD in Edge or IE
+
+        if (options.delay && (!options.delayOnTouchOnly || touch) && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
+          if (Sortable.eventCanceled) {
+            this._onDrop();
+
+            return;
+          } // If the user moves the pointer or let go the click or touch
+          // before the delay has been reached:
+          // disable the delayed drag
+
+
+          on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
+          on(ownerDocument, 'touchend', _this._disableDelayedDrag);
+          on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+          on(ownerDocument, 'mousemove', _this._delayedDragTouchMoveHandler);
+          on(ownerDocument, 'touchmove', _this._delayedDragTouchMoveHandler);
+          options.supportPointer && on(ownerDocument, 'pointermove', _this._delayedDragTouchMoveHandler);
+          _this._dragStartTimer = setTimeout(dragStartFn, options.delay);
+        } else {
+          dragStartFn();
+        }
+      }
+    },
+    _delayedDragTouchMoveHandler: function _delayedDragTouchMoveHandler(
+    /** TouchEvent|PointerEvent **/
+    e) {
+      var touch = e.touches ? e.touches[0] : e;
+
+      if (Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) >= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))) {
+        this._disableDelayedDrag();
+      }
+    },
+    _disableDelayedDrag: function _disableDelayedDrag() {
+      dragEl && _disableDraggable(dragEl);
+      clearTimeout(this._dragStartTimer);
+
+      this._disableDelayedDragEvents();
+    },
+    _disableDelayedDragEvents: function _disableDelayedDragEvents() {
+      var ownerDocument = this.el.ownerDocument;
+      off(ownerDocument, 'mouseup', this._disableDelayedDrag);
+      off(ownerDocument, 'touchend', this._disableDelayedDrag);
+      off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
+      off(ownerDocument, 'mousemove', this._delayedDragTouchMoveHandler);
+      off(ownerDocument, 'touchmove', this._delayedDragTouchMoveHandler);
+      off(ownerDocument, 'pointermove', this._delayedDragTouchMoveHandler);
+    },
+    _triggerDragStart: function _triggerDragStart(
+    /** Event */
+    evt,
+    /** Touch */
+    touch) {
+      touch = touch || evt.pointerType == 'touch' && evt;
+
+      if (!this.nativeDraggable || touch) {
+        if (this.options.supportPointer) {
+          on(document, 'pointermove', this._onTouchMove);
+        } else if (touch) {
+          on(document, 'touchmove', this._onTouchMove);
+        } else {
+          on(document, 'mousemove', this._onTouchMove);
+        }
+      } else {
+        on(dragEl, 'dragend', this);
+        on(rootEl, 'dragstart', this._onDragStart);
+      }
+
+      try {
+        if (document.selection) {
+          // Timeout neccessary for IE9
+          _nextTick(function () {
+            document.selection.empty();
+          });
+        } else {
+          window.getSelection().removeAllRanges();
+        }
+      } catch (err) {}
+    },
+    _dragStarted: function _dragStarted(fallback, evt) {
+
+      awaitingDragStarted = false;
+
+      if (rootEl && dragEl) {
+        pluginEvent('dragStarted', this, {
+          evt: evt
+        });
+
+        if (this.nativeDraggable) {
+          on(document, 'dragover', _checkOutsideTargetEl);
+        }
+
+        var options = this.options; // Apply effect
+
+        !fallback && toggleClass(dragEl, options.dragClass, false);
+        toggleClass(dragEl, options.ghostClass, true);
+        Sortable.active = this;
+        fallback && this._appendGhost(); // Drag start event
+
+        _dispatchEvent({
+          sortable: this,
+          name: 'start',
+          originalEvent: evt
+        });
+      } else {
+        this._nulling();
+      }
+    },
+    _emulateDragOver: function _emulateDragOver() {
+      if (touchEvt) {
+        this._lastX = touchEvt.clientX;
+        this._lastY = touchEvt.clientY;
+
+        _hideGhostForTarget();
+
+        var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+        var parent = target;
+
+        while (target && target.shadowRoot) {
+          target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+          if (target === parent) break;
+          parent = target;
+        }
+
+        dragEl.parentNode[expando]._isOutsideThisEl(target);
+
+        if (parent) {
+          do {
+            if (parent[expando]) {
+              var inserted = void 0;
+              inserted = parent[expando]._onDragOver({
+                clientX: touchEvt.clientX,
+                clientY: touchEvt.clientY,
+                target: target,
+                rootEl: parent
+              });
+
+              if (inserted && !this.options.dragoverBubble) {
+                break;
+              }
+            }
+
+            target = parent; // store last element
+          }
+          /* jshint boss:true */
+          while (parent = parent.parentNode);
+        }
+
+        _unhideGhostForTarget();
+      }
+    },
+    _onTouchMove: function _onTouchMove(
+    /**TouchEvent*/
+    evt) {
+      if (tapEvt) {
+        var options = this.options,
+            fallbackTolerance = options.fallbackTolerance,
+            fallbackOffset = options.fallbackOffset,
+            touch = evt.touches ? evt.touches[0] : evt,
+            ghostMatrix = ghostEl && matrix(ghostEl, true),
+            scaleX = ghostEl && ghostMatrix && ghostMatrix.a,
+            scaleY = ghostEl && ghostMatrix && ghostMatrix.d,
+            relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && getRelativeScrollOffset(ghostRelativeParent),
+            dx = (touch.clientX - tapEvt.clientX + fallbackOffset.x) / (scaleX || 1) + (relativeScrollOffset ? relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0] : 0) / (scaleX || 1),
+            dy = (touch.clientY - tapEvt.clientY + fallbackOffset.y) / (scaleY || 1) + (relativeScrollOffset ? relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1] : 0) / (scaleY || 1); // only set the status to dragging, when we are actually dragging
+
+        if (!Sortable.active && !awaitingDragStarted) {
+          if (fallbackTolerance && Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) < fallbackTolerance) {
+            return;
+          }
+
+          this._onDragStart(evt, true);
+        }
+
+        if (ghostEl) {
+          if (ghostMatrix) {
+            ghostMatrix.e += dx - (lastDx || 0);
+            ghostMatrix.f += dy - (lastDy || 0);
+          } else {
+            ghostMatrix = {
+              a: 1,
+              b: 0,
+              c: 0,
+              d: 1,
+              e: dx,
+              f: dy
+            };
+          }
+
+          var cssMatrix = "matrix(".concat(ghostMatrix.a, ",").concat(ghostMatrix.b, ",").concat(ghostMatrix.c, ",").concat(ghostMatrix.d, ",").concat(ghostMatrix.e, ",").concat(ghostMatrix.f, ")");
+          css$1(ghostEl, 'webkitTransform', cssMatrix);
+          css$1(ghostEl, 'mozTransform', cssMatrix);
+          css$1(ghostEl, 'msTransform', cssMatrix);
+          css$1(ghostEl, 'transform', cssMatrix);
+          lastDx = dx;
+          lastDy = dy;
+          touchEvt = touch;
+        }
+
+        evt.cancelable && evt.preventDefault();
+      }
+    },
+    _appendGhost: function _appendGhost() {
+      // Bug if using scale(): https://stackoverflow.com/questions/2637058
+      // Not being adjusted for
+      if (!ghostEl) {
+        var container = this.options.fallbackOnBody ? document.body : rootEl,
+            rect = getRect(dragEl, true, PositionGhostAbsolutely, true, container),
+            options = this.options; // Position absolutely
+
+        if (PositionGhostAbsolutely) {
+          // Get relatively positioned parent
+          ghostRelativeParent = container;
+
+          while (css$1(ghostRelativeParent, 'position') === 'static' && css$1(ghostRelativeParent, 'transform') === 'none' && ghostRelativeParent !== document) {
+            ghostRelativeParent = ghostRelativeParent.parentNode;
+          }
+
+          if (ghostRelativeParent !== document.body && ghostRelativeParent !== document.documentElement) {
+            if (ghostRelativeParent === document) ghostRelativeParent = getWindowScrollingElement();
+            rect.top += ghostRelativeParent.scrollTop;
+            rect.left += ghostRelativeParent.scrollLeft;
+          } else {
+            ghostRelativeParent = getWindowScrollingElement();
+          }
+
+          ghostRelativeParentInitialScroll = getRelativeScrollOffset(ghostRelativeParent);
+        }
+
+        ghostEl = dragEl.cloneNode(true);
+        toggleClass(ghostEl, options.ghostClass, false);
+        toggleClass(ghostEl, options.fallbackClass, true);
+        toggleClass(ghostEl, options.dragClass, true);
+        css$1(ghostEl, 'transition', '');
+        css$1(ghostEl, 'transform', '');
+        css$1(ghostEl, 'box-sizing', 'border-box');
+        css$1(ghostEl, 'margin', 0);
+        css$1(ghostEl, 'top', rect.top);
+        css$1(ghostEl, 'left', rect.left);
+        css$1(ghostEl, 'width', rect.width);
+        css$1(ghostEl, 'height', rect.height);
+        css$1(ghostEl, 'opacity', '0.8');
+        css$1(ghostEl, 'position', PositionGhostAbsolutely ? 'absolute' : 'fixed');
+        css$1(ghostEl, 'zIndex', '100000');
+        css$1(ghostEl, 'pointerEvents', 'none');
+        Sortable.ghost = ghostEl;
+        container.appendChild(ghostEl); // Set transform-origin
+
+        css$1(ghostEl, 'transform-origin', tapDistanceLeft / parseInt(ghostEl.style.width) * 100 + '% ' + tapDistanceTop / parseInt(ghostEl.style.height) * 100 + '%');
+      }
+    },
+    _onDragStart: function _onDragStart(
+    /**Event*/
+    evt,
+    /**boolean*/
+    fallback) {
+      var _this = this;
+
+      var dataTransfer = evt.dataTransfer;
+      var options = _this.options;
+      pluginEvent('dragStart', this, {
+        evt: evt
+      });
+
+      if (Sortable.eventCanceled) {
+        this._onDrop();
+
+        return;
+      }
+
+      pluginEvent('setupClone', this);
+
+      if (!Sortable.eventCanceled) {
+        cloneEl = clone(dragEl);
+        cloneEl.removeAttribute("id");
+        cloneEl.draggable = false;
+        cloneEl.style['will-change'] = '';
+
+        this._hideClone();
+
+        toggleClass(cloneEl, this.options.chosenClass, false);
+        Sortable.clone = cloneEl;
+      } // #1143: IFrame support workaround
+
+
+      _this.cloneId = _nextTick(function () {
+        pluginEvent('clone', _this);
+        if (Sortable.eventCanceled) return;
+
+        if (!_this.options.removeCloneOnHide) {
+          rootEl.insertBefore(cloneEl, dragEl);
+        }
+
+        _this._hideClone();
+
+        _dispatchEvent({
+          sortable: _this,
+          name: 'clone'
+        });
+      });
+      !fallback && toggleClass(dragEl, options.dragClass, true); // Set proper drop events
+
+      if (fallback) {
+        ignoreNextClick = true;
+        _this._loopId = setInterval(_this._emulateDragOver, 50);
+      } else {
+        // Undo what was set in _prepareDragStart before drag started
+        off(document, 'mouseup', _this._onDrop);
+        off(document, 'touchend', _this._onDrop);
+        off(document, 'touchcancel', _this._onDrop);
+
+        if (dataTransfer) {
+          dataTransfer.effectAllowed = 'move';
+          options.setData && options.setData.call(_this, dataTransfer, dragEl);
+        }
+
+        on(document, 'drop', _this); // #1276 fix:
+
+        css$1(dragEl, 'transform', 'translateZ(0)');
+      }
+
+      awaitingDragStarted = true;
+      _this._dragStartId = _nextTick(_this._dragStarted.bind(_this, fallback, evt));
+      on(document, 'selectstart', _this);
+      moved = true;
+
+      if (Safari) {
+        css$1(document.body, 'user-select', 'none');
+      }
+    },
+    // Returns true - if no further action is needed (either inserted or another condition)
+    _onDragOver: function _onDragOver(
+    /**Event*/
+    evt) {
+      var el = this.el,
+          target = evt.target,
+          dragRect,
+          targetRect,
+          revert,
+          options = this.options,
+          group = options.group,
+          activeSortable = Sortable.active,
+          isOwner = activeGroup === group,
+          canSort = options.sort,
+          fromSortable = putSortable || activeSortable,
+          vertical,
+          _this = this,
+          completedFired = false;
+
+      if (_silent) return;
+
+      function dragOverEvent(name, extra) {
+        pluginEvent(name, _this, _objectSpread2({
+          evt: evt,
+          isOwner: isOwner,
+          axis: vertical ? 'vertical' : 'horizontal',
+          revert: revert,
+          dragRect: dragRect,
+          targetRect: targetRect,
+          canSort: canSort,
+          fromSortable: fromSortable,
+          target: target,
+          completed: completed,
+          onMove: function onMove(target, after) {
+            return _onMove(rootEl, el, dragEl, dragRect, target, getRect(target), evt, after);
+          },
+          changed: changed
+        }, extra));
+      } // Capture animation state
+
+
+      function capture() {
+        dragOverEvent('dragOverAnimationCapture');
+
+        _this.captureAnimationState();
+
+        if (_this !== fromSortable) {
+          fromSortable.captureAnimationState();
+        }
+      } // Return invocation when dragEl is inserted (or completed)
+
+
+      function completed(insertion) {
+        dragOverEvent('dragOverCompleted', {
+          insertion: insertion
+        });
+
+        if (insertion) {
+          // Clones must be hidden before folding animation to capture dragRectAbsolute properly
+          if (isOwner) {
+            activeSortable._hideClone();
+          } else {
+            activeSortable._showClone(_this);
+          }
+
+          if (_this !== fromSortable) {
+            // Set ghost class to new sortable's ghost class
+            toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : activeSortable.options.ghostClass, false);
+            toggleClass(dragEl, options.ghostClass, true);
+          }
+
+          if (putSortable !== _this && _this !== Sortable.active) {
+            putSortable = _this;
+          } else if (_this === Sortable.active && putSortable) {
+            putSortable = null;
+          } // Animation
+
+
+          if (fromSortable === _this) {
+            _this._ignoreWhileAnimating = target;
+          }
+
+          _this.animateAll(function () {
+            dragOverEvent('dragOverAnimationComplete');
+            _this._ignoreWhileAnimating = null;
+          });
+
+          if (_this !== fromSortable) {
+            fromSortable.animateAll();
+            fromSortable._ignoreWhileAnimating = null;
+          }
+        } // Null lastTarget if it is not inside a previously swapped element
+
+
+        if (target === dragEl && !dragEl.animated || target === el && !target.animated) {
+          lastTarget = null;
+        } // no bubbling and not fallback
+
+
+        if (!options.dragoverBubble && !evt.rootEl && target !== document) {
+          dragEl.parentNode[expando]._isOutsideThisEl(evt.target); // Do not detect for empty insert if already inserted
+
+
+          !insertion && nearestEmptyInsertDetectEvent(evt);
+        }
+
+        !options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
+        return completedFired = true;
+      } // Call when dragEl has been inserted
+
+
+      function changed() {
+        newIndex = index(dragEl);
+        newDraggableIndex = index(dragEl, options.draggable);
+
+        _dispatchEvent({
+          sortable: _this,
+          name: 'change',
+          toEl: el,
+          newIndex: newIndex,
+          newDraggableIndex: newDraggableIndex,
+          originalEvent: evt
+        });
+      }
+
+      if (evt.preventDefault !== void 0) {
+        evt.cancelable && evt.preventDefault();
+      }
+
+      target = closest(target, options.draggable, el, true);
+      dragOverEvent('dragOver');
+      if (Sortable.eventCanceled) return completedFired;
+
+      if (dragEl.contains(evt.target) || target.animated && target.animatingX && target.animatingY || _this._ignoreWhileAnimating === target) {
+        return completed(false);
+      }
+
+      ignoreNextClick = false;
+
+      if (activeSortable && !options.disabled && (isOwner ? canSort || (revert = parentEl !== rootEl) // Reverting item into the original list
+      : putSortable === this || (this.lastPutMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) && group.checkPut(this, activeSortable, dragEl, evt))) {
+        vertical = this._getDirection(evt, target) === 'vertical';
+        dragRect = getRect(dragEl);
+        dragOverEvent('dragOverValid');
+        if (Sortable.eventCanceled) return completedFired;
+
+        if (revert) {
+          parentEl = rootEl; // actualization
+
+          capture();
+
+          this._hideClone();
+
+          dragOverEvent('revert');
+
+          if (!Sortable.eventCanceled) {
+            if (nextEl) {
+              rootEl.insertBefore(dragEl, nextEl);
+            } else {
+              rootEl.appendChild(dragEl);
+            }
+          }
+
+          return completed(true);
+        }
+
+        var elLastChild = lastChild(el, options.draggable);
+
+        if (!elLastChild || _ghostIsLast(evt, vertical, this) && !elLastChild.animated) {
+          // Insert to end of list
+          // If already at end of list: Do not insert
+          if (elLastChild === dragEl) {
+            return completed(false);
+          } // if there is a last element, it is the target
+
+
+          if (elLastChild && el === evt.target) {
+            target = elLastChild;
+          }
+
+          if (target) {
+            targetRect = getRect(target);
+          }
+
+          if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
+            capture();
+
+            if (elLastChild && elLastChild.nextSibling) {
+              // the last draggable element is not the last node
+              el.insertBefore(dragEl, elLastChild.nextSibling);
+            } else {
+              el.appendChild(dragEl);
+            }
+
+            parentEl = el; // actualization
+
+            changed();
+            return completed(true);
+          }
+        } else if (elLastChild && _ghostIsFirst(evt, vertical, this)) {
+          // Insert to start of list
+          var firstChild = getChild(el, 0, options, true);
+
+          if (firstChild === dragEl) {
+            return completed(false);
+          }
+
+          target = firstChild;
+          targetRect = getRect(target);
+
+          if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, false) !== false) {
+            capture();
+            el.insertBefore(dragEl, firstChild);
+            parentEl = el; // actualization
+
+            changed();
+            return completed(true);
+          }
+        } else if (target.parentNode === el) {
+          targetRect = getRect(target);
+          var direction = 0,
+              targetBeforeFirstSwap,
+              differentLevel = dragEl.parentNode !== el,
+              differentRowCol = !_dragElInRowColumn(dragEl.animated && dragEl.toRect || dragRect, target.animated && target.toRect || targetRect, vertical),
+              side1 = vertical ? 'top' : 'left',
+              scrolledPastTop = isScrolledPast(target, 'top', 'top') || isScrolledPast(dragEl, 'top', 'top'),
+              scrollBefore = scrolledPastTop ? scrolledPastTop.scrollTop : void 0;
+
+          if (lastTarget !== target) {
+            targetBeforeFirstSwap = targetRect[side1];
+            pastFirstInvertThresh = false;
+            isCircumstantialInvert = !differentRowCol && options.invertSwap || differentLevel;
+          }
+
+          direction = _getSwapDirection(evt, target, targetRect, vertical, differentRowCol ? 1 : options.swapThreshold, options.invertedSwapThreshold == null ? options.swapThreshold : options.invertedSwapThreshold, isCircumstantialInvert, lastTarget === target);
+          var sibling;
+
+          if (direction !== 0) {
+            // Check if target is beside dragEl in respective direction (ignoring hidden elements)
+            var dragIndex = index(dragEl);
+
+            do {
+              dragIndex -= direction;
+              sibling = parentEl.children[dragIndex];
+            } while (sibling && (css$1(sibling, 'display') === 'none' || sibling === ghostEl));
+          } // If dragEl is already beside target: Do not insert
+
+
+          if (direction === 0 || sibling === target) {
+            return completed(false);
+          }
+
+          lastTarget = target;
+          lastDirection = direction;
+          var nextSibling = target.nextElementSibling,
+              after = false;
+          after = direction === 1;
+
+          var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
+
+          if (moveVector !== false) {
+            if (moveVector === 1 || moveVector === -1) {
+              after = moveVector === 1;
+            }
+
+            _silent = true;
+            setTimeout(_unsilent, 30);
+            capture();
+
+            if (after && !nextSibling) {
+              el.appendChild(dragEl);
+            } else {
+              target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+            } // Undo chrome's scroll adjustment (has no effect on other browsers)
+
+
+            if (scrolledPastTop) {
+              scrollBy(scrolledPastTop, 0, scrollBefore - scrolledPastTop.scrollTop);
+            }
+
+            parentEl = dragEl.parentNode; // actualization
+            // must be done before animation
+
+            if (targetBeforeFirstSwap !== undefined && !isCircumstantialInvert) {
+              targetMoveDistance = Math.abs(targetBeforeFirstSwap - getRect(target)[side1]);
+            }
+
+            changed();
+            return completed(true);
+          }
+        }
+
+        if (el.contains(dragEl)) {
+          return completed(false);
+        }
+      }
+
+      return false;
+    },
+    _ignoreWhileAnimating: null,
+    _offMoveEvents: function _offMoveEvents() {
+      off(document, 'mousemove', this._onTouchMove);
+      off(document, 'touchmove', this._onTouchMove);
+      off(document, 'pointermove', this._onTouchMove);
+      off(document, 'dragover', nearestEmptyInsertDetectEvent);
+      off(document, 'mousemove', nearestEmptyInsertDetectEvent);
+      off(document, 'touchmove', nearestEmptyInsertDetectEvent);
+    },
+    _offUpEvents: function _offUpEvents() {
+      var ownerDocument = this.el.ownerDocument;
+      off(ownerDocument, 'mouseup', this._onDrop);
+      off(ownerDocument, 'touchend', this._onDrop);
+      off(ownerDocument, 'pointerup', this._onDrop);
+      off(ownerDocument, 'touchcancel', this._onDrop);
+      off(document, 'selectstart', this);
+    },
+    _onDrop: function _onDrop(
+    /**Event*/
+    evt) {
+      var el = this.el,
+          options = this.options; // Get the index of the dragged element within its parent
+
+      newIndex = index(dragEl);
+      newDraggableIndex = index(dragEl, options.draggable);
+      pluginEvent('drop', this, {
+        evt: evt
+      });
+      parentEl = dragEl && dragEl.parentNode; // Get again after plugin event
+
+      newIndex = index(dragEl);
+      newDraggableIndex = index(dragEl, options.draggable);
+
+      if (Sortable.eventCanceled) {
+        this._nulling();
+
+        return;
+      }
+
+      awaitingDragStarted = false;
+      isCircumstantialInvert = false;
+      pastFirstInvertThresh = false;
+      clearInterval(this._loopId);
+      clearTimeout(this._dragStartTimer);
+
+      _cancelNextTick(this.cloneId);
+
+      _cancelNextTick(this._dragStartId); // Unbind events
+
+
+      if (this.nativeDraggable) {
+        off(document, 'drop', this);
+        off(el, 'dragstart', this._onDragStart);
+      }
+
+      this._offMoveEvents();
+
+      this._offUpEvents();
+
+      if (Safari) {
+        css$1(document.body, 'user-select', '');
+      }
+
+      css$1(dragEl, 'transform', '');
+
+      if (evt) {
+        if (moved) {
+          evt.cancelable && evt.preventDefault();
+          !options.dropBubble && evt.stopPropagation();
+        }
+
+        ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
+
+        if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== 'clone') {
+          // Remove clone(s)
+          cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
+        }
+
+        if (dragEl) {
+          if (this.nativeDraggable) {
+            off(dragEl, 'dragend', this);
+          }
+
+          _disableDraggable(dragEl);
+
+          dragEl.style['will-change'] = ''; // Remove classes
+          // ghostClass is added in dragStarted
+
+          if (moved && !awaitingDragStarted) {
+            toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : this.options.ghostClass, false);
+          }
+
+          toggleClass(dragEl, this.options.chosenClass, false); // Drag stop event
+
+          _dispatchEvent({
+            sortable: this,
+            name: 'unchoose',
+            toEl: parentEl,
+            newIndex: null,
+            newDraggableIndex: null,
+            originalEvent: evt
+          });
+
+          if (rootEl !== parentEl) {
+            if (newIndex >= 0) {
+              // Add event
+              _dispatchEvent({
+                rootEl: parentEl,
+                name: 'add',
+                toEl: parentEl,
+                fromEl: rootEl,
+                originalEvent: evt
+              }); // Remove event
+
+
+              _dispatchEvent({
+                sortable: this,
+                name: 'remove',
+                toEl: parentEl,
+                originalEvent: evt
+              }); // drag from one list and drop into another
+
+
+              _dispatchEvent({
+                rootEl: parentEl,
+                name: 'sort',
+                toEl: parentEl,
+                fromEl: rootEl,
+                originalEvent: evt
+              });
+
+              _dispatchEvent({
+                sortable: this,
+                name: 'sort',
+                toEl: parentEl,
+                originalEvent: evt
+              });
+            }
+
+            putSortable && putSortable.save();
+          } else {
+            if (newIndex !== oldIndex) {
+              if (newIndex >= 0) {
+                // drag & drop within the same list
+                _dispatchEvent({
+                  sortable: this,
+                  name: 'update',
+                  toEl: parentEl,
+                  originalEvent: evt
+                });
+
+                _dispatchEvent({
+                  sortable: this,
+                  name: 'sort',
+                  toEl: parentEl,
+                  originalEvent: evt
+                });
+              }
+            }
+          }
+
+          if (Sortable.active) {
+            /* jshint eqnull:true */
+            if (newIndex == null || newIndex === -1) {
+              newIndex = oldIndex;
+              newDraggableIndex = oldDraggableIndex;
+            }
+
+            _dispatchEvent({
+              sortable: this,
+              name: 'end',
+              toEl: parentEl,
+              originalEvent: evt
+            }); // Save sorting
+
+
+            this.save();
+          }
+        }
+      }
+
+      this._nulling();
+    },
+    _nulling: function _nulling() {
+      pluginEvent('nulling', this);
+      rootEl = dragEl = parentEl = ghostEl = nextEl = cloneEl = lastDownEl = cloneHidden = tapEvt = touchEvt = moved = newIndex = newDraggableIndex = oldIndex = oldDraggableIndex = lastTarget = lastDirection = putSortable = activeGroup = Sortable.dragged = Sortable.ghost = Sortable.clone = Sortable.active = null;
+      savedInputChecked.forEach(function (el) {
+        el.checked = true;
+      });
+      savedInputChecked.length = lastDx = lastDy = 0;
+    },
+    handleEvent: function handleEvent(
+    /**Event*/
+    evt) {
+      switch (evt.type) {
+        case 'drop':
+        case 'dragend':
+          this._onDrop(evt);
+
+          break;
+
+        case 'dragenter':
+        case 'dragover':
+          if (dragEl) {
+            this._onDragOver(evt);
+
+            _globalDragOver(evt);
+          }
+
+          break;
+
+        case 'selectstart':
+          evt.preventDefault();
+          break;
+      }
+    },
+
+    /**
+     * Serializes the item into an array of string.
+     * @returns {String[]}
+     */
+    toArray: function toArray() {
+      var order = [],
+          el,
+          children = this.el.children,
+          i = 0,
+          n = children.length,
+          options = this.options;
+
+      for (; i < n; i++) {
+        el = children[i];
+
+        if (closest(el, options.draggable, this.el, false)) {
+          order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
+        }
+      }
+
+      return order;
+    },
+
+    /**
+     * Sorts the elements according to the array.
+     * @param  {String[]}  order  order of the items
+     */
+    sort: function sort(order, useAnimation) {
+      var items = {},
+          rootEl = this.el;
+      this.toArray().forEach(function (id, i) {
+        var el = rootEl.children[i];
+
+        if (closest(el, this.options.draggable, rootEl, false)) {
+          items[id] = el;
+        }
+      }, this);
+      useAnimation && this.captureAnimationState();
+      order.forEach(function (id) {
+        if (items[id]) {
+          rootEl.removeChild(items[id]);
+          rootEl.appendChild(items[id]);
+        }
+      });
+      useAnimation && this.animateAll();
+    },
+
+    /**
+     * Save the current sorting
+     */
+    save: function save() {
+      var store = this.options.store;
+      store && store.set && store.set(this);
+    },
+
+    /**
+     * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+     * @param   {HTMLElement}  el
+     * @param   {String}       [selector]  default: `options.draggable`
+     * @returns {HTMLElement|null}
+     */
+    closest: function closest$1(el, selector) {
+      return closest(el, selector || this.options.draggable, this.el, false);
+    },
+
+    /**
+     * Set/get option
+     * @param   {string} name
+     * @param   {*}      [value]
+     * @returns {*}
+     */
+    option: function option(name, value) {
+      var options = this.options;
+
+      if (value === void 0) {
+        return options[name];
+      } else {
+        var modifiedValue = PluginManager.modifyOption(this, name, value);
+
+        if (typeof modifiedValue !== 'undefined') {
+          options[name] = modifiedValue;
+        } else {
+          options[name] = value;
+        }
+
+        if (name === 'group') {
+          _prepareGroup(options);
+        }
+      }
+    },
+
+    /**
+     * Destroy
+     */
+    destroy: function destroy() {
+      pluginEvent('destroy', this);
+      var el = this.el;
+      el[expando] = null;
+      off(el, 'mousedown', this._onTapStart);
+      off(el, 'touchstart', this._onTapStart);
+      off(el, 'pointerdown', this._onTapStart);
+
+      if (this.nativeDraggable) {
+        off(el, 'dragover', this);
+        off(el, 'dragenter', this);
+      } // Remove draggable attributes
+
+
+      Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
+        el.removeAttribute('draggable');
+      });
+
+      this._onDrop();
+
+      this._disableDelayedDragEvents();
+
+      sortables.splice(sortables.indexOf(this.el), 1);
+      this.el = el = null;
+    },
+    _hideClone: function _hideClone() {
+      if (!cloneHidden) {
+        pluginEvent('hideClone', this);
+        if (Sortable.eventCanceled) return;
+        css$1(cloneEl, 'display', 'none');
+
+        if (this.options.removeCloneOnHide && cloneEl.parentNode) {
+          cloneEl.parentNode.removeChild(cloneEl);
+        }
+
+        cloneHidden = true;
+      }
+    },
+    _showClone: function _showClone(putSortable) {
+      if (putSortable.lastPutMode !== 'clone') {
+        this._hideClone();
+
+        return;
+      }
+
+      if (cloneHidden) {
+        pluginEvent('showClone', this);
+        if (Sortable.eventCanceled) return; // show clone at dragEl or original position
+
+        if (dragEl.parentNode == rootEl && !this.options.group.revertClone) {
+          rootEl.insertBefore(cloneEl, dragEl);
+        } else if (nextEl) {
+          rootEl.insertBefore(cloneEl, nextEl);
+        } else {
+          rootEl.appendChild(cloneEl);
+        }
+
+        if (this.options.group.revertClone) {
+          this.animate(dragEl, cloneEl);
+        }
+
+        css$1(cloneEl, 'display', '');
+        cloneHidden = false;
+      }
+    }
+  };
+
+  function _globalDragOver(
+  /**Event*/
+  evt) {
+    if (evt.dataTransfer) {
+      evt.dataTransfer.dropEffect = 'move';
+    }
+
+    evt.cancelable && evt.preventDefault();
+  }
+
+  function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvent, willInsertAfter) {
+    var evt,
+        sortable = fromEl[expando],
+        onMoveFn = sortable.options.onMove,
+        retVal; // Support for new CustomEvent feature
+
+    if (window.CustomEvent && !IE11OrLess && !Edge) {
+      evt = new CustomEvent('move', {
+        bubbles: true,
+        cancelable: true
+      });
+    } else {
+      evt = document.createEvent('Event');
+      evt.initEvent('move', true, true);
+    }
+
+    evt.to = toEl;
+    evt.from = fromEl;
+    evt.dragged = dragEl;
+    evt.draggedRect = dragRect;
+    evt.related = targetEl || toEl;
+    evt.relatedRect = targetRect || getRect(toEl);
+    evt.willInsertAfter = willInsertAfter;
+    evt.originalEvent = originalEvent;
+    fromEl.dispatchEvent(evt);
+
+    if (onMoveFn) {
+      retVal = onMoveFn.call(sortable, evt, originalEvent);
+    }
+
+    return retVal;
+  }
+
+  function _disableDraggable(el) {
+    el.draggable = false;
+  }
+
+  function _unsilent() {
+    _silent = false;
+  }
+
+  function _ghostIsFirst(evt, vertical, sortable) {
+    var rect = getRect(getChild(sortable.el, 0, sortable.options, true));
+    var spacer = 10;
+    return vertical ? evt.clientX < rect.left - spacer || evt.clientY < rect.top && evt.clientX < rect.right : evt.clientY < rect.top - spacer || evt.clientY < rect.bottom && evt.clientX < rect.left;
+  }
+
+  function _ghostIsLast(evt, vertical, sortable) {
+    var rect = getRect(lastChild(sortable.el, sortable.options.draggable));
+    var spacer = 10;
+    return vertical ? evt.clientX > rect.right + spacer || evt.clientX <= rect.right && evt.clientY > rect.bottom && evt.clientX >= rect.left : evt.clientX > rect.right && evt.clientY > rect.top || evt.clientX <= rect.right && evt.clientY > rect.bottom + spacer;
+  }
+
+  function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
+    var mouseOnAxis = vertical ? evt.clientY : evt.clientX,
+        targetLength = vertical ? targetRect.height : targetRect.width,
+        targetS1 = vertical ? targetRect.top : targetRect.left,
+        targetS2 = vertical ? targetRect.bottom : targetRect.right,
+        invert = false;
+
+    if (!invertSwap) {
+      // Never invert or create dragEl shadow when target movemenet causes mouse to move past the end of regular swapThreshold
+      if (isLastTarget && targetMoveDistance < targetLength * swapThreshold) {
+        // multiplied only by swapThreshold because mouse will already be inside target by (1 - threshold) * targetLength / 2
+        // check if past first invert threshold on side opposite of lastDirection
+        if (!pastFirstInvertThresh && (lastDirection === 1 ? mouseOnAxis > targetS1 + targetLength * invertedSwapThreshold / 2 : mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2)) {
+          // past first invert threshold, do not restrict inverted threshold to dragEl shadow
+          pastFirstInvertThresh = true;
+        }
+
+        if (!pastFirstInvertThresh) {
+          // dragEl shadow (target move distance shadow)
+          if (lastDirection === 1 ? mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
+          : mouseOnAxis > targetS2 - targetMoveDistance) {
+            return -lastDirection;
+          }
+        } else {
+          invert = true;
+        }
+      } else {
+        // Regular
+        if (mouseOnAxis > targetS1 + targetLength * (1 - swapThreshold) / 2 && mouseOnAxis < targetS2 - targetLength * (1 - swapThreshold) / 2) {
+          return _getInsertDirection(target);
+        }
+      }
+    }
+
+    invert = invert || invertSwap;
+
+    if (invert) {
+      // Invert of regular
+      if (mouseOnAxis < targetS1 + targetLength * invertedSwapThreshold / 2 || mouseOnAxis > targetS2 - targetLength * invertedSwapThreshold / 2) {
+        return mouseOnAxis > targetS1 + targetLength / 2 ? 1 : -1;
+      }
+    }
+
+    return 0;
+  }
+  /**
+   * Gets the direction dragEl must be swapped relative to target in order to make it
+   * seem that dragEl has been "inserted" into that element's position
+   * @param  {HTMLElement} target       The target whose position dragEl is being inserted at
+   * @return {Number}                   Direction dragEl must be swapped
+   */
+
+
+  function _getInsertDirection(target) {
+    if (index(dragEl) < index(target)) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+  /**
+   * Generate id
+   * @param   {HTMLElement} el
+   * @returns {String}
+   * @private
+   */
+
+
+  function _generateId(el) {
+    var str = el.tagName + el.className + el.src + el.href + el.textContent,
+        i = str.length,
+        sum = 0;
+
+    while (i--) {
+      sum += str.charCodeAt(i);
+    }
+
+    return sum.toString(36);
+  }
+
+  function _saveInputCheckedState(root) {
+    savedInputChecked.length = 0;
+    var inputs = root.getElementsByTagName('input');
+    var idx = inputs.length;
+
+    while (idx--) {
+      var el = inputs[idx];
+      el.checked && savedInputChecked.push(el);
+    }
+  }
+
+  function _nextTick(fn) {
+    return setTimeout(fn, 0);
+  }
+
+  function _cancelNextTick(id) {
+    return clearTimeout(id);
+  } // Fixed #973:
+
+
+  if (documentExists) {
+    on(document, 'touchmove', function (evt) {
+      if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
+        evt.preventDefault();
+      }
+    });
+  } // Export utils
+
+
+  Sortable.utils = {
+    on: on,
+    off: off,
+    css: css$1,
+    find: find,
+    is: function is(el, selector) {
+      return !!closest(el, selector, el, false);
+    },
+    extend: extend,
+    throttle: throttle,
+    closest: closest,
+    toggleClass: toggleClass,
+    clone: clone,
+    index: index,
+    nextTick: _nextTick,
+    cancelNextTick: _cancelNextTick,
+    detectDirection: _detectDirection,
+    getChild: getChild
+  };
+  /**
+   * Get the Sortable instance of an element
+   * @param  {HTMLElement} element The element
+   * @return {Sortable|undefined}         The instance of Sortable
+   */
+
+  Sortable.get = function (element) {
+    return element[expando];
+  };
+  /**
+   * Mount a plugin to Sortable
+   * @param  {...SortablePlugin|SortablePlugin[]} plugins       Plugins being mounted
+   */
+
+
+  Sortable.mount = function () {
+    for (var _len = arguments.length, plugins = new Array(_len), _key = 0; _key < _len; _key++) {
+      plugins[_key] = arguments[_key];
+    }
+
+    if (plugins[0].constructor === Array) plugins = plugins[0];
+    plugins.forEach(function (plugin) {
+      if (!plugin.prototype || !plugin.prototype.constructor) {
+        throw "Sortable: Mounted plugin must be a constructor function, not ".concat({}.toString.call(plugin));
+      }
+
+      if (plugin.utils) Sortable.utils = _objectSpread2(_objectSpread2({}, Sortable.utils), plugin.utils);
+      PluginManager.mount(plugin);
+    });
+  };
+  /**
+   * Create sortable instance
+   * @param {HTMLElement}  el
+   * @param {Object}      [options]
+   */
+
+
+  Sortable.create = function (el, options) {
+    return new Sortable(el, options);
+  }; // Export
+
+
+  Sortable.version = version;
+
+  var autoScrolls = [],
+      scrollEl,
+      scrollRootEl,
+      scrolling = false,
+      lastAutoScrollX,
+      lastAutoScrollY,
+      touchEvt$1,
+      pointerElemChangedInterval;
+
+  function AutoScrollPlugin() {
+    function AutoScroll() {
+      this.defaults = {
+        scroll: true,
+        forceAutoScrollFallback: false,
+        scrollSensitivity: 30,
+        scrollSpeed: 10,
+        bubbleScroll: true
+      }; // Bind all private methods
+
+      for (var fn in this) {
+        if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
+          this[fn] = this[fn].bind(this);
+        }
+      }
+    }
+
+    AutoScroll.prototype = {
+      dragStarted: function dragStarted(_ref) {
+        var originalEvent = _ref.originalEvent;
+
+        if (this.sortable.nativeDraggable) {
+          on(document, 'dragover', this._handleAutoScroll);
+        } else {
+          if (this.options.supportPointer) {
+            on(document, 'pointermove', this._handleFallbackAutoScroll);
+          } else if (originalEvent.touches) {
+            on(document, 'touchmove', this._handleFallbackAutoScroll);
+          } else {
+            on(document, 'mousemove', this._handleFallbackAutoScroll);
+          }
+        }
+      },
+      dragOverCompleted: function dragOverCompleted(_ref2) {
+        var originalEvent = _ref2.originalEvent;
+
+        // For when bubbling is canceled and using fallback (fallback 'touchmove' always reached)
+        if (!this.options.dragOverBubble && !originalEvent.rootEl) {
+          this._handleAutoScroll(originalEvent);
+        }
+      },
+      drop: function drop() {
+        if (this.sortable.nativeDraggable) {
+          off(document, 'dragover', this._handleAutoScroll);
+        } else {
+          off(document, 'pointermove', this._handleFallbackAutoScroll);
+          off(document, 'touchmove', this._handleFallbackAutoScroll);
+          off(document, 'mousemove', this._handleFallbackAutoScroll);
+        }
+
+        clearPointerElemChangedInterval();
+        clearAutoScrolls();
+        cancelThrottle();
+      },
+      nulling: function nulling() {
+        touchEvt$1 = scrollRootEl = scrollEl = scrolling = pointerElemChangedInterval = lastAutoScrollX = lastAutoScrollY = null;
+        autoScrolls.length = 0;
+      },
+      _handleFallbackAutoScroll: function _handleFallbackAutoScroll(evt) {
+        this._handleAutoScroll(evt, true);
+      },
+      _handleAutoScroll: function _handleAutoScroll(evt, fallback) {
+        var _this = this;
+
+        var x = (evt.touches ? evt.touches[0] : evt).clientX,
+            y = (evt.touches ? evt.touches[0] : evt).clientY,
+            elem = document.elementFromPoint(x, y);
+        touchEvt$1 = evt; // IE does not seem to have native autoscroll,
+        // Edge's autoscroll seems too conditional,
+        // MACOS Safari does not have autoscroll,
+        // Firefox and Chrome are good
+
+        if (fallback || this.options.forceAutoScrollFallback || Edge || IE11OrLess || Safari) {
+          autoScroll(evt, this.options, elem, fallback); // Listener for pointer element change
+
+          var ogElemScroller = getParentAutoScrollElement(elem, true);
+
+          if (scrolling && (!pointerElemChangedInterval || x !== lastAutoScrollX || y !== lastAutoScrollY)) {
+            pointerElemChangedInterval && clearPointerElemChangedInterval(); // Detect for pointer elem change, emulating native DnD behaviour
+
+            pointerElemChangedInterval = setInterval(function () {
+              var newElem = getParentAutoScrollElement(document.elementFromPoint(x, y), true);
+
+              if (newElem !== ogElemScroller) {
+                ogElemScroller = newElem;
+                clearAutoScrolls();
+              }
+
+              autoScroll(evt, _this.options, newElem, fallback);
+            }, 10);
+            lastAutoScrollX = x;
+            lastAutoScrollY = y;
+          }
+        } else {
+          // if DnD is enabled (and browser has good autoscrolling), first autoscroll will already scroll, so get parent autoscroll of first autoscroll
+          if (!this.options.bubbleScroll || getParentAutoScrollElement(elem, true) === getWindowScrollingElement()) {
+            clearAutoScrolls();
+            return;
+          }
+
+          autoScroll(evt, this.options, getParentAutoScrollElement(elem, false), false);
+        }
+      }
+    };
+    return _extends(AutoScroll, {
+      pluginName: 'scroll',
+      initializeByDefault: true
+    });
+  }
+
+  function clearAutoScrolls() {
+    autoScrolls.forEach(function (autoScroll) {
+      clearInterval(autoScroll.pid);
+    });
+    autoScrolls = [];
+  }
+
+  function clearPointerElemChangedInterval() {
+    clearInterval(pointerElemChangedInterval);
+  }
+
+  var autoScroll = throttle(function (evt, options, rootEl, isFallback) {
+    // Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
+    if (!options.scroll) return;
+    var x = (evt.touches ? evt.touches[0] : evt).clientX,
+        y = (evt.touches ? evt.touches[0] : evt).clientY,
+        sens = options.scrollSensitivity,
+        speed = options.scrollSpeed,
+        winScroller = getWindowScrollingElement();
+    var scrollThisInstance = false,
+        scrollCustomFn; // New scroll root, set scrollEl
+
+    if (scrollRootEl !== rootEl) {
+      scrollRootEl = rootEl;
+      clearAutoScrolls();
+      scrollEl = options.scroll;
+      scrollCustomFn = options.scrollFn;
+
+      if (scrollEl === true) {
+        scrollEl = getParentAutoScrollElement(rootEl, true);
+      }
+    }
+
+    var layersOut = 0;
+    var currentParent = scrollEl;
+
+    do {
+      var el = currentParent,
+          rect = getRect(el),
+          top = rect.top,
+          bottom = rect.bottom,
+          left = rect.left,
+          right = rect.right,
+          width = rect.width,
+          height = rect.height,
+          canScrollX = void 0,
+          canScrollY = void 0,
+          scrollWidth = el.scrollWidth,
+          scrollHeight = el.scrollHeight,
+          elCSS = css$1(el),
+          scrollPosX = el.scrollLeft,
+          scrollPosY = el.scrollTop;
+
+      if (el === winScroller) {
+        canScrollX = width < scrollWidth && (elCSS.overflowX === 'auto' || elCSS.overflowX === 'scroll' || elCSS.overflowX === 'visible');
+        canScrollY = height < scrollHeight && (elCSS.overflowY === 'auto' || elCSS.overflowY === 'scroll' || elCSS.overflowY === 'visible');
+      } else {
+        canScrollX = width < scrollWidth && (elCSS.overflowX === 'auto' || elCSS.overflowX === 'scroll');
+        canScrollY = height < scrollHeight && (elCSS.overflowY === 'auto' || elCSS.overflowY === 'scroll');
+      }
+
+      var vx = canScrollX && (Math.abs(right - x) <= sens && scrollPosX + width < scrollWidth) - (Math.abs(left - x) <= sens && !!scrollPosX);
+      var vy = canScrollY && (Math.abs(bottom - y) <= sens && scrollPosY + height < scrollHeight) - (Math.abs(top - y) <= sens && !!scrollPosY);
+
+      if (!autoScrolls[layersOut]) {
+        for (var i = 0; i <= layersOut; i++) {
+          if (!autoScrolls[i]) {
+            autoScrolls[i] = {};
+          }
+        }
+      }
+
+      if (autoScrolls[layersOut].vx != vx || autoScrolls[layersOut].vy != vy || autoScrolls[layersOut].el !== el) {
+        autoScrolls[layersOut].el = el;
+        autoScrolls[layersOut].vx = vx;
+        autoScrolls[layersOut].vy = vy;
+        clearInterval(autoScrolls[layersOut].pid);
+
+        if (vx != 0 || vy != 0) {
+          scrollThisInstance = true;
+          /* jshint loopfunc:true */
+
+          autoScrolls[layersOut].pid = setInterval(function () {
+            // emulate drag over during autoscroll (fallback), emulating native DnD behaviour
+            if (isFallback && this.layer === 0) {
+              Sortable.active._onTouchMove(touchEvt$1); // To move ghost if it is positioned absolutely
+
+            }
+
+            var scrollOffsetY = autoScrolls[this.layer].vy ? autoScrolls[this.layer].vy * speed : 0;
+            var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
+
+            if (typeof scrollCustomFn === 'function') {
+              if (scrollCustomFn.call(Sortable.dragged.parentNode[expando], scrollOffsetX, scrollOffsetY, evt, touchEvt$1, autoScrolls[this.layer].el) !== 'continue') {
+                return;
+              }
+            }
+
+            scrollBy(autoScrolls[this.layer].el, scrollOffsetX, scrollOffsetY);
+          }.bind({
+            layer: layersOut
+          }), 24);
+        }
+      }
+
+      layersOut++;
+    } while (options.bubbleScroll && currentParent !== winScroller && (currentParent = getParentAutoScrollElement(currentParent, false)));
+
+    scrolling = scrollThisInstance; // in case another function catches scrolling as false in between when it is not
+  }, 30);
+
+  var drop = function drop(_ref) {
+    var originalEvent = _ref.originalEvent,
+        putSortable = _ref.putSortable,
+        dragEl = _ref.dragEl,
+        activeSortable = _ref.activeSortable,
+        dispatchSortableEvent = _ref.dispatchSortableEvent,
+        hideGhostForTarget = _ref.hideGhostForTarget,
+        unhideGhostForTarget = _ref.unhideGhostForTarget;
+    if (!originalEvent) return;
+    var toSortable = putSortable || activeSortable;
+    hideGhostForTarget();
+    var touch = originalEvent.changedTouches && originalEvent.changedTouches.length ? originalEvent.changedTouches[0] : originalEvent;
+    var target = document.elementFromPoint(touch.clientX, touch.clientY);
+    unhideGhostForTarget();
+
+    if (toSortable && !toSortable.el.contains(target)) {
+      dispatchSortableEvent('spill');
+      this.onSpill({
+        dragEl: dragEl,
+        putSortable: putSortable
+      });
+    }
+  };
+
+  function Revert() {}
+
+  Revert.prototype = {
+    startIndex: null,
+    dragStart: function dragStart(_ref2) {
+      var oldDraggableIndex = _ref2.oldDraggableIndex;
+      this.startIndex = oldDraggableIndex;
+    },
+    onSpill: function onSpill(_ref3) {
+      var dragEl = _ref3.dragEl,
+          putSortable = _ref3.putSortable;
+      this.sortable.captureAnimationState();
+
+      if (putSortable) {
+        putSortable.captureAnimationState();
+      }
+
+      var nextSibling = getChild(this.sortable.el, this.startIndex, this.options);
+
+      if (nextSibling) {
+        this.sortable.el.insertBefore(dragEl, nextSibling);
+      } else {
+        this.sortable.el.appendChild(dragEl);
+      }
+
+      this.sortable.animateAll();
+
+      if (putSortable) {
+        putSortable.animateAll();
+      }
+    },
+    drop: drop
+  };
+
+  _extends(Revert, {
+    pluginName: 'revertOnSpill'
+  });
+
+  function Remove() {}
+
+  Remove.prototype = {
+    onSpill: function onSpill(_ref4) {
+      var dragEl = _ref4.dragEl,
+          putSortable = _ref4.putSortable;
+      var parentSortable = putSortable || this.sortable;
+      parentSortable.captureAnimationState();
+      dragEl.parentNode && dragEl.parentNode.removeChild(dragEl);
+      parentSortable.animateAll();
+    },
+    drop: drop
+  };
+
+  _extends(Remove, {
+    pluginName: 'removeOnSpill'
+  });
+
+  var lastSwapEl;
+
+  function SwapPlugin() {
+    function Swap() {
+      this.defaults = {
+        swapClass: 'sortable-swap-highlight'
+      };
+    }
+
+    Swap.prototype = {
+      dragStart: function dragStart(_ref) {
+        var dragEl = _ref.dragEl;
+        lastSwapEl = dragEl;
+      },
+      dragOverValid: function dragOverValid(_ref2) {
+        var completed = _ref2.completed,
+            target = _ref2.target,
+            onMove = _ref2.onMove,
+            activeSortable = _ref2.activeSortable,
+            changed = _ref2.changed,
+            cancel = _ref2.cancel;
+        if (!activeSortable.options.swap) return;
+        var el = this.sortable.el,
+            options = this.options;
+
+        if (target && target !== el) {
+          var prevSwapEl = lastSwapEl;
+
+          if (onMove(target) !== false) {
+            toggleClass(target, options.swapClass, true);
+            lastSwapEl = target;
+          } else {
+            lastSwapEl = null;
+          }
+
+          if (prevSwapEl && prevSwapEl !== lastSwapEl) {
+            toggleClass(prevSwapEl, options.swapClass, false);
+          }
+        }
+
+        changed();
+        completed(true);
+        cancel();
+      },
+      drop: function drop(_ref3) {
+        var activeSortable = _ref3.activeSortable,
+            putSortable = _ref3.putSortable,
+            dragEl = _ref3.dragEl;
+        var toSortable = putSortable || this.sortable;
+        var options = this.options;
+        lastSwapEl && toggleClass(lastSwapEl, options.swapClass, false);
+
+        if (lastSwapEl && (options.swap || putSortable && putSortable.options.swap)) {
+          if (dragEl !== lastSwapEl) {
+            toSortable.captureAnimationState();
+            if (toSortable !== activeSortable) activeSortable.captureAnimationState();
+            swapNodes(dragEl, lastSwapEl);
+            toSortable.animateAll();
+            if (toSortable !== activeSortable) activeSortable.animateAll();
+          }
+        }
+      },
+      nulling: function nulling() {
+        lastSwapEl = null;
+      }
+    };
+    return _extends(Swap, {
+      pluginName: 'swap',
+      eventProperties: function eventProperties() {
+        return {
+          swapItem: lastSwapEl
+        };
+      }
+    });
+  }
+
+  function swapNodes(n1, n2) {
+    var p1 = n1.parentNode,
+        p2 = n2.parentNode,
+        i1,
+        i2;
+    if (!p1 || !p2 || p1.isEqualNode(n2) || p2.isEqualNode(n1)) return;
+    i1 = index(n1);
+    i2 = index(n2);
+
+    if (p1.isEqualNode(p2) && i1 < i2) {
+      i2++;
+    }
+
+    p1.insertBefore(n2, p1.children[i1]);
+    p2.insertBefore(n1, p2.children[i2]);
+  }
+
+  var multiDragElements = [],
+      multiDragClones = [],
+      lastMultiDragSelect,
+      // for selection with modifier key down (SHIFT)
+  multiDragSortable,
+      initialFolding = false,
+      // Initial multi-drag fold when drag started
+  folding = false,
+      // Folding any other time
+  dragStarted = false,
+      dragEl$1,
+      clonesFromRect,
+      clonesHidden;
+
+  function MultiDragPlugin() {
+    function MultiDrag(sortable) {
+      // Bind all private methods
+      for (var fn in this) {
+        if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
+          this[fn] = this[fn].bind(this);
+        }
+      }
+
+      if (!sortable.options.avoidImplicitDeselect) {
+        if (sortable.options.supportPointer) {
+          on(document, 'pointerup', this._deselectMultiDrag);
+        } else {
+          on(document, 'mouseup', this._deselectMultiDrag);
+          on(document, 'touchend', this._deselectMultiDrag);
+        }
+      }
+
+      on(document, 'keydown', this._checkKeyDown);
+      on(document, 'keyup', this._checkKeyUp);
+      this.defaults = {
+        selectedClass: 'sortable-selected',
+        multiDragKey: null,
+        avoidImplicitDeselect: false,
+        setData: function setData(dataTransfer, dragEl) {
+          var data = '';
+
+          if (multiDragElements.length && multiDragSortable === sortable) {
+            multiDragElements.forEach(function (multiDragElement, i) {
+              data += (!i ? '' : ', ') + multiDragElement.textContent;
+            });
+          } else {
+            data = dragEl.textContent;
+          }
+
+          dataTransfer.setData('Text', data);
+        }
+      };
+    }
+
+    MultiDrag.prototype = {
+      multiDragKeyDown: false,
+      isMultiDrag: false,
+      delayStartGlobal: function delayStartGlobal(_ref) {
+        var dragged = _ref.dragEl;
+        dragEl$1 = dragged;
+      },
+      delayEnded: function delayEnded() {
+        this.isMultiDrag = ~multiDragElements.indexOf(dragEl$1);
+      },
+      setupClone: function setupClone(_ref2) {
+        var sortable = _ref2.sortable,
+            cancel = _ref2.cancel;
+        if (!this.isMultiDrag) return;
+
+        for (var i = 0; i < multiDragElements.length; i++) {
+          multiDragClones.push(clone(multiDragElements[i]));
+          multiDragClones[i].sortableIndex = multiDragElements[i].sortableIndex;
+          multiDragClones[i].draggable = false;
+          multiDragClones[i].style['will-change'] = '';
+          toggleClass(multiDragClones[i], this.options.selectedClass, false);
+          multiDragElements[i] === dragEl$1 && toggleClass(multiDragClones[i], this.options.chosenClass, false);
+        }
+
+        sortable._hideClone();
+
+        cancel();
+      },
+      clone: function clone(_ref3) {
+        var sortable = _ref3.sortable,
+            rootEl = _ref3.rootEl,
+            dispatchSortableEvent = _ref3.dispatchSortableEvent,
+            cancel = _ref3.cancel;
+        if (!this.isMultiDrag) return;
+
+        if (!this.options.removeCloneOnHide) {
+          if (multiDragElements.length && multiDragSortable === sortable) {
+            insertMultiDragClones(true, rootEl);
+            dispatchSortableEvent('clone');
+            cancel();
+          }
+        }
+      },
+      showClone: function showClone(_ref4) {
+        var cloneNowShown = _ref4.cloneNowShown,
+            rootEl = _ref4.rootEl,
+            cancel = _ref4.cancel;
+        if (!this.isMultiDrag) return;
+        insertMultiDragClones(false, rootEl);
+        multiDragClones.forEach(function (clone) {
+          css$1(clone, 'display', '');
+        });
+        cloneNowShown();
+        clonesHidden = false;
+        cancel();
+      },
+      hideClone: function hideClone(_ref5) {
+        var _this = this;
+
+        _ref5.sortable;
+            var cloneNowHidden = _ref5.cloneNowHidden,
+            cancel = _ref5.cancel;
+        if (!this.isMultiDrag) return;
+        multiDragClones.forEach(function (clone) {
+          css$1(clone, 'display', 'none');
+
+          if (_this.options.removeCloneOnHide && clone.parentNode) {
+            clone.parentNode.removeChild(clone);
+          }
+        });
+        cloneNowHidden();
+        clonesHidden = true;
+        cancel();
+      },
+      dragStartGlobal: function dragStartGlobal(_ref6) {
+        _ref6.sortable;
+
+        if (!this.isMultiDrag && multiDragSortable) {
+          multiDragSortable.multiDrag._deselectMultiDrag();
+        }
+
+        multiDragElements.forEach(function (multiDragElement) {
+          multiDragElement.sortableIndex = index(multiDragElement);
+        }); // Sort multi-drag elements
+
+        multiDragElements = multiDragElements.sort(function (a, b) {
+          return a.sortableIndex - b.sortableIndex;
+        });
+        dragStarted = true;
+      },
+      dragStarted: function dragStarted(_ref7) {
+        var _this2 = this;
+
+        var sortable = _ref7.sortable;
+        if (!this.isMultiDrag) return;
+
+        if (this.options.sort) {
+          // Capture rects,
+          // hide multi drag elements (by positioning them absolute),
+          // set multi drag elements rects to dragRect,
+          // show multi drag elements,
+          // animate to rects,
+          // unset rects & remove from DOM
+          sortable.captureAnimationState();
+
+          if (this.options.animation) {
+            multiDragElements.forEach(function (multiDragElement) {
+              if (multiDragElement === dragEl$1) return;
+              css$1(multiDragElement, 'position', 'absolute');
+            });
+            var dragRect = getRect(dragEl$1, false, true, true);
+            multiDragElements.forEach(function (multiDragElement) {
+              if (multiDragElement === dragEl$1) return;
+              setRect(multiDragElement, dragRect);
+            });
+            folding = true;
+            initialFolding = true;
+          }
+        }
+
+        sortable.animateAll(function () {
+          folding = false;
+          initialFolding = false;
+
+          if (_this2.options.animation) {
+            multiDragElements.forEach(function (multiDragElement) {
+              unsetRect(multiDragElement);
+            });
+          } // Remove all auxiliary multidrag items from el, if sorting enabled
+
+
+          if (_this2.options.sort) {
+            removeMultiDragElements();
+          }
+        });
+      },
+      dragOver: function dragOver(_ref8) {
+        var target = _ref8.target,
+            completed = _ref8.completed,
+            cancel = _ref8.cancel;
+
+        if (folding && ~multiDragElements.indexOf(target)) {
+          completed(false);
+          cancel();
+        }
+      },
+      revert: function revert(_ref9) {
+        var fromSortable = _ref9.fromSortable,
+            rootEl = _ref9.rootEl,
+            sortable = _ref9.sortable,
+            dragRect = _ref9.dragRect;
+
+        if (multiDragElements.length > 1) {
+          // Setup unfold animation
+          multiDragElements.forEach(function (multiDragElement) {
+            sortable.addAnimationState({
+              target: multiDragElement,
+              rect: folding ? getRect(multiDragElement) : dragRect
+            });
+            unsetRect(multiDragElement);
+            multiDragElement.fromRect = dragRect;
+            fromSortable.removeAnimationState(multiDragElement);
+          });
+          folding = false;
+          insertMultiDragElements(!this.options.removeCloneOnHide, rootEl);
+        }
+      },
+      dragOverCompleted: function dragOverCompleted(_ref10) {
+        var sortable = _ref10.sortable,
+            isOwner = _ref10.isOwner,
+            insertion = _ref10.insertion,
+            activeSortable = _ref10.activeSortable,
+            parentEl = _ref10.parentEl,
+            putSortable = _ref10.putSortable;
+        var options = this.options;
+
+        if (insertion) {
+          // Clones must be hidden before folding animation to capture dragRectAbsolute properly
+          if (isOwner) {
+            activeSortable._hideClone();
+          }
+
+          initialFolding = false; // If leaving sort:false root, or already folding - Fold to new location
+
+          if (options.animation && multiDragElements.length > 1 && (folding || !isOwner && !activeSortable.options.sort && !putSortable)) {
+            // Fold: Set all multi drag elements's rects to dragEl's rect when multi-drag elements are invisible
+            var dragRectAbsolute = getRect(dragEl$1, false, true, true);
+            multiDragElements.forEach(function (multiDragElement) {
+              if (multiDragElement === dragEl$1) return;
+              setRect(multiDragElement, dragRectAbsolute); // Move element(s) to end of parentEl so that it does not interfere with multi-drag clones insertion if they are inserted
+              // while folding, and so that we can capture them again because old sortable will no longer be fromSortable
+
+              parentEl.appendChild(multiDragElement);
+            });
+            folding = true;
+          } // Clones must be shown (and check to remove multi drags) after folding when interfering multiDragElements are moved out
+
+
+          if (!isOwner) {
+            // Only remove if not folding (folding will remove them anyways)
+            if (!folding) {
+              removeMultiDragElements();
+            }
+
+            if (multiDragElements.length > 1) {
+              var clonesHiddenBefore = clonesHidden;
+
+              activeSortable._showClone(sortable); // Unfold animation for clones if showing from hidden
+
+
+              if (activeSortable.options.animation && !clonesHidden && clonesHiddenBefore) {
+                multiDragClones.forEach(function (clone) {
+                  activeSortable.addAnimationState({
+                    target: clone,
+                    rect: clonesFromRect
+                  });
+                  clone.fromRect = clonesFromRect;
+                  clone.thisAnimationDuration = null;
+                });
+              }
+            } else {
+              activeSortable._showClone(sortable);
+            }
+          }
+        }
+      },
+      dragOverAnimationCapture: function dragOverAnimationCapture(_ref11) {
+        var dragRect = _ref11.dragRect,
+            isOwner = _ref11.isOwner,
+            activeSortable = _ref11.activeSortable;
+        multiDragElements.forEach(function (multiDragElement) {
+          multiDragElement.thisAnimationDuration = null;
+        });
+
+        if (activeSortable.options.animation && !isOwner && activeSortable.multiDrag.isMultiDrag) {
+          clonesFromRect = _extends({}, dragRect);
+          var dragMatrix = matrix(dragEl$1, true);
+          clonesFromRect.top -= dragMatrix.f;
+          clonesFromRect.left -= dragMatrix.e;
+        }
+      },
+      dragOverAnimationComplete: function dragOverAnimationComplete() {
+        if (folding) {
+          folding = false;
+          removeMultiDragElements();
+        }
+      },
+      drop: function drop(_ref12) {
+        var evt = _ref12.originalEvent,
+            rootEl = _ref12.rootEl,
+            parentEl = _ref12.parentEl,
+            sortable = _ref12.sortable,
+            dispatchSortableEvent = _ref12.dispatchSortableEvent,
+            oldIndex = _ref12.oldIndex,
+            putSortable = _ref12.putSortable;
+        var toSortable = putSortable || this.sortable;
+        if (!evt) return;
+        var options = this.options,
+            children = parentEl.children; // Multi-drag selection
+
+        if (!dragStarted) {
+          if (options.multiDragKey && !this.multiDragKeyDown) {
+            this._deselectMultiDrag();
+          }
+
+          toggleClass(dragEl$1, options.selectedClass, !~multiDragElements.indexOf(dragEl$1));
+
+          if (!~multiDragElements.indexOf(dragEl$1)) {
+            multiDragElements.push(dragEl$1);
+            dispatchEvent({
+              sortable: sortable,
+              rootEl: rootEl,
+              name: 'select',
+              targetEl: dragEl$1,
+              originalEvent: evt
+            }); // Modifier activated, select from last to dragEl
+
+            if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
+              var lastIndex = index(lastMultiDragSelect),
+                  currentIndex = index(dragEl$1);
+
+              if (~lastIndex && ~currentIndex && lastIndex !== currentIndex) {
+                // Must include lastMultiDragSelect (select it), in case modified selection from no selection
+                // (but previous selection existed)
+                var n, i;
+
+                if (currentIndex > lastIndex) {
+                  i = lastIndex;
+                  n = currentIndex;
+                } else {
+                  i = currentIndex;
+                  n = lastIndex + 1;
+                }
+
+                for (; i < n; i++) {
+                  if (~multiDragElements.indexOf(children[i])) continue;
+                  toggleClass(children[i], options.selectedClass, true);
+                  multiDragElements.push(children[i]);
+                  dispatchEvent({
+                    sortable: sortable,
+                    rootEl: rootEl,
+                    name: 'select',
+                    targetEl: children[i],
+                    originalEvent: evt
+                  });
+                }
+              }
+            } else {
+              lastMultiDragSelect = dragEl$1;
+            }
+
+            multiDragSortable = toSortable;
+          } else {
+            multiDragElements.splice(multiDragElements.indexOf(dragEl$1), 1);
+            lastMultiDragSelect = null;
+            dispatchEvent({
+              sortable: sortable,
+              rootEl: rootEl,
+              name: 'deselect',
+              targetEl: dragEl$1,
+              originalEvent: evt
+            });
+          }
+        } // Multi-drag drop
+
+
+        if (dragStarted && this.isMultiDrag) {
+          folding = false; // Do not "unfold" after around dragEl if reverted
+
+          if ((parentEl[expando].options.sort || parentEl !== rootEl) && multiDragElements.length > 1) {
+            var dragRect = getRect(dragEl$1),
+                multiDragIndex = index(dragEl$1, ':not(.' + this.options.selectedClass + ')');
+            if (!initialFolding && options.animation) dragEl$1.thisAnimationDuration = null;
+            toSortable.captureAnimationState();
+
+            if (!initialFolding) {
+              if (options.animation) {
+                dragEl$1.fromRect = dragRect;
+                multiDragElements.forEach(function (multiDragElement) {
+                  multiDragElement.thisAnimationDuration = null;
+
+                  if (multiDragElement !== dragEl$1) {
+                    var rect = folding ? getRect(multiDragElement) : dragRect;
+                    multiDragElement.fromRect = rect; // Prepare unfold animation
+
+                    toSortable.addAnimationState({
+                      target: multiDragElement,
+                      rect: rect
+                    });
+                  }
+                });
+              } // Multi drag elements are not necessarily removed from the DOM on drop, so to reinsert
+              // properly they must all be removed
+
+
+              removeMultiDragElements();
+              multiDragElements.forEach(function (multiDragElement) {
+                if (children[multiDragIndex]) {
+                  parentEl.insertBefore(multiDragElement, children[multiDragIndex]);
+                } else {
+                  parentEl.appendChild(multiDragElement);
+                }
+
+                multiDragIndex++;
+              }); // If initial folding is done, the elements may have changed position because they are now
+              // unfolding around dragEl, even though dragEl may not have his index changed, so update event
+              // must be fired here as Sortable will not.
+
+              if (oldIndex === index(dragEl$1)) {
+                var update = false;
+                multiDragElements.forEach(function (multiDragElement) {
+                  if (multiDragElement.sortableIndex !== index(multiDragElement)) {
+                    update = true;
+                    return;
+                  }
+                });
+
+                if (update) {
+                  dispatchSortableEvent('update');
+                }
+              }
+            } // Must be done after capturing individual rects (scroll bar)
+
+
+            multiDragElements.forEach(function (multiDragElement) {
+              unsetRect(multiDragElement);
+            });
+            toSortable.animateAll();
+          }
+
+          multiDragSortable = toSortable;
+        } // Remove clones if necessary
+
+
+        if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== 'clone') {
+          multiDragClones.forEach(function (clone) {
+            clone.parentNode && clone.parentNode.removeChild(clone);
+          });
+        }
+      },
+      nullingGlobal: function nullingGlobal() {
+        this.isMultiDrag = dragStarted = false;
+        multiDragClones.length = 0;
+      },
+      destroyGlobal: function destroyGlobal() {
+        this._deselectMultiDrag();
+
+        off(document, 'pointerup', this._deselectMultiDrag);
+        off(document, 'mouseup', this._deselectMultiDrag);
+        off(document, 'touchend', this._deselectMultiDrag);
+        off(document, 'keydown', this._checkKeyDown);
+        off(document, 'keyup', this._checkKeyUp);
+      },
+      _deselectMultiDrag: function _deselectMultiDrag(evt) {
+        if (typeof dragStarted !== "undefined" && dragStarted) return; // Only deselect if selection is in this sortable
+
+        if (multiDragSortable !== this.sortable) return; // Only deselect if target is not item in this sortable
+
+        if (evt && closest(evt.target, this.options.draggable, this.sortable.el, false)) return; // Only deselect if left click
+
+        if (evt && evt.button !== 0) return;
+
+        while (multiDragElements.length) {
+          var el = multiDragElements[0];
+          toggleClass(el, this.options.selectedClass, false);
+          multiDragElements.shift();
+          dispatchEvent({
+            sortable: this.sortable,
+            rootEl: this.sortable.el,
+            name: 'deselect',
+            targetEl: el,
+            originalEvent: evt
+          });
+        }
+      },
+      _checkKeyDown: function _checkKeyDown(evt) {
+        if (evt.key === this.options.multiDragKey) {
+          this.multiDragKeyDown = true;
+        }
+      },
+      _checkKeyUp: function _checkKeyUp(evt) {
+        if (evt.key === this.options.multiDragKey) {
+          this.multiDragKeyDown = false;
+        }
+      }
+    };
+    return _extends(MultiDrag, {
+      // Static methods & properties
+      pluginName: 'multiDrag',
+      utils: {
+        /**
+         * Selects the provided multi-drag item
+         * @param  {HTMLElement} el    The element to be selected
+         */
+        select: function select(el) {
+          var sortable = el.parentNode[expando];
+          if (!sortable || !sortable.options.multiDrag || ~multiDragElements.indexOf(el)) return;
+
+          if (multiDragSortable && multiDragSortable !== sortable) {
+            multiDragSortable.multiDrag._deselectMultiDrag();
+
+            multiDragSortable = sortable;
+          }
+
+          toggleClass(el, sortable.options.selectedClass, true);
+          multiDragElements.push(el);
+        },
+
+        /**
+         * Deselects the provided multi-drag item
+         * @param  {HTMLElement} el    The element to be deselected
+         */
+        deselect: function deselect(el) {
+          var sortable = el.parentNode[expando],
+              index = multiDragElements.indexOf(el);
+          if (!sortable || !sortable.options.multiDrag || !~index) return;
+          toggleClass(el, sortable.options.selectedClass, false);
+          multiDragElements.splice(index, 1);
+        }
+      },
+      eventProperties: function eventProperties() {
+        var _this3 = this;
+
+        var oldIndicies = [],
+            newIndicies = [];
+        multiDragElements.forEach(function (multiDragElement) {
+          oldIndicies.push({
+            multiDragElement: multiDragElement,
+            index: multiDragElement.sortableIndex
+          }); // multiDragElements will already be sorted if folding
+
+          var newIndex;
+
+          if (folding && multiDragElement !== dragEl$1) {
+            newIndex = -1;
+          } else if (folding) {
+            newIndex = index(multiDragElement, ':not(.' + _this3.options.selectedClass + ')');
+          } else {
+            newIndex = index(multiDragElement);
+          }
+
+          newIndicies.push({
+            multiDragElement: multiDragElement,
+            index: newIndex
+          });
+        });
+        return {
+          items: _toConsumableArray(multiDragElements),
+          clones: [].concat(multiDragClones),
+          oldIndicies: oldIndicies,
+          newIndicies: newIndicies
+        };
+      },
+      optionListeners: {
+        multiDragKey: function multiDragKey(key) {
+          key = key.toLowerCase();
+
+          if (key === 'ctrl') {
+            key = 'Control';
+          } else if (key.length > 1) {
+            key = key.charAt(0).toUpperCase() + key.substr(1);
+          }
+
+          return key;
+        }
+      }
+    });
+  }
+
+  function insertMultiDragElements(clonesInserted, rootEl) {
+    multiDragElements.forEach(function (multiDragElement, i) {
+      var target = rootEl.children[multiDragElement.sortableIndex + (clonesInserted ? Number(i) : 0)];
+
+      if (target) {
+        rootEl.insertBefore(multiDragElement, target);
+      } else {
+        rootEl.appendChild(multiDragElement);
+      }
+    });
+  }
+  /**
+   * Insert multi-drag clones
+   * @param  {[Boolean]} elementsInserted  Whether the multi-drag elements are inserted
+   * @param  {HTMLElement} rootEl
+   */
+
+
+  function insertMultiDragClones(elementsInserted, rootEl) {
+    multiDragClones.forEach(function (clone, i) {
+      var target = rootEl.children[clone.sortableIndex + (elementsInserted ? Number(i) : 0)];
+
+      if (target) {
+        rootEl.insertBefore(clone, target);
+      } else {
+        rootEl.appendChild(clone);
+      }
+    });
+  }
+
+  function removeMultiDragElements() {
+    multiDragElements.forEach(function (multiDragElement) {
+      if (multiDragElement === dragEl$1) return;
+      multiDragElement.parentNode && multiDragElement.parentNode.removeChild(multiDragElement);
+    });
+  }
+
+  Sortable.mount(new AutoScrollPlugin());
+  Sortable.mount(Remove, Revert);
+
+  Sortable.mount(new SwapPlugin());
+  Sortable.mount(new MultiDragPlugin());
+
+  // The programming goals of Split.js are to deliver readable, understandable and
+  // maintainable code, while at the same time manually optimizing for tiny minified file size,
+  // browser compatibility without additional requirements
+  // and very few assumptions about the user's page layout.
+  const global = typeof window !== 'undefined' ? window : null;
+  const ssr = global === null;
+  const document$1 = !ssr ? global.document : undefined;
+
+  // Save a couple long function names that are used frequently.
+  // This optimization saves around 400 bytes.
+  const addEventListener = 'addEventListener';
+  const removeEventListener = 'removeEventListener';
+  const getBoundingClientRect = 'getBoundingClientRect';
+  const gutterStartDragging = '_a';
+  const aGutterSize = '_b';
+  const bGutterSize = '_c';
+  const HORIZONTAL = 'horizontal';
+  const NOOP = () => false;
+
+  // Helper function determines which prefixes of CSS calc we need.
+  // We only need to do this once on startup, when this anonymous function is called.
+  //
+  // Tests -webkit, -moz and -o prefixes. Modified from StackOverflow:
+  // http://stackoverflow.com/questions/16625140/js-feature-detection-to-detect-the-usage-of-webkit-calc-over-calc/16625167#16625167
+  const calc = ssr
+      ? 'calc'
+      : `${['', '-webkit-', '-moz-', '-o-']
+          .filter(prefix => {
+              const el = document$1.createElement('div');
+              el.style.cssText = `width:${prefix}calc(9px)`;
+
+              return !!el.style.length
+          })
+          .shift()}calc`;
+
+  // Helper function checks if its argument is a string-like type
+  const isString = v => typeof v === 'string' || v instanceof String;
+
+  // Helper function allows elements and string selectors to be used
+  // interchangeably. In either case an element is returned. This allows us to
+  // do `Split([elem1, elem2])` as well as `Split(['#id1', '#id2'])`.
+  const elementOrSelector = el => {
+      if (isString(el)) {
+          const ele = document$1.querySelector(el);
+          if (!ele) {
+              throw new Error(`Selector ${el} did not match a DOM element`)
+          }
+          return ele
+      }
+
+      return el
+  };
+
+  // Helper function gets a property from the properties object, with a default fallback
+  const getOption = (options, propName, def) => {
+      const value = options[propName];
+      if (value !== undefined) {
+          return value
+      }
+      return def
+  };
+
+  const getGutterSize = (gutterSize, isFirst, isLast, gutterAlign) => {
+      if (isFirst) {
+          if (gutterAlign === 'end') {
+              return 0
+          }
+          if (gutterAlign === 'center') {
+              return gutterSize / 2
+          }
+      } else if (isLast) {
+          if (gutterAlign === 'start') {
+              return 0
+          }
+          if (gutterAlign === 'center') {
+              return gutterSize / 2
+          }
+      }
+
+      return gutterSize
+  };
+
+  // Default options
+  const defaultGutterFn = (i, gutterDirection) => {
+      const gut = document$1.createElement('div');
+      gut.className = `gutter gutter-${gutterDirection}`;
+      return gut
+  };
+
+  const defaultElementStyleFn = (dim, size, gutSize) => {
+      const style = {};
+
+      if (!isString(size)) {
+          style[dim] = `${calc}(${size}% - ${gutSize}px)`;
+      } else {
+          style[dim] = size;
+      }
+
+      return style
+  };
+
+  const defaultGutterStyleFn = (dim, gutSize) => ({ [dim]: `${gutSize}px` });
+
+  // The main function to initialize a split. Split.js thinks about each pair
+  // of elements as an independant pair. Dragging the gutter between two elements
+  // only changes the dimensions of elements in that pair. This is key to understanding
+  // how the following functions operate, since each function is bound to a pair.
+  //
+  // A pair object is shaped like this:
+  //
+  // {
+  //     a: DOM element,
+  //     b: DOM element,
+  //     aMin: Number,
+  //     bMin: Number,
+  //     dragging: Boolean,
+  //     parent: DOM element,
+  //     direction: 'horizontal' | 'vertical'
+  // }
+  //
+  // The basic sequence:
+  //
+  // 1. Set defaults to something sane. `options` doesn't have to be passed at all.
+  // 2. Initialize a bunch of strings based on the direction we're splitting.
+  //    A lot of the behavior in the rest of the library is paramatized down to
+  //    rely on CSS strings and classes.
+  // 3. Define the dragging helper functions, and a few helpers to go with them.
+  // 4. Loop through the elements while pairing them off. Every pair gets an
+  //    `pair` object and a gutter.
+  // 5. Actually size the pair elements, insert gutters and attach event listeners.
+  const Split = (idsOption, options = {}) => {
+      if (ssr) return {}
+
+      let ids = idsOption;
+      let dimension;
+      let clientAxis;
+      let position;
+      let positionEnd;
+      let clientSize;
+      let elements;
+
+      // Allow HTMLCollection to be used as an argument when supported
+      if (Array.from) {
+          ids = Array.from(ids);
+      }
+
+      // All DOM elements in the split should have a common parent. We can grab
+      // the first elements parent and hope users read the docs because the
+      // behavior will be whacky otherwise.
+      const firstElement = elementOrSelector(ids[0]);
+      const parent = firstElement.parentNode;
+      const parentStyle = getComputedStyle ? getComputedStyle(parent) : null;
+      const parentFlexDirection = parentStyle ? parentStyle.flexDirection : null;
+
+      // Set default options.sizes to equal percentages of the parent element.
+      let sizes = getOption(options, 'sizes') || ids.map(() => 100 / ids.length);
+
+      // Standardize minSize and maxSize to an array if it isn't already.
+      // This allows minSize and maxSize to be passed as a number.
+      const minSize = getOption(options, 'minSize', 100);
+      const minSizes = Array.isArray(minSize) ? minSize : ids.map(() => minSize);
+      const maxSize = getOption(options, 'maxSize', Infinity);
+      const maxSizes = Array.isArray(maxSize) ? maxSize : ids.map(() => maxSize);
+
+      // Get other options
+      const expandToMin = getOption(options, 'expandToMin', false);
+      const gutterSize = getOption(options, 'gutterSize', 10);
+      const gutterAlign = getOption(options, 'gutterAlign', 'center');
+      const snapOffset = getOption(options, 'snapOffset', 30);
+      const snapOffsets = Array.isArray(snapOffset) ? snapOffset : ids.map(() => snapOffset);
+      const dragInterval = getOption(options, 'dragInterval', 1);
+      const direction = getOption(options, 'direction', HORIZONTAL);
+      const cursor = getOption(
+          options,
+          'cursor',
+          direction === HORIZONTAL ? 'col-resize' : 'row-resize',
+      );
+      const gutter = getOption(options, 'gutter', defaultGutterFn);
+      const elementStyle = getOption(
+          options,
+          'elementStyle',
+          defaultElementStyleFn,
+      );
+      const gutterStyle = getOption(options, 'gutterStyle', defaultGutterStyleFn);
+
+      // 2. Initialize a bunch of strings based on the direction we're splitting.
+      // A lot of the behavior in the rest of the library is paramatized down to
+      // rely on CSS strings and classes.
+      if (direction === HORIZONTAL) {
+          dimension = 'width';
+          clientAxis = 'clientX';
+          position = 'left';
+          positionEnd = 'right';
+          clientSize = 'clientWidth';
+      } else if (direction === 'vertical') {
+          dimension = 'height';
+          clientAxis = 'clientY';
+          position = 'top';
+          positionEnd = 'bottom';
+          clientSize = 'clientHeight';
+      }
+
+      // 3. Define the dragging helper functions, and a few helpers to go with them.
+      // Each helper is bound to a pair object that contains its metadata. This
+      // also makes it easy to store references to listeners that that will be
+      // added and removed.
+      //
+      // Even though there are no other functions contained in them, aliasing
+      // this to self saves 50 bytes or so since it's used so frequently.
+      //
+      // The pair object saves metadata like dragging state, position and
+      // event listener references.
+
+      function setElementSize(el, size, gutSize, i) {
+          // Split.js allows setting sizes via numbers (ideally), or if you must,
+          // by string, like '300px'. This is less than ideal, because it breaks
+          // the fluid layout that `calc(% - px)` provides. You're on your own if you do that,
+          // make sure you calculate the gutter size by hand.
+          const style = elementStyle(dimension, size, gutSize, i);
+
+          Object.keys(style).forEach(prop => {
+              // eslint-disable-next-line no-param-reassign
+              el.style[prop] = style[prop];
+          });
+      }
+
+      function setGutterSize(gutterElement, gutSize, i) {
+          const style = gutterStyle(dimension, gutSize, i);
+
+          Object.keys(style).forEach(prop => {
+              // eslint-disable-next-line no-param-reassign
+              gutterElement.style[prop] = style[prop];
+          });
+      }
+
+      function getSizes() {
+          return elements.map(element => element.size)
+      }
+
+      // Supports touch events, but not multitouch, so only the first
+      // finger `touches[0]` is counted.
+      function getMousePosition(e) {
+          if ('touches' in e) return e.touches[0][clientAxis]
+          return e[clientAxis]
+      }
+
+      // Actually adjust the size of elements `a` and `b` to `offset` while dragging.
+      // calc is used to allow calc(percentage + gutterpx) on the whole split instance,
+      // which allows the viewport to be resized without additional logic.
+      // Element a's size is the same as offset. b's size is total size - a size.
+      // Both sizes are calculated from the initial parent percentage,
+      // then the gutter size is subtracted.
+      function adjust(offset) {
+          const a = elements[this.a];
+          const b = elements[this.b];
+          const percentage = a.size + b.size;
+
+          a.size = (offset / this.size) * percentage;
+          b.size = percentage - (offset / this.size) * percentage;
+
+          setElementSize(a.element, a.size, this[aGutterSize], a.i);
+          setElementSize(b.element, b.size, this[bGutterSize], b.i);
+      }
+
+      // drag, where all the magic happens. The logic is really quite simple:
+      //
+      // 1. Ignore if the pair is not dragging.
+      // 2. Get the offset of the event.
+      // 3. Snap offset to min if within snappable range (within min + snapOffset).
+      // 4. Actually adjust each element in the pair to offset.
+      //
+      // ---------------------------------------------------------------------
+      // |    | <- a.minSize               ||              b.minSize -> |    |
+      // |    |  | <- this.snapOffset      ||     this.snapOffset -> |  |    |
+      // |    |  |                         ||                        |  |    |
+      // |    |  |                         ||                        |  |    |
+      // ---------------------------------------------------------------------
+      // | <- this.start                                        this.size -> |
+      function drag(e) {
+          let offset;
+          const a = elements[this.a];
+          const b = elements[this.b];
+
+          if (!this.dragging) return
+
+          // Get the offset of the event from the first side of the
+          // pair `this.start`. Then offset by the initial position of the
+          // mouse compared to the gutter size.
+          offset =
+              getMousePosition(e) -
+              this.start +
+              (this[aGutterSize] - this.dragOffset);
+
+          if (dragInterval > 1) {
+              offset = Math.round(offset / dragInterval) * dragInterval;
+          }
+
+          // If within snapOffset of min or max, set offset to min or max.
+          // snapOffset buffers a.minSize and b.minSize, so logic is opposite for both.
+          // Include the appropriate gutter sizes to prevent overflows.
+          if (offset <= a.minSize + a.snapOffset + this[aGutterSize]) {
+              offset = a.minSize + this[aGutterSize];
+          } else if (
+              offset >=
+              this.size - (b.minSize + b.snapOffset + this[bGutterSize])
+          ) {
+              offset = this.size - (b.minSize + this[bGutterSize]);
+          }
+
+          if (offset >= a.maxSize - a.snapOffset + this[aGutterSize]) {
+              offset = a.maxSize + this[aGutterSize];
+          } else if (
+              offset <=
+              this.size - (b.maxSize - b.snapOffset + this[bGutterSize])
+          ) {
+              offset = this.size - (b.maxSize + this[bGutterSize]);
+          }
+
+          // Actually adjust the size.
+          adjust.call(this, offset);
+
+          // Call the drag callback continously. Don't do anything too intensive
+          // in this callback.
+          getOption(options, 'onDrag', NOOP)(getSizes());
+      }
+
+      // Cache some important sizes when drag starts, so we don't have to do that
+      // continously:
+      //
+      // `size`: The total size of the pair. First + second + first gutter + second gutter.
+      // `start`: The leading side of the first element.
+      //
+      // ------------------------------------------------
+      // |      aGutterSize -> |||                      |
+      // |                     |||                      |
+      // |                     |||                      |
+      // |                     ||| <- bGutterSize       |
+      // ------------------------------------------------
+      // | <- start                             size -> |
+      function calculateSizes() {
+          // Figure out the parent size minus padding.
+          const a = elements[this.a].element;
+          const b = elements[this.b].element;
+
+          const aBounds = a[getBoundingClientRect]();
+          const bBounds = b[getBoundingClientRect]();
+
+          this.size =
+              aBounds[dimension] +
+              bBounds[dimension] +
+              this[aGutterSize] +
+              this[bGutterSize];
+          this.start = aBounds[position];
+          this.end = aBounds[positionEnd];
+      }
+
+      function innerSize(element) {
+          // Return nothing if getComputedStyle is not supported (< IE9)
+          // Or if parent element has no layout yet
+          if (!getComputedStyle) return null
+
+          const computedStyle = getComputedStyle(element);
+
+          if (!computedStyle) return null
+
+          let size = element[clientSize];
+
+          if (size === 0) return null
+
+          if (direction === HORIZONTAL) {
+              size -=
+                  parseFloat(computedStyle.paddingLeft) +
+                  parseFloat(computedStyle.paddingRight);
+          } else {
+              size -=
+                  parseFloat(computedStyle.paddingTop) +
+                  parseFloat(computedStyle.paddingBottom);
+          }
+
+          return size
+      }
+
+      // When specifying percentage sizes that are less than the computed
+      // size of the element minus the gutter, the lesser percentages must be increased
+      // (and decreased from the other elements) to make space for the pixels
+      // subtracted by the gutters.
+      function trimToMin(sizesToTrim) {
+          // Try to get inner size of parent element.
+          // If it's no supported, return original sizes.
+          const parentSize = innerSize(parent);
+          if (parentSize === null) {
+              return sizesToTrim
+          }
+
+          if (minSizes.reduce((a, b) => a + b, 0) > parentSize) {
+              return sizesToTrim
+          }
+
+          // Keep track of the excess pixels, the amount of pixels over the desired percentage
+          // Also keep track of the elements with pixels to spare, to decrease after if needed
+          let excessPixels = 0;
+          const toSpare = [];
+
+          const pixelSizes = sizesToTrim.map((size, i) => {
+              // Convert requested percentages to pixel sizes
+              const pixelSize = (parentSize * size) / 100;
+              const elementGutterSize = getGutterSize(
+                  gutterSize,
+                  i === 0,
+                  i === sizesToTrim.length - 1,
+                  gutterAlign,
+              );
+              const elementMinSize = minSizes[i] + elementGutterSize;
+
+              // If element is too smal, increase excess pixels by the difference
+              // and mark that it has no pixels to spare
+              if (pixelSize < elementMinSize) {
+                  excessPixels += elementMinSize - pixelSize;
+                  toSpare.push(0);
+                  return elementMinSize
+              }
+
+              // Otherwise, mark the pixels it has to spare and return it's original size
+              toSpare.push(pixelSize - elementMinSize);
+              return pixelSize
+          });
+
+          // If nothing was adjusted, return the original sizes
+          if (excessPixels === 0) {
+              return sizesToTrim
+          }
+
+          return pixelSizes.map((pixelSize, i) => {
+              let newPixelSize = pixelSize;
+
+              // While there's still pixels to take, and there's enough pixels to spare,
+              // take as many as possible up to the total excess pixels
+              if (excessPixels > 0 && toSpare[i] - excessPixels > 0) {
+                  const takenPixels = Math.min(
+                      excessPixels,
+                      toSpare[i] - excessPixels,
+                  );
+
+                  // Subtract the amount taken for the next iteration
+                  excessPixels -= takenPixels;
+                  newPixelSize = pixelSize - takenPixels;
+              }
+
+              // Return the pixel size adjusted as a percentage
+              return (newPixelSize / parentSize) * 100
+          })
+      }
+
+      // stopDragging is very similar to startDragging in reverse.
+      function stopDragging() {
+          const self = this;
+          const a = elements[self.a].element;
+          const b = elements[self.b].element;
+
+          if (self.dragging) {
+              getOption(options, 'onDragEnd', NOOP)(getSizes());
+          }
+
+          self.dragging = false;
+
+          // Remove the stored event listeners. This is why we store them.
+          global[removeEventListener]('mouseup', self.stop);
+          global[removeEventListener]('touchend', self.stop);
+          global[removeEventListener]('touchcancel', self.stop);
+          global[removeEventListener]('mousemove', self.move);
+          global[removeEventListener]('touchmove', self.move);
+
+          // Clear bound function references
+          self.stop = null;
+          self.move = null;
+
+          a[removeEventListener]('selectstart', NOOP);
+          a[removeEventListener]('dragstart', NOOP);
+          b[removeEventListener]('selectstart', NOOP);
+          b[removeEventListener]('dragstart', NOOP);
+
+          a.style.userSelect = '';
+          a.style.webkitUserSelect = '';
+          a.style.MozUserSelect = '';
+          a.style.pointerEvents = '';
+
+          b.style.userSelect = '';
+          b.style.webkitUserSelect = '';
+          b.style.MozUserSelect = '';
+          b.style.pointerEvents = '';
+
+          self.gutter.style.cursor = '';
+          self.parent.style.cursor = '';
+          document$1.body.style.cursor = '';
+      }
+
+      // startDragging calls `calculateSizes` to store the inital size in the pair object.
+      // It also adds event listeners for mouse/touch events,
+      // and prevents selection while dragging so avoid the selecting text.
+      function startDragging(e) {
+          // Right-clicking can't start dragging.
+          if ('button' in e && e.button !== 0) {
+              return
+          }
+
+          // Alias frequently used variables to save space. 200 bytes.
+          const self = this;
+          const a = elements[self.a].element;
+          const b = elements[self.b].element;
+
+          // Call the onDragStart callback.
+          if (!self.dragging) {
+              getOption(options, 'onDragStart', NOOP)(getSizes());
+          }
+
+          // Don't actually drag the element. We emulate that in the drag function.
+          e.preventDefault();
+
+          // Set the dragging property of the pair object.
+          self.dragging = true;
+
+          // Create two event listeners bound to the same pair object and store
+          // them in the pair object.
+          self.move = drag.bind(self);
+          self.stop = stopDragging.bind(self);
+
+          // All the binding. `window` gets the stop events in case we drag out of the elements.
+          global[addEventListener]('mouseup', self.stop);
+          global[addEventListener]('touchend', self.stop);
+          global[addEventListener]('touchcancel', self.stop);
+          global[addEventListener]('mousemove', self.move);
+          global[addEventListener]('touchmove', self.move);
+
+          // Disable selection. Disable!
+          a[addEventListener]('selectstart', NOOP);
+          a[addEventListener]('dragstart', NOOP);
+          b[addEventListener]('selectstart', NOOP);
+          b[addEventListener]('dragstart', NOOP);
+
+          a.style.userSelect = 'none';
+          a.style.webkitUserSelect = 'none';
+          a.style.MozUserSelect = 'none';
+          a.style.pointerEvents = 'none';
+
+          b.style.userSelect = 'none';
+          b.style.webkitUserSelect = 'none';
+          b.style.MozUserSelect = 'none';
+          b.style.pointerEvents = 'none';
+
+          // Set the cursor at multiple levels
+          self.gutter.style.cursor = cursor;
+          self.parent.style.cursor = cursor;
+          document$1.body.style.cursor = cursor;
+
+          // Cache the initial sizes of the pair.
+          calculateSizes.call(self);
+
+          // Determine the position of the mouse compared to the gutter
+          self.dragOffset = getMousePosition(e) - self.end;
+      }
+
+      // adjust sizes to ensure percentage is within min size and gutter.
+      sizes = trimToMin(sizes);
+
+      // 5. Create pair and element objects. Each pair has an index reference to
+      // elements `a` and `b` of the pair (first and second elements).
+      // Loop through the elements while pairing them off. Every pair gets a
+      // `pair` object and a gutter.
+      //
+      // Basic logic:
+      //
+      // - Starting with the second element `i > 0`, create `pair` objects with
+      //   `a = i - 1` and `b = i`
+      // - Set gutter sizes based on the _pair_ being first/last. The first and last
+      //   pair have gutterSize / 2, since they only have one half gutter, and not two.
+      // - Create gutter elements and add event listeners.
+      // - Set the size of the elements, minus the gutter sizes.
+      //
+      // -----------------------------------------------------------------------
+      // |     i=0     |         i=1         |        i=2       |      i=3     |
+      // |             |                     |                  |              |
+      // |           pair 0                pair 1             pair 2           |
+      // |             |                     |                  |              |
+      // -----------------------------------------------------------------------
+      const pairs = [];
+      elements = ids.map((id, i) => {
+          // Create the element object.
+          const element = {
+              element: elementOrSelector(id),
+              size: sizes[i],
+              minSize: minSizes[i],
+              maxSize: maxSizes[i],
+              snapOffset: snapOffsets[i],
+              i,
+          };
+
+          let pair;
+
+          if (i > 0) {
+              // Create the pair object with its metadata.
+              pair = {
+                  a: i - 1,
+                  b: i,
+                  dragging: false,
+                  direction,
+                  parent,
+              };
+
+              pair[aGutterSize] = getGutterSize(
+                  gutterSize,
+                  i - 1 === 0,
+                  false,
+                  gutterAlign,
+              );
+              pair[bGutterSize] = getGutterSize(
+                  gutterSize,
+                  false,
+                  i === ids.length - 1,
+                  gutterAlign,
+              );
+
+              // if the parent has a reverse flex-direction, switch the pair elements.
+              if (
+                  parentFlexDirection === 'row-reverse' ||
+                  parentFlexDirection === 'column-reverse'
+              ) {
+                  const temp = pair.a;
+                  pair.a = pair.b;
+                  pair.b = temp;
+              }
+          }
+
+          // Determine the size of the current element. IE8 is supported by
+          // staticly assigning sizes without draggable gutters. Assigns a string
+          // to `size`.
+          //
+          // Create gutter elements for each pair.
+          if (i > 0) {
+              const gutterElement = gutter(i, direction, element.element);
+              setGutterSize(gutterElement, gutterSize, i);
+
+              // Save bound event listener for removal later
+              pair[gutterStartDragging] = startDragging.bind(pair);
+
+              // Attach bound event listener
+              gutterElement[addEventListener](
+                  'mousedown',
+                  pair[gutterStartDragging],
+              );
+              gutterElement[addEventListener](
+                  'touchstart',
+                  pair[gutterStartDragging],
+              );
+
+              parent.insertBefore(gutterElement, element.element);
+
+              pair.gutter = gutterElement;
+          }
+
+          setElementSize(
+              element.element,
+              element.size,
+              getGutterSize(
+                  gutterSize,
+                  i === 0,
+                  i === ids.length - 1,
+                  gutterAlign,
+              ),
+              i,
+          );
+
+          // After the first iteration, and we have a pair object, append it to the
+          // list of pairs.
+          if (i > 0) {
+              pairs.push(pair);
+          }
+
+          return element
+      });
+
+      function adjustToMin(element) {
+          const isLast = element.i === pairs.length;
+          const pair = isLast ? pairs[element.i - 1] : pairs[element.i];
+
+          calculateSizes.call(pair);
+
+          const size = isLast
+              ? pair.size - element.minSize - pair[bGutterSize]
+              : element.minSize + pair[aGutterSize];
+
+          adjust.call(pair, size);
+      }
+
+      elements.forEach(element => {
+          const computedSize = element.element[getBoundingClientRect]()[dimension];
+
+          if (computedSize < element.minSize) {
+              if (expandToMin) {
+                  adjustToMin(element);
+              } else {
+                  // eslint-disable-next-line no-param-reassign
+                  element.minSize = computedSize;
+              }
+          }
+      });
+
+      function setSizes(newSizes) {
+          const trimmed = trimToMin(newSizes);
+          trimmed.forEach((newSize, i) => {
+              if (i > 0) {
+                  const pair = pairs[i - 1];
+
+                  const a = elements[pair.a];
+                  const b = elements[pair.b];
+
+                  a.size = trimmed[i - 1];
+                  b.size = newSize;
+
+                  setElementSize(a.element, a.size, pair[aGutterSize], a.i);
+                  setElementSize(b.element, b.size, pair[bGutterSize], b.i);
+              }
+          });
+      }
+
+      function destroy(preserveStyles, preserveGutter) {
+          pairs.forEach(pair => {
+              if (preserveGutter !== true) {
+                  pair.parent.removeChild(pair.gutter);
+              } else {
+                  pair.gutter[removeEventListener](
+                      'mousedown',
+                      pair[gutterStartDragging],
+                  );
+                  pair.gutter[removeEventListener](
+                      'touchstart',
+                      pair[gutterStartDragging],
+                  );
+              }
+
+              if (preserveStyles !== true) {
+                  const style = elementStyle(
+                      dimension,
+                      pair.a.size,
+                      pair[aGutterSize],
+                  );
+
+                  Object.keys(style).forEach(prop => {
+                      elements[pair.a].element.style[prop] = '';
+                      elements[pair.b].element.style[prop] = '';
+                  });
+              }
+          });
+      }
+
+      return {
+          setSizes,
+          getSizes,
+          collapse(i) {
+              adjustToMin(elements[i]);
+          },
+          destroy,
+          parent,
+          pairs,
+      }
+  };
+
+  let company_features = {
+          variations: {
+            allow: true,
+          },
+          languages: {
+            allow: true,
+          },
+          writing_styles: {
+            allow: true,
+          },
+          favourites: {
+            allow: true,
+          },
+          pin: {
+            allow: true,
+          },
+          import_export: {
+            allow: true,
+          },
+          copy: {
+            allow: true,
+          },
+          delete: {
+            allow: true,
+          },
+          edit: {
+              allow: true
+          },
+          public_prompts: {
+            allow: true,
+          },
+          private_prompts: {
+            allow: true,
+          },
+          search: {
+            allow: true,
+          },
+          setting: {
+            allow: true,
+          },
+          expanded_view: {
+            allow: true,
+          },
+          collapsed_view: {
+              allow: true,
+            },
+          variables:{
+            allow:true
+          },
+          reload: {
+              allow: true
+          },
+          add_prompt: {
+              allow: true
+          },
 
   };
 
@@ -714,6 +5314,12 @@
         return `<svg xmlns="http://www.w3.org/2000/svg" fill="gray" class="h-5 w-5" viewBox="0 0 32 32" version="1.1">
       <path d="M0 16q0 3.264 1.28 6.208t3.392 5.12 5.12 3.424 6.208 1.248 6.208-1.248 5.12-3.424 3.392-5.12 1.28-6.208-1.28-6.208-3.392-5.12-5.088-3.392-6.24-1.28q-3.264 0-6.208 1.28t-5.12 3.392-3.392 5.12-1.28 6.208zM4 16q0-3.264 1.6-6.016t4.384-4.352 6.016-1.632 6.016 1.632 4.384 4.352 1.6 6.016-1.6 6.048-4.384 4.352-6.016 1.6-6.016-1.6-4.384-4.352-1.6-6.048zM9.76 20.256q0 0.832 0.576 1.408t1.44 0.608 1.408-0.608l2.816-2.816 2.816 2.816q0.576 0.608 1.408 0.608t1.44-0.608 0.576-1.408-0.576-1.408l-2.848-2.848 2.848-2.816q0.576-0.576 0.576-1.408t-0.576-1.408-1.44-0.608-1.408 0.608l-2.816 2.816-2.816-2.816q-0.576-0.608-1.408-0.608t-1.44 0.608-0.576 1.408 0.576 1.408l2.848 2.816-2.848 2.848q-0.576 0.576-0.576 1.408z"/>
       </svg>`;
+      case 'trash':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+      <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="gray" stroke-width="2"/>
+      <path d="M19.5 5H4.5" stroke="gray" stroke-width="2" stroke-linecap="round"/>
+      <path d="M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z" stroke="gray" stroke-width="2"/>
+      </svg>`
       case 'info':
         return `<svg xmlns="http://www.w3.org/2000/svg" fill="gray" class="h-5 w-5" viewBox="0 0 1920 1920">
           <path d="M960 0c530.193 0 960 429.807 960 960s-429.807 960-960 960S0 1490.193 0 960 429.807 0 960 0Zm0 101.053c-474.384 0-858.947 384.563-858.947 858.947S485.616 1818.947 960 1818.947 1818.947 1434.384 1818.947 960 1434.384 101.053 960 101.053Zm-42.074 626.795c-85.075 39.632-157.432 107.975-229.844 207.898-10.327 14.249-10.744 22.907-.135 30.565 7.458 5.384 11.792 3.662 22.656-7.928 1.453-1.562 1.453-1.562 2.94-3.174 9.391-10.17 16.956-18.8 33.115-37.565 53.392-62.005 79.472-87.526 120.003-110.867 35.075-20.198 65.9 9.485 60.03 47.471-1.647 10.664-4.483 18.534-11.791 35.432-2.907 6.722-4.133 9.646-5.496 13.23-13.173 34.63-24.269 63.518-47.519 123.85l-1.112 2.886c-7.03 18.242-7.03 18.242-14.053 36.48-30.45 79.138-48.927 127.666-67.991 178.988l-1.118 3.008a10180.575 10180.575 0 0 0-10.189 27.469c-21.844 59.238-34.337 97.729-43.838 138.668-1.484 6.37-1.484 6.37-2.988 12.845-5.353 23.158-8.218 38.081-9.82 53.42-2.77 26.522-.543 48.24 7.792 66.493 9.432 20.655 29.697 35.43 52.819 38.786 38.518 5.592 75.683 5.194 107.515-2.048 17.914-4.073 35.638-9.405 53.03-15.942 50.352-18.932 98.861-48.472 145.846-87.52 41.11-34.26 80.008-76 120.788-127.872 3.555-4.492 3.555-4.492 7.098-8.976 12.318-15.707 18.352-25.908 20.605-36.683 2.45-11.698-7.439-23.554-15.343-19.587-3.907 1.96-7.993 6.018-14.22 13.872-4.454 5.715-6.875 8.77-9.298 11.514-9.671 10.95-19.883 22.157-30.947 33.998-18.241 19.513-36.775 38.608-63.656 65.789-13.69 13.844-30.908 25.947-49.42 35.046-29.63 14.559-56.358-3.792-53.148-36.635 2.118-21.681 7.37-44.096 15.224-65.767 17.156-47.367 31.183-85.659 62.216-170.048 13.459-36.6 19.27-52.41 26.528-72.201 21.518-58.652 38.696-105.868 55.04-151.425 20.19-56.275 31.596-98.224 36.877-141.543 3.987-32.673-5.103-63.922-25.834-85.405-22.986-23.816-55.68-34.787-96.399-34.305-45.053.535-97.607 15.256-145.963 37.783Zm308.381-388.422c-80.963-31.5-178.114 22.616-194.382 108.33-11.795 62.124 11.412 115.76 58.78 138.225 93.898 44.531 206.587-26.823 206.592-130.826.005-57.855-24.705-97.718-70.99-115.729Z" fill-rule="evenodd"/>
@@ -755,9 +5361,10 @@
       case 'star-yellow':
         return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
       <g id="Interface / Star">
-      <path id="Vector" d="M2.33496 10.3368C2.02171 10.0471 2.19187 9.52339 2.61557 9.47316L8.61914 8.76107C8.79182 8.74059 8.94181 8.63215 9.01465 8.47425L11.5469 2.98446C11.7256 2.59703 12.2764 2.59695 12.4551 2.98439L14.9873 8.47413C15.0601 8.63204 15.2092 8.74077 15.3818 8.76124L21.3857 9.47316C21.8094 9.52339 21.9791 10.0472 21.6659 10.3369L17.2278 14.4419C17.1001 14.56 17.0433 14.7357 17.0771 14.9063L18.255 20.8359C18.3382 21.2544 17.8928 21.5787 17.5205 21.3703L12.2451 18.4166C12.0934 18.3317 11.9091 18.3321 11.7573 18.417L6.48144 21.3695C6.10913 21.5779 5.66294 21.2544 5.74609 20.8359L6.92414 14.9066C6.95803 14.7361 6.90134 14.5599 6.77367 14.4419L2.33496 10.3368Z" stroke="#FFC300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path id="Vector" d="M2.33496 10.3368C2.02171 10.0471 2.19187 9.52339 2.61557 9.47316L8.61914 8.76107C8.79182 8.74059 8.94181 8.63215 9.01465 8.47425L11.5469 2.98446C11.7256 2.59703 12.2764 2.59695 12.4551 2.98439L14.9873 8.47413C15.0601 8.63204 15.2092 8.74077 15.3818 8.76124L21.3857 9.47316C21.8094 9.52339 21.9791 10.0472 21.6659 10.3369L17.2278 14.4419C17.1001 14.56 17.0433 14.7357 17.0771 14.9063L18.255 20.8359C18.3382 21.2544 17.8928 21.5787 17.5205 21.3703L12.2451 18.4166C12.0934 18.3317 11.9091 18.3321 11.7573 18.417L6.48144 21.3695C6.10913 21.5779 5.66294 21.2544 5.74609 20.8359L6.92414 14.9066C6.95803 14.7361 6.90134 14.5599 6.77367 14.4419L2.33496 10.3368Z" stroke="#FFC300" fill="#FFC300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </g>
-      </svg>`;
+      </svg>
+      `;
       case 'grid':
         return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 -5 20 20" id="meteor-icon-kit__solid-grip-lines" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 8.5C0 7.6716 0.67157 7 1.5 7H18.5C19.3284 7 20 7.6716 20 8.5C20 9.3284 19.3284 10 18.5 10H1.5C0.67157 10 0 9.3284 0 8.5zM0 1.5C0 0.67157 0.67157 0 1.5 0H18.5C19.3284 0 20 0.67157 20 1.5C20 2.32843 19.3284 3 18.5 3H1.5C0.67157 3 0 2.32843 0 1.5z" fill="gray"/></svg>`;
       case 'grid-yellow':
@@ -831,8 +5438,14 @@
       <circle cx="12" cy="12" r="9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>`
       case 'pin-yellow':
-        return `<svg xmlns="http://www.w3.org/2000/svg" transform="rotate(-45)" class="h-4 w-4 " viewBox="0 0 15 15" fill="none">
-      <path d="M0.5 14.5L5 10M0.5 5.5L9.5 14.5M8.5 0.5L14.5 6.5M1.5 6.5L9.5 1.5M8.5 13.5L13.5 5.5" stroke="#FFC300"/>
+        return `<svg xmlns="http://www.w3.org/2000/svg" fill="#FFC300" class="h-4 w-4 " viewBox="0 0 16 16"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+
+      <g>
+      
+      <polygon points="13 8 11 6 11 3 12 3 12 1 4 1 4 3 5 3 5 6 3 8 3 10 7.3 10 7.3 16 8.7 16 8.7 10 13 10 13 8"/>
+      
+      </g>
+      
       </svg>`
       case 'pin-gray':
         return `<svg xmlns="http://www.w3.org/2000/svg" transform="rotate(-45)" class="h-4 w-4 " viewBox="0 0 15 15" fill="none">
@@ -882,6 +5495,42 @@
         return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " fill="gray" width="800px" height="800px" viewBox="0 0 24 24"><script xmlns=""/>
       <path d="M6,7 L3.70710678,7 L3.85355339,7.14644661 C4.04881554,7.34170876 4.04881554,7.65829124 3.85355339,7.85355339 C3.65829124,8.04881554 3.34170876,8.04881554 3.14644661,7.85355339 L2.14644661,6.85355339 C1.95118446,6.65829124 1.95118446,6.34170876 2.14644661,6.14644661 L3.14644661,5.14644661 C3.34170876,4.95118446 3.65829124,4.95118446 3.85355339,5.14644661 C4.04881554,5.34170876 4.04881554,5.65829124 3.85355339,5.85355339 L3.70710678,6 L6,6 L6,3.70710678 L5.85355339,3.85355339 C5.65829124,4.04881554 5.34170876,4.04881554 5.14644661,3.85355339 C4.95118446,3.65829124 4.95118446,3.34170876 5.14644661,3.14644661 L6.14644661,2.14644661 C6.34170876,1.95118446 6.65829124,1.95118446 6.85355339,2.14644661 L7.85355339,3.14644661 C8.04881554,3.34170876 8.04881554,3.65829124 7.85355339,3.85355339 C7.65829124,4.04881554 7.34170876,4.04881554 7.14644661,3.85355339 L7,3.70710678 L7,6 L9.29289322,6 L9.14644661,5.85355339 C8.95118446,5.65829124 8.95118446,5.34170876 9.14644661,5.14644661 C9.34170876,4.95118446 9.65829124,4.95118446 9.85355339,5.14644661 L10.8535534,6.14644661 C11.0488155,6.34170876 11.0488155,6.65829124 10.8535534,6.85355339 L9.85355339,7.85355339 C9.65829124,8.04881554 9.34170876,8.04881554 9.14644661,7.85355339 C8.95118446,7.65829124 8.95118446,7.34170876 9.14644661,7.14644661 L9.29289322,7 L7,7 L7,9.29289322 L7.14644661,9.14644661 C7.34170876,8.95118446 7.65829124,8.95118446 7.85355339,9.14644661 C8.04881554,9.34170876 8.04881554,9.65829124 7.85355339,9.85355339 L6.85355339,10.8535534 C6.65829124,11.0488155 6.34170876,11.0488155 6.14644661,10.8535534 L5.14644661,9.85355339 C4.95118446,9.65829124 4.95118446,9.34170876 5.14644661,9.14644661 C5.34170876,8.95118446 5.65829124,8.95118446 5.85355339,9.14644661 L6,9.29289322 L6,7 Z M14,9.5 L14,12.0474376 C14,12.3783481 13.8839855,12.698786 13.6721417,12.9529985 C13.1720143,13.5531514 12.2800608,13.6342381 11.6799078,13.1341106 L10.7560738,12.3642489 C10.4736449,12.1288916 10.11764,12 9.75,12 C9.48363526,12 9.24082605,12.1526146 9.12532205,12.3926334 L9.08962348,12.4668155 C8.95447865,12.7476481 8.99541029,13.0814869 9.19439734,13.321352 L13.607865,18.6414804 C14.3217788,19.502054 15.3818498,20 16.5,20 C18.9852814,20 21,17.9852814 21,15.5 L21,11.5 C21,11.2238576 20.7761424,11 20.5,11 C20.2238576,11 20,11.2238576 20,11.5 L20,12.5 C20,12.7761424 19.7761424,13 19.5,13 C19.2238576,13 19,12.7761424 19,12.5 L19,10.5 C19,10.2238576 18.7761424,10 18.5,10 C18.2238576,10 18,10.2238576 18,10.5 L18,12.5 C18,12.7761424 17.7761424,13 17.5,13 C17.2238576,13 17,12.7761424 17,12.5 L17,9.5 C17,9.22385763 16.7761424,9 16.5,9 C16.2238576,9 16,9.22385763 16,9.5 L16,12.5 C16,12.7761424 15.7761424,13 15.5,13 C15.2238576,13 15,12.7761424 15,12.5 L15,5.5 C15,5.22385763 14.7761424,5 14.5,5 C14.2238576,5 14,5.22385763 14,5.5 L14,9.5 Z M13,9.49999997 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 C15.3284271,4 16,4.67157288 16,5.5 L16,8.08535285 C16.1563895,8.03007711 16.3246823,8 16.5,8 C17.191734,8 17.7741062,8.46823386 17.9474595,9.10504462 C18.1184541,9.03725677 18.3048761,9 18.5,9 C19.191734,9 19.7741062,9.46823386 19.9474595,10.1050446 C20.1184541,10.0372568 20.3048761,10 20.5,10 C21.3284271,10 22,10.6715729 22,11.5 L22,15.5 C22,18.5375661 19.5375661,21 16.5,21 C15.0842933,21 13.7421216,20.3695431 12.8382246,19.279958 L8.42475695,13.9598296 C7.97611908,13.4190278 7.88383427,12.6663521 8.18853292,12.0331845 L8.2242315,11.9590024 C8.50634865,11.3727595 9.09940726,11 9.75,11 C10.3515765,11 10.9341143,11.2109078 11.3962582,11.5960277 L12.3200922,12.3658894 C12.4959683,12.5124527 12.7573571,12.4886901 12.9039205,12.3128141 C12.9660017,12.2383166 13,12.1444116 13,12.0474376 L13,9.5 Z"/>
     </svg>`
+      case `drag-lines`:
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 drag-icon cursor-move " fill="gray" viewBox="0 0 48 48"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+      
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="invisible_box" data-name="invisible box">
+          <rect width="48" height="48" fill="none"/>
+        </g>
+        <g id="icons_Q2" data-name="icons Q2">
+          <g>
+            <path d="M46,20a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2H2a2,2,0,0,1,2-2H44a2,2,0,0,1,2,2Z"/>
+            <path d="M46,28a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2H2a2,2,0,0,1,2-2H44a2,2,0,0,1,2,2Z"/>
+          </g>
+        </g>
+      </g>
+    </svg>`
+      case `drag-prompt`:
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 drag-icon-prompt cursor-grab " fill="gray" viewBox="0 0 48 48"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+      
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="invisible_box" data-name="invisible box">
+          <rect width="48" height="48" fill="none"/>
+        </g>
+        <g id="icons_Q2" data-name="icons Q2">
+          <g>
+            <path d="M46,20a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2H2a2,2,0,0,1,2-2H44a2,2,0,0,1,2,2Z"/>
+            <path d="M46,28a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2H2a2,2,0,0,1,2-2H44a2,2,0,0,1,2,2Z"/>
+          </g>
+        </g>
+      </g>
+    </svg>`
+  //     case `drag-prompt`:
+  //       return `
+      
+  //     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 drag-icon-prompt cursor-grab " viewBox="0 0 24 24" fill="none">
+  // <path d="M5 10H19M14 19L12 21L10 19M14 5L12 3L10 5M5 14H19" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  // </svg>`
       case 'no-txt-logo-light':
         return `<svg id="Layer_1" style="width:5em; margin-left:25%;"  data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198.6 198.6"><defs><style>.cls-1{fill:#505d69;stroke:#505d69;stroke-miterlimit:10;stroke-width:4px;}.cls-2{fill:#fff;}</style></defs><rect class="cls-1" x="3.35" y="3.11" width="192.39" height="192.39" rx="20"/><path class="cls-2" d="M120.14,132.35,107.07,116,89.16,93.72l0,0L57.14,53.6a5,5,0,0,0-3.91-1.88v0H34.45a5,5,0,0,0-4.3,7.67L71.79,144.1a5,5,0,0,0,6.71,2.3,5,5,0,0,0,1.67-1.32L93,129.5l-6.43-8-9.16,11.18L42.51,61.76h8.33l40,49.95,12.35,15.38,0,0,14,17.47a5,5,0,0,0,2,1.72,5,5,0,0,0,6.69-2.4l42.68-84.71a5,5,0,0,0,.64-2.46,5,5,0,0,0-5-5h-18v0a5,5,0,0,0-3.87,1.83l-37,45.11,6.42,8,36.8-44.88h7.65l-36,70.59Z"/></svg>`
       case 'no-txt-logo-dark':
@@ -891,6 +5540,61 @@
       <g>
         <path d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9   l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6   c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6   C49.575,418.961,150.875,501.261,268.175,488.161z"/>
       </g>
+      </svg>`
+      case 'menu-vertical':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4ZM15 5C15 6.65685 13.6569 8 12 8C10.3431 8 9 6.65685 9 5C9 3.34315 10.3431 2 12 2C13.6569 2 15 3.34315 15 5ZM12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11ZM15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12ZM11 19C11 18.4477 11.4477 18 12 18C12.5523 18 13 18.4477 13 19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19ZM12 22C13.6569 22 15 20.6569 15 19C15 17.3431 13.6569 16 12 16C10.3431 16 9 17.3431 9 19C9 20.6569 10.3431 22 12 22Z" fill="gray"/>
+      </svg>`
+      case 'document':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M9.29289 1.29289C9.48043 1.10536 9.73478 1 10 1H18C19.6569 1 21 2.34315 21 4V20C21 21.6569 19.6569 23 18 23H6C4.34315 23 3 21.6569 3 20V8C3 7.73478 3.10536 7.48043 3.29289 7.29289L9.29289 1.29289ZM18 3H11V8C11 8.55228 10.5523 9 10 9H5V20C5 20.5523 5.44772 21 6 21H18C18.5523 21 19 20.5523 19 20V4C19 3.44772 18.5523 3 18 3ZM6.41421 7H9V4.41421L6.41421 7ZM7 13C7 12.4477 7.44772 12 8 12H16C16.5523 12 17 12.4477 17 13C17 13.5523 16.5523 14 16 14H8C7.44772 14 7 13.5523 7 13ZM7 17C7 16.4477 7.44772 16 8 16H16C16.5523 16 17 16.4477 17 17C17 17.5523 16.5523 18 16 18H8C7.44772 18 7 17.5523 7 17Z" fill="gray"/>
+      </svg>`
+      case 'html-doc':
+        return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="gray" class="h-4 w-4 " version="1.1" id="Capa_1" viewBox="0 0 511 511" xml:space="preserve">
+      <g>
+        <path d="M498.962,102.751c-0.018-0.182-0.049-0.359-0.08-0.537c-0.011-0.063-0.016-0.128-0.029-0.191   c-0.042-0.21-0.096-0.416-0.156-0.619c-0.009-0.03-0.014-0.061-0.023-0.091c-0.063-0.207-0.138-0.409-0.218-0.608   c-0.011-0.027-0.019-0.055-0.03-0.081c-0.078-0.189-0.168-0.372-0.261-0.552c-0.019-0.037-0.034-0.075-0.054-0.112   c-0.09-0.167-0.189-0.327-0.291-0.486c-0.031-0.048-0.057-0.098-0.088-0.145c-0.101-0.151-0.212-0.295-0.324-0.438   c-0.039-0.05-0.073-0.102-0.113-0.151c-0.156-0.189-0.32-0.372-0.493-0.545L400.804,2.198c-0.173-0.173-0.355-0.338-0.545-0.493   c-0.049-0.04-0.101-0.074-0.151-0.113c-0.143-0.112-0.287-0.223-0.438-0.324c-0.047-0.032-0.097-0.058-0.145-0.088   c-0.159-0.101-0.319-0.201-0.486-0.291c-0.036-0.02-0.075-0.035-0.112-0.054c-0.181-0.093-0.364-0.183-0.552-0.261   c-0.027-0.011-0.054-0.019-0.081-0.03c-0.199-0.08-0.401-0.155-0.608-0.218c-0.03-0.009-0.061-0.015-0.091-0.023   c-0.203-0.059-0.409-0.114-0.619-0.156c-0.063-0.013-0.128-0.018-0.191-0.029c-0.177-0.031-0.355-0.062-0.537-0.08   C396.001,0.013,395.751,0,395.5,0h-224C149.72,0,132,17.72,132,39.5V80H43.5C26.131,80,12,94.131,12,111.5v80   c0,17.369,14.131,31.5,31.5,31.5H132v248.5c0,21.78,17.72,39.5,39.5,39.5h288c21.78,0,39.5-17.72,39.5-39.5v-368   C499,103.249,498.987,102.999,498.962,102.751z M403,25.606L473.394,96H427.5C413.991,96,403,85.009,403,71.5V25.606z M27,191.5   v-80c0-9.098,7.402-16.5,16.5-16.5h304c9.098,0,16.5,7.402,16.5,16.5v80c0,9.098-7.402,16.5-16.5,16.5H139.519   c-0.007,0-0.013-0.001-0.019-0.001S139.487,208,139.481,208H43.5C34.402,208,27,200.598,27,191.5z M459.5,496h-288   c-13.509,0-24.5-10.991-24.5-24.5V223h200.5c17.369,0,31.5-14.131,31.5-31.5v-80c0-17.369-14.131-31.5-31.5-31.5H147V39.5   c0-13.509,10.991-24.5,24.5-24.5H388v56.5c0,21.78,17.72,39.5,39.5,39.5H484v360.5C484,485.009,473.009,496,459.5,496z"/>
+        <path d="M115.5,112c-4.142,0-7.5,3.358-7.5,7.5V152H67v-32.5c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5v64   c0,4.142,3.358,7.5,7.5,7.5s7.5-3.358,7.5-7.5V167h41v16.5c0,4.142,3.358,7.5,7.5,7.5s7.5-3.358,7.5-7.5v-64   C123,115.358,119.642,112,115.5,112z"/>
+        <path d="M211.5,191c4.142,0,7.5-3.358,7.5-7.5v-36.923l10.069,16.782c1.355,2.259,3.797,3.641,6.431,3.641h8   c2.634,0,5.076-1.382,6.431-3.641L260,146.577V183.5c0,4.142,3.358,7.5,7.5,7.5s7.5-3.358,7.5-7.5v-64   c0-3.371-2.249-6.328-5.498-7.228c-3.249-0.9-6.698,0.478-8.433,3.369L239.5,151.589l-21.569-35.948   c-1.734-2.891-5.186-4.267-8.433-3.369c-3.249,0.9-5.498,3.857-5.498,7.228v64C204,187.642,207.358,191,211.5,191z"/>
+        <path d="M139.5,127H156v56.5c0,4.142,3.358,7.5,7.5,7.5s7.5-3.358,7.5-7.5V127h16.5c4.142,0,7.5-3.358,7.5-7.5s-3.358-7.5-7.5-7.5   h-48c-4.142,0-7.5,3.358-7.5,7.5S135.358,127,139.5,127z"/>
+        <path d="M299.5,191h40c4.142,0,7.5-3.358,7.5-7.5s-3.358-7.5-7.5-7.5H307v-56.5c0-4.142-3.358-7.5-7.5-7.5s-7.5,3.358-7.5,7.5v64   C292,187.642,295.358,191,299.5,191z"/>
+        <path d="M341.872,280.385c-3.929-1.309-8.177,0.814-9.487,4.744l-48,144c-1.31,3.929,0.814,8.177,4.744,9.487   c0.787,0.262,1.586,0.387,2.373,0.387c3.14,0,6.066-1.988,7.114-5.13l48-144C347.925,285.942,345.801,281.695,341.872,280.385z"/>
+        <path d="M272.803,298.197c-2.929-2.929-7.678-2.929-10.606,0l-56,56c-2.929,2.929-2.929,7.678,0,10.606l56,56   c1.464,1.464,3.384,2.197,5.303,2.197s3.839-0.732,5.303-2.197c2.929-2.929,2.929-7.678,0-10.606L222.106,359.5l50.697-50.697   C275.732,305.875,275.732,301.125,272.803,298.197z"/>
+        <path d="M368.803,298.197c-2.929-2.929-7.678-2.929-10.606,0c-2.929,2.929-2.929,7.678,0,10.606l50.697,50.697l-50.697,50.697   c-2.929,2.929-2.929,7.678,0,10.606c1.464,1.464,3.384,2.197,5.303,2.197s3.839-0.732,5.303-2.197l56-56   c2.929-2.929,2.929-7.678,0-10.606L368.803,298.197z"/>
+      </g>
+      </svg>
+      `
+      case 'save':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M6.85665 2.30447C8.2922 2.16896 10.3981 2 12 2C13.6019 2 15.7078 2.16896 17.1433 2.30447C18.4976 2.4323 19.549 3.51015 19.6498 4.85178C19.7924 6.74918 20 9.90785 20 12.2367C20 14.022 19.8781 16.2915 19.7575 18.1035C19.697 19.0119 19.6365 19.8097 19.5911 20.3806C19.5685 20.6661 19.5496 20.8949 19.5363 21.0526L19.5209 21.234L19.5154 21.2966L19.5153 21.2976C19.5153 21.2977 19.5153 21.2977 18.7441 21.2308L19.5153 21.2976C19.4927 21.5553 19.3412 21.7845 19.1122 21.9075C18.8831 22.0305 18.6072 22.0309 18.3779 21.9085L12.1221 18.5713C12.0458 18.5307 11.9542 18.5307 11.8779 18.5713L5.62213 21.9085C5.39277 22.0309 5.11687 22.0305 4.88784 21.9075C4.65881 21.7845 4.50732 21.5554 4.48466 21.2977L5.25591 21.2308C4.48466 21.2977 4.48467 21.2978 4.48466 21.2977L4.47913 21.234L4.46371 21.0526C4.45045 20.8949 4.43154 20.6661 4.40885 20.3806C4.3635 19.8097 4.30303 19.0119 4.24255 18.1035C4.12191 16.2915 4 14.022 4 12.2367C4 9.90785 4.20763 6.74918 4.3502 4.85178C4.45102 3.51015 5.50236 2.4323 6.85665 2.30447ZM5.93179 19.9971L11.1455 17.2159C11.6791 16.9312 12.3209 16.9312 12.8545 17.2159L18.0682 19.9971C18.1101 19.4598 18.1613 18.7707 18.2124 18.0019C18.3327 16.1962 18.4516 13.9687 18.4516 12.2367C18.4516 9.97099 18.2482 6.86326 18.1057 4.96632C18.0606 4.366 17.5938 3.89237 16.9969 3.83603C15.5651 3.70088 13.5225 3.53846 12 3.53846C10.4775 3.53846 8.43487 3.70088 7.00309 3.83603C6.40624 3.89237 5.9394 4.366 5.89429 4.96632C5.75175 6.86326 5.54839 9.97099 5.54839 12.2367C5.54839 13.9687 5.66734 16.1962 5.78756 18.0019C5.83874 18.7707 5.88993 19.4598 5.93179 19.9971Z" fill="gray"/>
+      </svg>`
+      case 'empty_checkbox':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <g id="Interface / Checkbox_Unchecked">
+      <path id="Vector" d="M4 7.2002V16.8002C4 17.9203 4 18.4801 4.21799 18.9079C4.40973 19.2842 4.71547 19.5905 5.0918 19.7822C5.5192 20 6.07899 20 7.19691 20H16.8031C17.921 20 18.48 20 18.9074 19.7822C19.2837 19.5905 19.5905 19.2842 19.7822 18.9079C20 18.4805 20 17.9215 20 16.8036V7.19691C20 6.07899 20 5.5192 19.7822 5.0918C19.5905 4.71547 19.2837 4.40973 18.9074 4.21799C18.4796 4 17.9203 4 16.8002 4H7.2002C6.08009 4 5.51962 4 5.0918 4.21799C4.71547 4.40973 4.40973 4.71547 4.21799 5.0918C4 5.51962 4 6.08009 4 7.2002Z" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      </svg>`
+      case 'checked_checkbox':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M7 2C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2H7ZM15.7295 10.6839C16.1073 10.281 16.0869 9.6482 15.684 9.27047C15.281 8.89274 14.6482 8.91315 14.2705 9.31606L11.1865 12.6056L9.66437 11.2526C9.25159 10.8857 8.61952 10.9229 8.2526 11.3356C7.88568 11.7484 7.92286 12.3805 8.33565 12.7474L10.5856 14.7474C10.9907 15.1075 11.6089 15.0793 11.9795 14.6839L15.7295 10.6839Z" fill="#FFC300"/>
+      </svg>`
+      case 'folder':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24">
+        <title/>
+        <g id="Complete">
+        <g id="folder">
+        <path d="M2,18.8V5.3A2.3,2.3,0,0,1,4.3,3H9.6a1.1,1.1,0,0,1,.8.4l2.8,3.2a1.1,1.1,0,0,0,.8.4h5.6A2.2,2.2,0,0,1,22,9.2v9.7A2.2,2.2,0,0,1,19.8,21H4.2A2.2,2.2,0,0,1,2,18.8Z" fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+        </g>
+      </svg>`
+      case 'eye_off':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <g id="Edit / Hide">
+      <path id="Vector" d="M3.99989 4L19.9999 20M16.4999 16.7559C15.1473 17.4845 13.6185 17.9999 11.9999 17.9999C8.46924 17.9999 5.36624 15.5478 3.5868 13.7788C3.1171 13.3119 2.88229 13.0784 2.7328 12.6201C2.62619 12.2933 2.62616 11.7066 2.7328 11.3797C2.88233 10.9215 3.11763 10.6875 3.58827 10.2197C4.48515 9.32821 5.71801 8.26359 7.17219 7.42676M19.4999 14.6335C19.8329 14.3405 20.138 14.0523 20.4117 13.7803L20.4146 13.7772C20.8832 13.3114 21.1182 13.0779 21.2674 12.6206C21.374 12.2938 21.3738 11.7068 21.2672 11.38C21.1178 10.9219 20.8827 10.6877 20.4133 10.2211C18.6338 8.45208 15.5305 6 11.9999 6C11.6624 6 11.3288 6.02241 10.9999 6.06448M13.3228 13.5C12.9702 13.8112 12.5071 14 11.9999 14C10.8953 14 9.99989 13.1046 9.99989 12C9.99989 11.4605 10.2135 10.9711 10.5608 10.6113" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      </svg>`
+      case 'eye':
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M6.30147 15.5771C4.77832 14.2684 3.6904 12.7726 3.18002 12C3.6904 11.2274 4.77832 9.73158 6.30147 8.42294C7.87402 7.07185 9.81574 6 12 6C14.1843 6 16.1261 7.07185 17.6986 8.42294C19.2218 9.73158 20.3097 11.2274 20.8201 12C20.3097 12.7726 19.2218 14.2684 17.6986 15.5771C16.1261 16.9282 14.1843 18 12 18C9.81574 18 7.87402 16.9282 6.30147 15.5771ZM12 4C9.14754 4 6.75717 5.39462 4.99812 6.90595C3.23268 8.42276 2.00757 10.1376 1.46387 10.9698C1.05306 11.5985 1.05306 12.4015 1.46387 13.0302C2.00757 13.8624 3.23268 15.5772 4.99812 17.0941C6.75717 18.6054 9.14754 20 12 20C14.8525 20 17.2429 18.6054 19.002 17.0941C20.7674 15.5772 21.9925 13.8624 22.5362 13.0302C22.947 12.4015 22.947 11.5985 22.5362 10.9698C21.9925 10.1376 20.7674 8.42276 19.002 6.90595C17.2429 5.39462 14.8525 4 12 4ZM10 12C10 10.8954 10.8955 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8955 14 10 13.1046 10 12ZM12 8C9.7909 8 8.00004 9.79086 8.00004 12C8.00004 14.2091 9.7909 16 12 16C14.2092 16 16 14.2091 16 12C16 9.79086 14.2092 8 12 8Z" fill="gray"/>
       </svg>`
 
     }
@@ -913,13 +5617,13 @@
           '</h2><ul class="flex flex-col gap-3.5 mb-4'
         );
       case 'h3':
-        return 'm-0 tracking-tight leading-8 text-gray-900 dark:text-gray-100 text-lg font-bold';
+        return 'm-0 cursor-pointer tracking-tight leading-8 text-gray-900 dark:text-gray-100 text-lg font-bold';
       case 'ul':
         return 'gap-3.5';
       case 'card':
-        return 'flex flex-col gap-1 w-full bg-gray-50 dark:bg-white/5 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 text-left border shadow border-gray-300 dark:border-gray-700 hover:shadow-lg transition duration-300 ease-in-out tw-border-2 tw-border-blue-500 tw-rounded-xl';
+        return ' cursor-default flex flex-col gap-1 bg-gray-50 dark:bg-white/5 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 text-left border shadow border-gray-300 dark:border-gray-700 hover:shadow-lg transition duration-300 ease-in-out tw-border-2 tw-border-blue-500 tw-rounded-xl';
       case 'p':
-        return 'm-0 font-light text-gray-500';
+        return 'm-0 cursor-pointer font-light text-gray-500';
       case 'paginationText':
         return 'text-sm text-gray-700 dark:text-gray-400';
       case 'paginationNumber':
@@ -928,8 +5632,10 @@
         return 'inline-flex xs:mt-0';
       case 'paginationButton':
         return 'px-1 py-1 font-small bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white';
+      case 'saveSearchChips':
+        return 'px-2 py-1 rounded font-small bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white';
       case 'continueButton':
-        return 'py-2 font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:border-gray-600 dark:hover:bg-gray-800 bg-gray disabled:text-gray-300 disabled:hover:bg-transparent rounded-l-md px-4';
+        return ' font-medium bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:border-gray-600 dark:hover:bg-gray-800 bg-gray disabled:text-gray-300 disabled:hover:bg-transparent rounded-l-md px-4';
       case 'continueActionSelect':
         return 'bg-gray-100 border-0 p-1 border-l text-xs rounded-r-md block w-2 dark:bg-gray-600 border-gray-200 dark:border-gray-600 dark:hover:bg-gray-800 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0 focus:border-gray-200 pr-6';
       case 'action':
@@ -1460,7 +6166,7 @@
             addPromptBtn:"Add New Prompt",
             topic:"Topic",
             activity:"Tags",
-            share:"Share prompt template publicly",
+            share:"Add to shared prompts",
             author:{
               label:"Author Name",
               placeholder:"Author Name"
@@ -1579,9 +6285,11 @@
 
   // The number of prompts per page in the prompt templates section
   const pageSizeOptions = [4, 8, 12, 16, 20, 24];
-  const pageSizeDefault = 30;
+  const pageSizeDefault = 5000;
 
   const editPromptTemplateEvent = 'editPromptTemplate';
+  const demoUser = 'iqbalnawaz123750@gmail.com';
+
 
   window.IN_BOUND = {
     // Save a reference to the original fetch function
@@ -1593,12 +6301,14 @@
 
     feedSelect: ["All","Favourites"],
 
-    feedSelected: "All",
+    feedSelected: window.localStorage.feedSelected || "All",
 
     ExtLang:"english",
 
+    demoInterface: false,
+
     access: {
-      cardMenuInDots: false
+      cardMenuInDots: true
     },
 
     feedView: window.localStorage.feedView || "grid",
@@ -1633,7 +6343,7 @@
 
     // Set default prompt templates type
     /** @type {PromptTemplatesType} */
-    PromptTemplatesType: PromptTemplatesType.OWN,
+    PromptTemplatesType: localStorage.getItem('PromptTemplatesType') || PromptTemplatesType.PUBLIC,
 
     /** @type {Prompt[]} */
     PromptTemplates: [],
@@ -1647,6 +6357,8 @@
     ToneCategories: [],
     DefaultTones: [],
     userTones: [],
+    tonesOrderLocal:[],
+    promptsOrderLocal:[],
     ToneCategorySelected: "",
     InputToneCategorySelected: "",
     promptVariables: [],
@@ -1658,6 +6370,18 @@
     current_active_prompts: [],
     Company: "",
     companyMeta:{},
+    longInputText:'',
+    features: company_features,
+    team:{},
+    allTeams: [],
+    selectedTeam: localStorage.getItem('team_id'),
+    usedPrompts: [],
+    allCompanies: [],
+    selectedCompany: localStorage.getItem('company_id'),
+    savedSearchList: JSON.parse(localStorage.getItem('savedSearchList')) || [],
+    chunkProcessingState: false,
+    SelectedPromptTemplateID: "",
+    hiddenVariations: JSON.parse(localStorage.getItem('hiddenVariations')) || [] ,
     
     APIEndpoint,
 
@@ -1713,10 +6437,16 @@
     SelectedPromptTemplate: null,
 
     async init() {
+      // this.injectStyleSheet()
       this.setupSidebar();
+      this.folderManager.initializeFolders();
+      // window.pdfjsLib.GlobalWorkerOptions.workerSrc = window.pdfjsWorker
       this.isLoading = true;
       this.showLoadingInterface("");
-      console.log('IN_BOUND init');
+      // console.log('IN_BOUND init');
+      
+
+      this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'))?.index || {index: []};
 
       // Bind event handler for arrow keys
       this.boundHandleArrowKey = this.handleArrowKey.bind(this);
@@ -1728,15 +6458,15 @@
       this.createObserver();
 
       // this.fetchMessages();
-
       
 
       // Wait for languages, tones, writing styles and continue actions
       await Promise.all([
-        this.fetchUser()
+        // this.fetchUser()
+        this.fetchUserData()
       ]);
 
-      this.insertLanguageToneWritingStyleContinueActions();
+      // this.insertLanguageToneWritingStyleContinueActions();
       // await this.fetchForks();
       
 
@@ -1752,6 +6482,9 @@
       this.isLoading = false;
       this.hideLoadingInterface();
       this.insertPromptTemplatesSection();
+      this.observeForTextareaElemChanges();
+      this.sendBtnObserverForChunks();
+      this.insertConversationMenu();
 
       // listen for IN_BOUND.tokens event from  APP
       document.addEventListener('IN_BOUND.getRequest', async (event) => {
@@ -1763,12 +6496,80 @@
         this.fetchPromptFromDeepLink();
       });
 
+      let sizes = localStorage.getItem('split-sizes');
+      if (sizes) {
+          sizes = JSON.parse(sizes);
+      } else {
+          sizes = [65, 35]; // default sizes
+      }
+
+      Split(['#__next', '#nav'], {
+        sizes ,
+        gutterSize: 2,
+        onDragEnd: function (sizes) {
+          localStorage.setItem('split-sizes', JSON.stringify(sizes));
+      },
+      });
+
+      const sideBarnMainDiv = document.querySelector('#__next').getElementsByClassName('overflow-hidden w-full h-full relative flex z-0')[0].children;
+      sideBarnMainDiv[0].id = 'sidebar-resize';
+      sideBarnMainDiv[1].id = 'chat-resize';
+
+
       // document.addEventListener('click', (event) => {
       //   const myDiv = document.getElementsByClassName('tonesList')[0] || ""
       //   if (!myDiv.contains(event.target)) {
       //     myDiv.style.display = 'none';
       //   }
       // });
+
+      this.hidePromptCardOptionsOnClickOutside();
+    },
+
+     hidePromptCardOptionsOnClickOutside() {
+      document.addEventListener('click', function(event) {
+        const promptCardOptions = document.getElementsByClassName('PromptCardOptions');
+        const promptCardOptionsBtn = document.querySelectorAll('#PromptCardOptionsBtn');
+    
+        // Check if the clicked element is the PromptCardOptionsBtn or its child elements
+        const isClickOnPromptCardOptionsBtn = Array.from(promptCardOptionsBtn)?.some(function(element) {
+          return element.contains(event.target);
+        });
+        // console.log('isClickOnPromptCardOptionsBtn ', isClickOnPromptCardOptionsBtn)
+    
+        // Check if the clicked element is inside any of the PromptCardOptions divs
+        const isClickInsidePromptCardOptions = Array.from(promptCardOptions)?.some(function(element) {
+          return element.contains(event.target);
+        });
+    
+    // console.log("isClickInsidePromptCardOptions",isClickInsidePromptCardOptions)
+        if (!isClickInsidePromptCardOptions && !isClickOnPromptCardOptionsBtn) {
+          Array.from(promptCardOptions)?.forEach(function(element) {
+            setTimeout(() => {
+              // element.classList.replace('flex','hidden') 
+              // console.log('hide', element)
+              element.className.indexOf('hidden') > -1 ? "" : element.className = element.className.replace('flex ','hidden ');
+            },10);
+          });
+        } 
+
+        // if(!document.querySelector('#variationButton').contains(event.target) && !document.querySelector('#variationButtonContent').contains(event.target)){
+        //   document.querySelector('#variationButtonContent').className.indexOf('hidden ') > -1 ? "" : document.querySelector('#variationButtonContent').className += ' hidden'
+        // }
+      });
+    }
+    ,
+    
+
+    injectStyleSheet(){
+      // Create a link element
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = `${APIEndpoint}/css/chatgpt_style`;
+
+      // Append the link element to the head section
+      document.head.appendChild(link);
+
     },
 
     changeLoadingText(txt){
@@ -1778,36 +6579,176 @@
 
     async reloadAllData(){
       this.showLoadingInterface();
-      await this.fetchUser();
+      await this.fetchUserData();
       this.hideLoadingInterface();
       this.insertPromptTemplatesSection();
+      this.insertLanguageToneWritingStyleContinueActions();
     },
 
 
+
+
     // ----------------------------------Network Requests ----------------------------
+
+    async fetchUserData() {
+      this.changeLoadingText("Loading...");
+
+      setTimeout(() => {
+        this.changeLoadingText("Fetching User Data...");
+      }, 1500);
+
+      setTimeout(() => {
+        this.changeLoadingText("Fetching Company Data...");
+      }, 3000);
+
+      setTimeout(() => {
+        this.changeLoadingText("Fetching Prompts...");
+      }, 4500);
+
+      setTimeout(() => {
+        this.changeLoadingText("Fetching Variations...");
+      }, 6000);
+
+      const storedCompany = this.selectedCompany;
+
+      let data = {};
+      try{
+        if(storedCompany){
+          data =  await fetch(`${APIEndpoint}/user-data-multi?user=${this.Client.User.Email}&company=${storedCompany}`).then(r => {
+            if(r.status === 500){
+              window.localStorage.removeItem('company_id');
+              window.location.reload();
+            }
+            return r.json()
+          });
+       }else {
+          data =  await fetch(`${APIEndpoint}/user-data?user=${this.Client.User.Email}`).then(r => {
+            if(r.status === 500){
+              window.localStorage.removeItem('company_id');
+              window.location.reload();
+            }
+            return r.json()
+          });
+       }
+      //  console.log("data: ", data)
+       
+      }catch(e){
+        // console.log(e)
+        this.changeLoadingText("Reloading...");
+        IN_BOUND.fetchUserData();
+
+        return 
+      }
+      
+      
+      
+      const {user, company, ownPrompts, publicPrompts, userVariations, companyVariations, userMulti, teams} = data;
+
+      if(user === null){
+        localStorage.setItem("company_id","");
+        this.selectedCompany = null;
+        this.fetchUserData();
+        return
+      }
+
+      this.Company = user.company_email;
+      this.allCompanies = userMulti;
+      this.allTeams = [ {tag:"No Team", id:"", company_id: user.company_email  }, ...teams];
+      ({ ...user, company:user.company_email });
+
+      this.companyToneText = company.company_tone;
+      let { dark_logo, description, email, id , light_logo, name, website, features } = company;
+      this.companyMeta = { dark_logo, description, email, id , light_logo, name, website };
+      this.WritingStyles = company.writing_styles?.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
+        let { id, label, prompt} = data;
+        return ({ID: id, Label:label, Prompt:prompt})
+      }) || [];
+      this.ContinueActions = company.continue_actions?.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
+        let { id, label, prompt} = data;
+        return ({ID: id, Label:label, Prompt:prompt})
+      }) || [];
+      this.Languages = company.languages?.sort( (a,b) => a.language.localeCompare(b.language) ).map( (data, index) => {
+        let { langcode, language, id } = data;
+        return ({langcode, languageEnglish:language, languageLabel:language, id})
+      } ) || [];
+      this.features = features ? features : this.features;
+
+
+      this.PromptTemplates = publicPrompts?.map( (data, index) => ({...data, OwnPrompt:false, favourite:false, pin:false }) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) ) || [];
+      this.DefaultPromptTemplates = this.PromptTemplates;
+
+      this.OwnPrompts = ownPrompts?.map( (data, index) => ({...data, OwnPrompt:true}) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) ) || [];
+
+      this.userTones = userVariations?.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"user"}) ) || [];
+
+      this.companyTones = companyVariations?.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"org"}) ) || [];
+
+      if(data.user.email === demoUser){
+        window.IN_BOUND.demoInterface = true; 
+        this.OwnPrompts = [];
+        this.userTones = [];
+        this.companyTones = [];
+        window.localStorage.setItem('PromptTemplatesType',"public");
+        this.features.copy.allow = false;
+        this.features.add_prompt.allow = false;
+        this.features.favourites.allow = false;
+        this.features.reload.allow = false;
+        this.features.private_prompts.allow = false;
+        this.features.setting.allow = false;
+        this.features.import_export.allow = false;
+       }
+
+      this.insertPromptTemplatesSection();
+
+    },
+
+
     async fetchUser(){
       this.changeLoadingText("Fetching User...");
       const user = this.Client.User.Email;
       const res_0 = await fetch(`${APIEndpoint}/user?user=${user}`);
       const res = await res_0.json();
-      // console.log(res)
-      this.Company = res.company;
-      await this.fetchCompany(res.company);
-      await this.fetchPublicPrompts(res.company);
-      await this.fetchPrivatePrompts(res.company);
-      await this.fetchUserVariations(res.company);
-      await this.fetchCompanyVariations(res.company);
+      // console.log("User Response: ", res)
+      this.Company = res.company_email;
+      ({ ...res, company:res.company_email });
+      
+      // await this.fetchTeam(userObj)
+      
     },
-    async fetchCompany(company){
+
+    // async fetchTeam(resp){
+    //   if( resp.teamID === []) {
+    //     this.team = {
+    //       tag: "Default",
+    //       id: "",
+    //       company_id: resp.company
+    //     }
+    //   }else{
+    //     this.changeLoadingText("Fetching Team...")
+    //     const res_0 = await fetch(`${APIEndpoint}/team?id=${resp.teamID}`)
+    //     const res = await res_0.json()
+    //     this.team = res
+        // console.log("Team Response: ", res)
+    //   }
+
+
+    //   await this.fetchCompany(resp.company, resp.teamID)
+    //   await this.fetchPublicPrompts(resp.company, resp.teamID)
+    //   await this.fetchPrivatePrompts(resp.company, resp.teamID)
+    //   await this.fetchUserVariations(resp.company, resp.teamID)
+    //   await this.fetchCompanyVariations(resp.company, resp.teamID)
+    // },
+
+    async fetchCompany(company,teamID){
       this.changeLoadingText("Fetching Organization...");
 
       const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/company?user=${user}&company=${company}`);
+      const res_0 = await fetch(`${APIEndpoint}/company?user=${user}&company=${company}&teamID=${teamID}`);
       const res = await res_0.json();
-      // console.log(res)
+      // console.log("Response: ",res)
 
       this.companyToneText = res.company_tone;
-      let { dark_logo, description, email, id , light_logo, name, website } = res;
+      let { dark_logo, description, email, id , light_logo, name, website, features } = res;
       this.companyMeta = { dark_logo, description, email, id , light_logo, name, website };
       this.WritingStyles = res.writing_styles.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
         let { id, label, prompt} = data;
@@ -1821,13 +6762,14 @@
         let { langcode, language, id } = data;
         return ({langcode, languageEnglish:language, languageLabel:language, id})
       } );
+      this.features = features;
     },
 
-    async fetchPublicPrompts(company){
+    async fetchPublicPrompts(company,teamID){
       this.changeLoadingText("Fetching Public Prompts...");
 
       const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=2`);
+      const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=2&teamID=${teamID}`);
       const res = await res_0.json();
 
       this.PromptTemplates = res.documents.map( (data, index) => ({...data, OwnPrompt:false, favourite:false, pin:false }) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) );
@@ -1836,33 +6778,33 @@
       // console.log(res)
     },
 
-    async fetchPrivatePrompts(company){
+    async fetchPrivatePrompts(company,teamID){
       this.changeLoadingText("Fetching User Prompts...");
 
       const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=1`);
+      const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=1&teamID=${teamID}`);
       const res = await res_0.json();
       this.OwnPrompts = res.documents.map( (data, index) => ({...data, OwnPrompt:true}) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) );
       // console.log(res)
     },
 
-    async fetchUserVariations(company){
+    async fetchUserVariations(company,teamID){
       this.changeLoadingText("Fetching User Variations...");
 
       const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=user`);
+      const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=user&teamID=${teamID}`);
       const res = await res_0.json();
       this.userTones = res.documents.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"user"}) );
       // console.log(res)
     },
 
-    async fetchCompanyVariations(company){
+    async fetchCompanyVariations(company,teamID){
       this.changeLoadingText("Fetching Org Variations...");
 
       const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=org`);
+      const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=org&teamID=${teamID}`);
       const res = await res_0.json();
-      this.companyTones = res.documents.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"user"}) );
+      this.companyTones = res.documents.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"org"}) );
       // console.log(res)
     },
 
@@ -1908,9 +6850,9 @@
       // console.log("Got in Main App: ",ev.detail)
       let searchDiv = document.createElement('div');
       searchDiv.innerHTML = ev.detail.data;
-      const rawOBJ = ev.detail;
+      ev.detail;
       const rawData = ev.detail.data;
-      console.log(rawOBJ);
+      // console.log(rawOBJ)
 
       // Extract Search Results
       // let searchEnguine = searchDiv?.querySelector('#b_results')?.children ? "bing" : searchDiv.querySelector('#search')? "googlenews" : "ddg"
@@ -1921,10 +6863,12 @@
         this.processDDGResults(rawData);
       }else if(ev.detail.returnType === "getGoogleNewsResults"){
         this.processGoogleNewsResults(rawData);
+      }else if(ev.detail.returnType === "getWebContentResults"){
+        this.processWebContentResults(rawData);
       }
       
       // console.log(this.webResults)
-      
+
 
       // console.log(this.SelectedPromptTemplate.Prompt)
       // this.showNotification(
@@ -1947,7 +6891,8 @@
       let prompt = this.SelectedPromptTemplate.Prompt;
 
       let searchResultsExtract = this.webResults.map((s,i) => `[${i+1}] ${s.text} (URL: ${s.url})`).slice(0,4).join('\n');
-      prompt = prompt.replace('{{WebSearch}}', searchResultsExtract);
+      const promptRefine = prompt.split('{{BingSearch');
+      prompt =  promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
       this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
       // this.selectPromptTemplate(this.SelectedPromptTemplate)
 
@@ -1972,12 +6917,13 @@
         text ? text.length > 20 ? this.webResults.push({text, url}) : "" : "";
       });
 
-      console.log(this.webResults);
+      // console.log(this.webResults)
 
       let prompt = this.SelectedPromptTemplate.Prompt;
 
       let searchResultsExtract = this.webResults.map((s,i) => `[${i+1}] ${s.text} (Link:${s.url})`).slice(0,5 + Math.floor(Math.random()*5) ).join('\n');
-      prompt = prompt.replace('{{WebSearch}}', searchResultsExtract);
+      const promptRefine = prompt.split('{{WebSearch');
+      prompt =  promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
       this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
       // this.selectPromptTemplate(this.SelectedPromptTemplate)
 
@@ -1992,11 +6938,11 @@
     processGoogleNewsResults(data){
       let searchDiv = document.createElement('div');
       searchDiv.innerHTML = data;
-      console.log(searchDiv);
+      // console.log(searchDiv)
 
       let elems = searchDiv?.querySelector('#search')?.querySelectorAll('a') || searchDiv?.querySelector('#main')?.querySelectorAll('a');
       // IN_BOUND.searchDiv = searchDiv
-      console.log(elems);
+      // console.log(elems)
       let allElems = Array.from(elems);
       allElems?.forEach( elem => {
         let text = elem?.innerText;
@@ -2007,8 +6953,9 @@
       let prompt = this.SelectedPromptTemplate.Prompt;
 
       let searchResultsExtract = this.webResults.map((s,i) => `[${i+1}] ${s.text} (Link:${s.url})`).slice(0,5 + Math.floor(Math.random()*5) ).join('\n');
-      console.log(this.webResults);
-      prompt = prompt.replace('{{WebNews}}', searchResultsExtract);
+      // console.log(this.webResults)
+      const promptRefine = prompt.split('{{WebNews');
+      prompt =  promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
       this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
       // this.selectPromptTemplate(this.SelectedPromptTemplate)
 
@@ -2020,11 +6967,91 @@
       return prompt
     },
 
+    processWebContentResults(data){
+      let contentDiv = document.createElement('div');
+      contentDiv.innerHTML = data;
+      IN_BOUND.contentDiv = contentDiv;
+      IN_BOUND.rawDiv = data;
+      // console.log(contentDiv)
+
+      let prompt = this.SelectedPromptTemplate.Prompt;
+
+      const textContent_0 = this.getTextFromHTML(data);
+      this.longInputText = this.sanitizeTextContent(textContent_0);
+
+
+      let textContentExtract =  this.longInputText;
+      
+      // console.log(textContentExtract)
+      const promptRefine = prompt.split('{{WebContent');
+      prompt =  promptRefine[0] + textContentExtract + promptRefine[1].split('}}')[1];
+      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+
+      this.showNotification(
+        NotificationSeverity.SUCCESS,
+        'Results added!'
+      );
+
+    },
+
+    processWebContentResultsFromAPI(data){
+
+      let prompt = this.SelectedPromptTemplate.Prompt;
+
+      const textContent_0 = {...data, "rules": [
+        "Use the language that the user previously used or the language requested by the user.",
+        "Respond to the user's request, which may include asking questions or requesting specific actions (such as translation, rewriting, etc.), based on the provided content.",
+        "If the user does not make a request, perform the following tasks: 1. Display the title in the user's language; 2. Summarize the article content into a brief and easily understandable paragraph; 3. Depending on the content, present three thought-provoking questions or insights with appropriate subheadings. For articles, follow this approach; for code, formulas, or content not suited for questioning, this step may be skipped."
+      ] };
+      // this.longInputText = JSON.stringify(textContent_0)
+      let textContentExtract =  JSON.stringify(textContent_0);
+
+      // console.log(textContentExtract)
+      const promptRefine = prompt.split('{{WebContent');
+      prompt =  promptRefine[0] + textContentExtract + promptRefine[1].split('}}')[1];
+      // console.log(prompt)
+      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+
+      this.showNotification(
+        NotificationSeverity.SUCCESS,
+        'Results added!'
+      );
+
+    },
+
+     getTextFromHTML (html) {
+      // Create a temporary element
+      var tempEl = document.createElement('div');
+      tempEl.innerHTML = html;
+    
+      // Remove script and style tags and their contents
+      var scripts = tempEl.getElementsByTagName('script');
+      var styles = tempEl.getElementsByTagName('style');
+    
+      for (var i = 0; i < scripts.length; i++) {
+        scripts[i].parentNode.removeChild(scripts[i]);
+      }
+    
+      for (var j = 0; j < styles.length; j++) {
+        styles[j].parentNode.removeChild(styles[j]);
+      }
+    
+      // Extract the text from the remaining HTML
+      var text = tempEl.textContent || tempEl.innerText;
+    
+      // Remove leading and trailing whitespace and extra newlines
+      text = text.trim().replace(/\n\s*\n/g, '\n');
+    
+      return text;
+    },
+
+
     async refreshData(){
       // console.log("Refresh")
       // setTimeout(function() {
-        await this.fetchPrivatePrompts(this.Company);
-        await this.fetchUserVariations(this.Company);
+        await this.fetchPrivatePrompts(this.Company, this.selectedTeam);
+        await this.fetchPublicPrompts(this.Company, this.selectedTeam);
+        await this.fetchUserVariations(this.Company, this.selectedTeam);
       // }.bind(this), 2000);
 
       // setTimeout(function() {
@@ -2036,7 +7063,7 @@
     async refreshActions(){
       // console.log("Refresh")
       // setTimeout(function() {
-      await  this.fetchUserVariations(this.Company);
+      await  this.fetchUserVariations(this.Company, this.selectedTeam);
       // }.bind(this), 200);
 
       // setTimeout(function() {
@@ -2047,7 +7074,7 @@
      
     },
 
-    // get the prompt ID from the URL and select the prompt template
+    // get the prompt ID from the URL and select the prompt templateinsert
     async fetchPromptFromDeepLink() {
       // Get the prompt ID from the URL (IN_BOUND_PromptID)
       const promptID = new URLSearchParams(window.location.search).get(
@@ -2062,18 +7089,21 @@
       }
 
       // If the prompt is already selected, do nothing
-      if (
-        this.SelectedPromptTemplate &&
-        this.SelectedPromptTemplate.ID === promptID
-      ) {
-        return;
-      }
+      // if (
+      //   this.SelectedPromptTemplate &&
+      //   this.SelectedPromptTemplate.ID === promptID
+      // ) {
+      //   return;
+      // }
 
       let prompt;
 
       try {
         // Fetch the prompt using the IN_BOUND API client
         prompt = await this.fetchUserPrompt(promptID);
+        if(prompt.ID){
+          this.selectPromptTemplate(prompt);
+        }
         // console.log("Prompt: ",prompt)
       } catch (error) {
         // console.log(error)
@@ -2088,8 +7118,9 @@
         return;
       }
 
+      // console.log(prompt)
       // Select the prompt template
-      this.selectPromptTemplate(prompt);
+      
     },
 
     // Fetch the list of messages from the server
@@ -2169,282 +7200,23 @@
 
       // ----------------------------------------------
 
-      if(!document.getElementById("sideBarWrapper")){
+      if(!document.getElementById("nav")){
         document.body.classList.toggle("show-nav");
+        document.body.classList.toggle('split');
 
         // document.getElementById('__next').style.width = '80%'
         let sideBarWrapper = document.createElement('div');
-        sideBarWrapper.id = 'sideBarWrapper';
+        sideBarWrapper.id = 'nav';
         // sideBarWrapper.className = 'text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:flex md:flex-col px-6 dark:text-gray-100'
-        sideBarWrapper.innerHTML = `
-      
-      <nav class="nav">
-      </nav>`;
+        // sideBarWrapper.innerHTML = `
+        
+        // <nav class="nav">
+        // </nav>`
         document.body.appendChild(sideBarWrapper);
       }
+
+        
       
-    },
-
-    // Fetch the list of topics from a remote CSV file
-    async fetchTopics() {
-      this.fetch(TopicFeedURL + this.CacheBuster)
-        // Convert the response to text
-        .then((res) => res.text())
-        // Convert the CSV text to an array of records
-        .then((csv) => this.CSVToArray(csv))
-        // Map the records to topic objects with properties 'ID' and 'Label'
-        .then((records) => {
-          return (
-            records
-              .map(([ID, Label]) => {
-                return { ID, Label };
-              })
-              // Filter out records that do not have an ID, or it is the header row (with "ID" as its title)
-              .filter(({ ID }) => ID && ID !== 'ID')
-          );
-        })
-        .then((topics) => {
-          // Sort and save the topics
-          this.Topics = topics.sort((a, b) => a.Label.localeCompare(b.Label));
-        });
-    },
-
-    fetchFavourites(){
-      this.fetch(dbMetaURL.query(promptsLikesDBID,this.Client.User.Email))
-      // Convert the response to text
-      .then((res) => res.text())
-      // Convert the CSV text to an array of records
-      .then((json) => json.slice(1,-1).replace(/""/gi,'"'))
-      // Map the records to topic objects with properties 'ID' and 'Label'
-      .then((obj) => {
-        // console.log(obj)
-        if(obj[0]==='' || !obj[0]){
-          return {likesCollection:[]}
-        }else {
-          return (
-            JSON.parse(obj)
-          );
-        }
-      })
-      .then((likes) => {
-        // console.log(likes)
-        // Sort and save the topics
-        this.FavouritePromptTemplates = likes.likesCollection;
-        this.PinPromptTemplates = likes?.pinCollection || [];
-        this.userTones = likes?.userTones?.map(d => JSON.parse(d)) || [];
-        this.userTones = this.userTones?.map(d => ({...d, type:"user"}) )  || [];
-
-        this.fetchToneCategories();
-      });
-    },
-
-    // Fetch the list of activities from a remote CSV file
-    async fetchActivities() {
-      this.fetch(ActivityFeedURL + this.CacheBuster)
-        // Convert the response to text
-        .then((res) => res.text())
-        // Convert the CSV text to an array of records
-        .then((csv) => this.CSVToArray(csv))
-        // Map the records to activity objects with properties 'TopicID', 'ID', and 'Label'
-        .then((records) => {
-          // console.log(records)
-          return (
-            records
-              .map(([TopicID, ID, Label]) => {
-                return { TopicID, ID, Label };
-              })
-              // Filter out records that do not have an ID, or it is the header row (with "ID" as its title)
-              .filter(({ ID }) => ID && ID !== 'ID')
-          );
-        })
-        .then((activities) => {
-          // console.log(activities)
-          // Sort and save the array of activities
-          this.Activities = activities.sort((a, b) =>
-            a.Label.localeCompare(b.Label)
-          );
-        });
-    },
-
-    fetchLanguages() {
-      // Fetch the list of languages from a remote CSV file
-      return (
-        this.fetch(LanguageFeedURL + this.CacheBuster)
-          // Convert the response to text
-          .then((res) => res.text())
-          // Convert the CSV text to an array of records
-          .then((csv) => this.CSVToArray(csv))
-          // Map the records to language objects with properties 'langcode', 'languageEnglish' and 'languageLabel'
-          .then((records) => {
-            return (
-              records
-                .map(([langcode, languageEnglish, languageLabel]) => {
-                  return { langcode, languageEnglish, languageLabel };
-                })
-                // Filter out records that do not have a language code, or it is the header row (with "langcode" as its title)
-                .filter(({ langcode }) => langcode && langcode !== 'langcode')
-            );
-          })
-          .then((languages) => {
-            // Save the array of languages to a global variable
-            this.Languages = languages;
-          })
-      );
-    },
-
-    // Fetch list of company tones from a remote CSV file
-    fetchTones() {
-      return (
-        this.fetch(ToneFeedURL + this.CacheBuster)
-          // Convert the response to text
-          .then((res) => res.text())
-          // Convert the CSV text to an array of records
-          .then((csv) => this.CSVToArray(csv))
-          // Map the records to tone objects with properties 'ID' and 'Label'
-          .then((records) => {
-            return (
-              records
-                .map(([ID, Label, Description, Category, CategoryID]) => {
-                  return { ID, Label, Description, Category, CategoryID, type:"company" };
-                })
-                // Filter out records that do not have an ID, or it is the header row (with "ID" as its title)
-                .filter(({ ID }) => ID && ID !== 'ID')
-                // Sort the tones by Label
-                .sort((a, b) => a.Label.localeCompare(b.Label))
-            );
-          })
-          .then((tones) => {
-            // Save the array of tones to a global variable
-            this.DefaultTones = tones;
-            this.fetchToneCategories();
-          })
-      );
-    },
-
-    fetchCompanyTone(){
-      this.fetch(CompanyToneUrl)
-        .then(c => c.text())
-        .then( tone => {
-          this.companyToneText = tone.slice(1,-1);
-        });
-    },
-
-    fetchToneCategories(){
-      const tones = this.companyTonesState? [ ...this.DefaultTones, ...this.userTones ] : this.userTones;
-      const categories = tones.map(d => d.Category + "___||__=" + d.CategoryID);
-      let uniqCategories = [];
-      categories.forEach(function(item) {
-          if(uniqCategories.indexOf(item) < 0) {
-              uniqCategories.push(item);
-          }
-      });
-
-      let arrayCategories = uniqCategories.map(d => d.split('___||__='));
-      this.ToneCategories = arrayCategories.map(d => ({ ID: d[1], Label: d[0] }) )?.sort((a, b) => a.Label.localeCompare(b.Label)) || [];
-      this.ToneCategorySelected = this.ToneCategories[0]?.ID || [];
-      this.Tones = tones?.filter(d => d.CategoryID === this.ToneCategorySelected) || [];
-      // this.Tone = this.Tones[0]?.ID || ""
-
-      this.insertLanguageToneWritingStyleContinueActions();
-    },
-
-    // Fetch list of writing styles from a remote CSV file
-    fetchWritingStyles() {
-      return (
-        this.fetch(WritingStyleFeedURL + this.CacheBuster)
-          // Convert the response to text
-          .then((res) => res.text())
-          // Convert the CSV text to an array of records
-          .then((csv) => this.CSVToArray(csv))
-          // Map the records to writing style objects with properties 'ID' and 'Label'
-          .then((records) => {
-            return (
-              records
-                .map(([ID, Label]) => {
-                  return { ID: parseInt(ID), Label };
-                })
-                // Filter out records that do not have an ID, or it is the header row (with "ID" as its title)
-                .filter(({ ID }) => ID && ID !== 'ID')
-                // Sort the writing styles by Label
-                .sort((a, b) => a.Label.localeCompare(b.Label))
-            );
-          })
-          .then((writingStyles) => {
-            // Save the array of writing styles to a global variable
-            this.WritingStyles = writingStyles;
-          })
-      );
-    },
-
-    // Fetch list of continue actions from a remote CSV file
-    fetchContinueActions() {
-      return (
-        this.fetch(ContinueActionsFeedURL + this.CacheBuster)
-          // Convert the response to text
-          .then((res) => res.text())
-          // Convert the CSV text to an array of records
-          .then((csv) => this.CSVToArray(csv))
-          // Map the records to continue action objects with properties 'ID', 'Label, and 'Prompt'
-          .then((records) => {
-            return (
-              records
-                .map(([ID, Label, Prompt]) => {
-                  return { ID: parseInt(ID), Label, Prompt };
-                })
-                // Filter out records that do not have an ID, or it is the header row (with "ID" as its title)
-                .filter(({ ID }) => ID && ID !== 'ID')
-                // Sort the continue actions alphabetically
-                .sort((a, b) => a.Label.localeCompare(b.Label))
-            );
-          })
-          .then((continueActions) => {
-            // Save the array of continue actions to a global variable
-            this.ContinueActions = continueActions;
-          })
-      );
-    },
-
-    async fetchPromptTemplates() {
-      /** @type {Prompt[]} */
-      const templates =  this.import? await this.Client.importPrompts(
-        this.PromptTopic === DefaultPromptTopic ? '' : this.PromptTopic,
-      this.PromptSortMode
-      ) : await this.Client.getPrompts(
-        this.PromptTopic === DefaultPromptTopic ? '' : this.PromptTopic,
-        this.PromptSortMode
-      );
-
-      
-      // split templates into public and own
-      [this.PromptTemplates, this.OwnPrompts] = templates.reduce(
-        (publicPrivatePrompts, template) => {
-          // Public template
-          if (template.PromptTypeNo === PromptTypeNo.PUBLIC) {
-            publicPrivatePrompts[0].push(template);
-          }
-
-          // Private or public template owned by current user
-          if ( template.AuthorURL === this.Client.User.Email) {
-            publicPrivatePrompts[1].push(template);
-          }
-
-          return publicPrivatePrompts;
-        },
-        [[], []]
-      );
-      
-      await this.fetchForks();
-
-      this.DefaultPromptTemplates = this.PromptTemplates;
-
-      this.insertPromptTemplatesSection();
-    },
-
-    async fetchForks(){
-      const forks = await this.Client.getForks();
-      const userForks = forks.filter(fork => fork.AuthorURL === this.Client.User.Email);
-      this.forkPromptTemplates = userForks.map(fork => fork.forkID );
-      // console.log(this.forkPromptTemplates)
     },
 
     createObserver() {
@@ -2471,31 +7243,15 @@
     },
 
     createThemeObserver(){
-      // const targetParent = document.getElementsByClassName("scrollbar-trigger")[0]
-      // let targetNode
-      // for(let i=0; i<targetParent.children[0].children.length; i++){
-      //     if(targetParent.children[0].children[i].innerText === "Light mode" || targetParent.children[0].children[i].innerText === "Dark mode"){
-      //       targetNode = targetParent.children[0].children[i]
-      //     }
-      // }
-
-      // if(!targetNode){
-      //   return
-      // }
-
       let targetNode = document.documentElement;
 
-      // Options for the observer (which mutations to observe)
       const config = { attributes: true, childList: true, subtree: true };
       
-      // Callback function to execute when mutations are observed
       const callback = (mutationList, observer) => {
         for (const mutation of mutationList) {
           if (mutation.type === "childList") ; else if (mutation.type === "attributes") {
-            // console.log(`The ${mutation.attributeName} attribute was modified.`);
             let currentTheme = document.documentElement.style.colorScheme;
             if(IN_BOUND.Theme !== currentTheme){
-              // console.log('Theme Change: ',currentTheme)
               IN_BOUND.Theme = currentTheme;
               IN_BOUND.insertPromptTemplatesSection();
             }
@@ -2526,29 +7282,10 @@
         // console.log("Change!")
         for (const mutation of mutationList) {
           // console.log("Change!")
-          if (mutation.type === "childList") {
-            const allDivs = document.getElementsByClassName('text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-2 md:gap-3 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible');
-            const resDivs = allDivs[allDivs.length-1];
-            // console.log(allDivs,resDivs)
-
-            if(!resDivs){
-              return 
-            }
-
-            if(!resDivs.querySelector('#copy-btn')){
-              const elem = document.createElement('button');
-              elem.className = 'p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400';
-              elem.innerHTML = svg(`copy`);
-              elem.id = 'copy-btn';
-              resDivs.prepend(elem);
-
-              elem.onclick = function(e){
-                IN_BOUND.copyResponse(e);
-              };
-            }
-            
-            // console.log(resDivs)
-          } else if (mutation.type === "attributes") ;
+          if (mutation.type === "childList") ; else if (mutation.type === "attributes") {
+            // console.log(`The ${mutation.attributeName} attribute was modified.`);
+            IN_BOUND.hideLanguageToneWritingStyleContinueActions();
+          }
         }
       };
       
@@ -2558,6 +7295,387 @@
       // Start observing the target node for configured mutations
       observer.observe(targetNode, config);
 
+    },
+
+    insertConversationMenu(){
+      const allDivs = document.getElementsByClassName('text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-2 md:gap-3 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible');
+      // console.log("All Chat Boxes",allDivs.length)
+      
+      Array.from(allDivs)?.forEach((div,index) => {
+        if(index%2 === 0){
+          return
+        }
+        if(!div.querySelector('#chat-menu')){
+          const elem = document.createElement('button');
+          elem.className = 'p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400';
+          elem.innerHTML = svg(`menu-vertical`);
+          elem.id = 'chat-menu';
+          div.append(elem);
+
+          const options = document.createElement('div');
+          options.className = 'hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700 gap-2 justify-center  mt-1 text-gray-600 group-hover:visible';
+          options.style = 'top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); width: 12em;';
+          options.innerHTML = `
+            <a title="Copy Markdown" id="copy_markdown" class=" relative flex flex-row text-sm gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >
+                ${svg('copy')}
+                Copy Markdown</a>
+
+            <a title="Copy HTML" id="copy_html" class=" relative flex flex-row text-sm gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >
+            ${svg('html-doc')}
+            Copy HTML</a>
+
+            <a title="Share Link" id="share_link" class=" relative flex flex-row text-sm gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >
+                ${svg('Link')}
+                Share Link</a>`;
+
+            //   <a title="Save to Google Doc" id="share_g_doc" class=" relative flex flex-row text-sm gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >
+            //     ${svg('document')}
+            //     Save to Google Doc</a>
+            // `
+          options.id = 'chat-menu-options';
+          elem.appendChild(options);
+          
+
+          elem.addEventListener('click', ()=>{
+            options.className.split(' ').includes('hidden')? options.className = options.className.replace('hidden ',"flex ") : options.className = options.className.replace('flex ',"hidden ");
+          });
+
+          options.querySelector('#copy_markdown')?.addEventListener('click', ()=>{
+            let markdown = '';
+            const chat = document.getElementsByClassName('group w-full text-token-text-primary border-b border-black/10');
+            Array.from(chat)?.forEach((div)=>{
+              markdown += div.querySelector('.markdown') ? div.querySelector('.markdown').innerHTML : `<h2>${div.innerHTML}</h2>`;
+            });
+            markdown = IN_BOUND.htmlToMarkdown(markdown);
+            console.log(markdown);
+            navigator.clipboard.writeText(markdown)
+              .then(()=>{
+                // console.log('Copied')
+                options.className = options.className.replace('flex ','hidden ');
+                IN_BOUND.showNotification(
+                  NotificationSeverity.SUCCESS,
+                  'Markdown copied to clipboard!'
+                );
+              }).catch(()=>{
+                // console.log('Failed')
+                IN_BOUND.showNotification(
+                  NotificationSeverity.ERROR,
+                  'Failed to copy Markdown to clipboard!'
+                );
+              });
+          });
+
+          options.querySelector('#copy_html')?.addEventListener('click', ()=>{
+            let htmlData = '';
+            const chat = document.getElementsByClassName('group w-full text-token-text-primary border-b border-black/10');
+            Array.from(chat)?.forEach((div)=>{
+              htmlData += div.querySelector('.markdown') ? div.querySelector('.markdown').innerHTML : `<h2>${div.innerHTML}</h2>`;
+            });
+            navigator.clipboard.writeText(htmlData)
+              .then(()=>{
+                // console.log('Copied')
+                options.className = options.className.replace('flex ','hidden ');
+                IN_BOUND.showNotification(
+                  NotificationSeverity.SUCCESS,
+                  'HTML copied to clipboard!'
+                );
+              }).catch(()=>{
+                // console.log('Failed')
+                IN_BOUND.showNotification(
+                  NotificationSeverity.ERROR,
+                  'Failed to copy HTML to clipboard!'
+                );
+              });
+          });
+
+          options.querySelector('#share_link')?.addEventListener('click', ()=>{
+            let htmlData_0 = document.getElementsByClassName('flex flex-col text-sm dark:bg-gray-800')[0];
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlData_0.innerHTML;
+            tempDiv.className = "flex flex-col text-sm dark:bg-gray-800";
+
+
+            tempDiv.querySelector('#chat-menu')?.remove();
+            tempDiv.querySelector('#chat-menu-options')?.remove();
+            const iconsElements = tempDiv.getElementsByClassName('text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-2 md:gap-3 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible');
+            Array.from(iconsElements)?.forEach((icon)=>{
+              icon.className.replace(' visible',' hidden');
+              icon.remove();
+            });
+            let bgFix = tempDiv.getElementsByClassName('group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800');
+            Array.from(bgFix)?.forEach((bg)=>{
+              bg.className = bg.className + ' bg-white dark:bg-gray-800';
+            });
+
+            const htmlData = tempDiv.innerHTML.replaceAll('/_next/image?url=https%3A%2F%2F', 'https://chat.openai.com/_next/image?url=https%3A%2F%2F');
+            // console.log(htmlData)
+            IN_BOUND.showNotification(
+              NotificationSeverity.SUCCESS,
+              'Generating link..'
+            );
+            // call to api to store html data
+            const randomID = crypto.randomUUID();
+            const url = `${APIEndpoint}/chatgpt-conversations?id=${randomID}&user=${this.Client.User.Email}&company=${this.Company}&promptID=${this.SelectedPromptTemplateID}`;
+            fetch(url,{
+              method:'POST',
+              headers:{
+                'Content-Type':'text/plain'
+              },
+              body: htmlData
+            })
+                .then(res=>{
+                  if(res.ok){
+                    const copyUrl = "https://api.workengine.ai/chatgpt-conversations?chatid=" + randomID;
+                    navigator.clipboard.writeText(copyUrl)
+                      .then(()=>{
+                        // console.log('Copied')
+                        options.className = options.className.replace('flex ','hidden ');
+                        IN_BOUND.showNotification(
+                          NotificationSeverity.SUCCESS,
+                          'Url copied to clipboard!'
+                        );
+                        window.open(copyUrl, '_blank');
+                      }).catch(()=>{
+                        // console.log('Failed')
+                        IN_BOUND.showNotification(
+                          NotificationSeverity.ERROR,
+                          'Failed to copy Url to clipboard!'
+                        );
+                      });
+                  }else {
+                    // console.log('Failed')
+                    IN_BOUND.showNotification(
+                      NotificationSeverity.ERROR,
+                      'Failed to share chat!'
+                    );
+                  }
+                });
+          });
+
+
+          // options.querySelector('#share_g_doc')?.addEventListener('click', ()=>{
+          //   let html = ''
+          //   const chat = document.getElementsByClassName('min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap break-words')
+          //   Array.from(chat)?.forEach((div)=>{
+          //     html += div.querySelector('.markdown') ? div.querySelector('.markdown').innerHTML : `<h2>${div.innerHTML}</h2>`
+          //   })
+            // console.log(html)
+          //   const markdown = IN_BOUND.htmlToMarkdown(html)
+            // console.log(markdown)
+            
+
+          //   fetch('https://script.google.com/macros/s/AKfycbwGlqpQgbj2AMEoQvhDm18YkWQysPI64bmw6Vs5sRsZX4zS7MTRP9mW2bKvptyIeSjW2w/exec', {
+          //     method: 'POST',
+          //     headers: {
+          //       'Content-Type': 'text/plain'
+          //     },
+          //     body: markdown
+          //   })
+          //   .then(function(response) {
+          //     if (response.ok) {
+          //       return response.text();
+          //     } else {
+          //       throw new Error('Error: ' + response.status);
+          //     }
+          //   })
+          //   .then(function(data) {
+              // console.log(data);
+          //   })
+          //   .catch(function(error) {
+              // console.log(error);
+          //   });
+
+
+          // })
+          
+
+        }
+      });
+      
+
+      setTimeout(() => {
+        IN_BOUND.insertConversationMenu();
+        IN_BOUND.getParsedJSONFromCodeBlock();
+      }, 5000);
+
+
+      
+
+      
+    },
+
+    htmlToMarkdown(html) {
+      // Remove newline characters
+      // html = html.replace(/\n/g, '');
+    
+      // Replace HTML tags with Markdown equivalents
+      html = html.replace(/<h1(?:[\s\S]*?)>([\s\S]*?)<\/h1>/gi, '# $1\n\n');
+      html = html.replace(/<h2(?:[\s\S]*?)>([\s\S]*?)<\/h2>/gi, '## $1\n\n');
+      html = html.replace(/<h3(?:[\s\S]*?)>([\s\S]*?)<\/h3>/gi, '### $1\n\n');
+      html = html.replace(/<h4(?:[\s\S]*?)>([\s\S]*?)<\/h4>/gi, '#### $1\n\n');
+      html = html.replace(/<h5(?:[\s\S]*?)>([\s\S]*?)<\/h5>/gi, '##### $1\n\n');
+      html = html.replace(/<h6(?:[\s\S]*?)>([\s\S]*?)<\/h6>/gi, '###### $1\n\n');
+      html = html.replace(/<p(?:[\s\S]*?)>([\s\S]*?)<\/p>/gi, '$1\n\n');
+      html = html.replace(/<a(?:[\s\S]*?)href="(.*?)"(?:[\s\S]*?)>([\s\S]*?)<\/a>/gi, '[$2]($1)');
+      html = html.replace(/<strong(?:[\s\S]*?)>([\s\S]*?)<\/strong>/gi, '**$1**');
+      html = html.replace(/<em(?:[\s\S]*?)>([\s\S]*?)<\/em>/gi, '*$1*');
+      html = html.replace(/<ul(?:[\s\S]*?)>([\s\S]*?)<\/ul>/gi, '$1\n');
+      html = html.replace(/<ol(?:[\s\S]*?)>([\s\S]*?)<\/ol>/gi, '$1\n');
+      html = html.replace(/<li(?:[\s\S]*?)>([\s\S]*?)<\/li>/gi, '- $1\n');
+      html = html.replace(/<blockquote(?:[\s\S]*?)>([\s\S]*?)<\/blockquote>/gi, '> $1\n');
+      html = html.replace(/<code(?:[\s\S]*?)>([\s\S]*?)<\/code>/gi, '`$1`');
+      html = html.replace(/<pre(?:[\s\S]*?)>([\s\S]*?)<\/pre>/gi, '```\n$1\n```');
+    
+      // Convert code blocks
+      html = html.replace(/<code(?:[\s\S]*?)>/gi, '```');
+      html = html.replace(/<\/code>/gi, '```');
+    
+      // Convert table
+      html = html.replace(/<table(?:[\s\S]*?)>([\s\S]*?)<\/table>/gi, '\n$1\n');
+    
+      // Convert table headers
+      html = html.replace(/<th(?:[\s\S]*?)>([\s\S]*?)<\/th>/gi, '| $1 ');
+      html = html.replace(/<\/th>/gi, '|');
+      html = html.replace(/<tr(?:[\s\S]*?)>/gi, '|');
+      html = html.replace(/<\/tr>/gi, '|\n');
+    
+      // Convert table cells
+      html = html.replace(/<td(?:[\s\S]*?)>([\s\S]*?)<\/td>/gi, '| $1 ');
+      html = html.replace(/<\/td>/gi, '|');
+    
+      // Remove any remaining HTML tags
+      html = html.replace(/<\/?[a-z]+(?:[\s\S]*?)>/gi, '');
+    
+      return html;
+    }
+    ,
+
+     getParsedJSONFromCodeBlock() {
+      // Get all elements with the specified classes
+      const elements = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert');
+      // console.log("elements",elements)
+      // Iterate through each element
+      Array.from(elements).forEach((element) => {
+        // console.log(element)
+        if(element.querySelectorAll('#save-json').length === element.querySelectorAll('.language-json').length);else {
+          const codeBlocks = element.querySelectorAll('.language-json'); 
+          codeBlocks.forEach(codeBlock => {
+            // console.log("codeBlock",codeBlock)
+          // Check if the element contains a code block
+          if (codeBlock?.className.includes('language-json') ) {
+            // Get the code block's content
+            const code = codeBlock.textContent.trim();
+      
+            try {
+              // Parse the code block content as JSON
+              const json = JSON.parse(code);
+              // console.log(json)
+              if (json.Prompt && json.Title) {
+                // console.log('inserting...')
+                this.insertButtonCodeBlock(codeBlock, json);
+                // JSON parsing successful, return the parsed JSON object
+              // return json;
+              } else {
+                // Return an error
+                console.error("Error: JSON object must contain Prompt and Title keys.");
+              }
+              
+              
+            } catch (error) {
+              // JSON parsing failed, continue to the next code block
+              console.error("Error: JSON object must contain Prompt and Title keys.");
+              // continue;
+            }
+          }
+          });
+          
+        }
+        
+      });
+    
+      // No JSON code block found, return null or handle accordingly
+      return null;
+    },
+
+    insertButtonCodeBlock(elem, json){
+      // console.log(elem)
+      // const header = elem.getElementsByClassName('flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md')[0]
+      const header = elem.parentElement.previousElementSibling;
+      if(header){
+        if(header.querySelector('#save-json')){
+          return
+        }else {
+          const button = document.createElement('button');
+          button.classList.add('flex', 'ml-auto', 'gap-2');
+          button.innerHTML = svg('save') + "Save as Template";
+          // button.textContent = 'Save as Template';
+          button.id = "save-json";
+    
+          // Add onClick event to log JSON of code block
+          button.addEventListener('click', function() {
+            if (json) {
+              // console.log("Save json as Prompt Template: ", json);
+              IN_BOUND.saveImportedPrompt(json);
+              // header.querySelector('#save-json').style.display = 'none';
+            }
+          });
+    
+          header.appendChild(button);
+        }
+        
+      }
+    },
+    
+
+    sendBtnObserverForChunks(){
+      const targetNode = document.querySelector('textarea').nextElementSibling;
+      const config = { attributes: true, childList: true, subtree: true };
+      let chunkProcessingState = false;
+      
+      const callback = async (mutationList, observer) => {
+        for (const mutation of mutationList) {
+          if (mutation.type === "childList") {
+            const textarea = document.querySelector('textarea');
+            const button = textarea.nextElementSibling;
+            if(button.children[0].className === '' && IN_BOUND.longInputText.length > 0){
+              // console.log('Observer')
+              if(chunkProcessingState === false){
+                // console.log('Add Element')
+                chunkProcessingState = true;
+                if(IN_BOUND.longInputText.length>0){
+                  // console.log('Next')
+                  const textarea = document.querySelector("textarea[tabindex='0']");
+                  if(IN_BOUND.longInputText.slice(0,9000).length < 9000 ){
+                    textarea.value = IN_BOUND.longInputText.slice(0,9000);
+                    
+                    // IN_BOUND.sendBtnObserverObject.disconnect()
+                  }else {
+                    textarea.value = IN_BOUND.longInputText.slice(0,9000); 
+                    
+                  }
+
+                  // IN_BOUND.longInputText = IN_BOUND.longInputText.slice(9000)
+                  // IN_BOUND.SelectedPromptTemplate = {...IN_BOUND.SelectedPromptTemplate, Prompt: IN_BOUND.longInputText }
+
+                  textarea.dispatchEvent(new Event("input", { bubbles: true }));
+                  if (button.disabled) {
+                    button.disabled = false;
+                  }
+                  await new Promise((resolve) => setTimeout(resolve, 1000));
+                  button.click();
+                }
+              }
+            }else {
+              chunkProcessingState = false;
+            }
+          }
+        }
+      };
+      
+      const observer = new MutationObserver(callback);
+      observer.observe(targetNode, config);
+      IN_BOUND.sendBtnObserverObject = observer;
     },
 
     copyResponse(e){
@@ -2592,10 +7710,10 @@
         }
 
         // Get the selected prompt template
-        const template = this.SelectedPromptTemplate;
+        let template = this.SelectedPromptTemplate;
 
         // Allow the user to use continue actions after sending a prompt
-        this.showContinueActionsButton();
+        // this.showContinueActionsButton();
 
         try {
           // Get the options object for the request, which includes the request body
@@ -2607,6 +7725,11 @@
             // Get the prompt from the request body
             const prompt = body.messages[0].content.parts[0];
             // console.log(prompt)
+            this.SelectedPromptTemplateID = template.ID;
+
+            if(!prompt){
+              return
+            }
 
             // Use the default target language if no target language has been selected
             const targetLanguage = (
@@ -2615,10 +7738,17 @@
 
             // Replace the prompt in the request body with the selected prompt template,
             // inserting the original prompt into the template and replacing the target language placeholder
+            // const tone = this.userTones.filter((tone) => this.Tone?.indexOf(tone.ID) > -1 )
+            if(template.Prompt.indexOf(PromptPlaceholder) === -1){
+              template.Prompt = template.Prompt + `\n${prompt}`;
+            }
+
             body.messages[0].content.parts[0] = template.Prompt.replaceAll(
               PromptPlaceholder,
               prompt
             ).replaceAll(TargetLanguagePlaceholder, targetLanguage);
+
+            // console.log(body.messages[0].content.parts[0], template.Prompt)
 
           }
 
@@ -2626,70 +7756,94 @@
           const toneWritingStyleLanguagePrompt = [];
 
           // If the user has selected a tone, add it to the request body
-          const tone = this.companyTonesState === 'true' 
-          ? {Description: this.companyToneText  }
-          : this.Tone
-            ? this.userTones.find((tone) => tone.ID === this.Tone)
-            : null;
+          // const tone = this.companyTonesState === 'true' 
+          // ? {Description: this.companyToneText  }
+          // : this.Tone
+          //   ? this.userTones.find((tone) => tone.ID === this.Tone)
+          //   : null;
 
-          
+          const tone = this.userTones.filter((tone) => this.Tone === tone.ID )[0];
+
+
+          // console.log("tone",tone)
 
           //   console.log("Tone replacefetch: ",tone,this.companyTonesState,this.companyToneText)
 
-          if (tone) {
-            toneWritingStyleLanguagePrompt.push(
-              `[${tone.Description.toLowerCase()}] tone`
-            );
+          // if (tone.length > 0) {
+          //   toneWritingStyleLanguagePrompt.push(
+          //     `[${tone?.map((tone) => tone.Description).join(', ').toLowerCase()}] tone`
+          //   );
 
-            // Track the tone usage
-            // this.Client.usePrompt(`${tone.ID}`, UsageTypeNo.SEND);
-          }
+          // }
 
-          // If the user has selected a writing style, add it to the request body
-          const writingStyle = this.WritingStyle
-            ? this.WritingStyles.find(
-                (writingStyle) => writingStyle.ID === this.WritingStyle
-              )
-            : null;
 
-          if (writingStyle) {
-            toneWritingStyleLanguagePrompt.push(
-              `${writingStyle.Label.toLowerCase()} writing style`
-            );
-
-            // Track the writing style usage
-            // this.Client.usePrompt(`${writingStyle.ID}`, UsageTypeNo.SEND);
-          }
-
-          // If the user has selected a target language, add it to the request body
-          if (!template && this.TargetLanguage) {
-            toneWritingStyleLanguagePrompt.push(
-              `${this.TargetLanguage.replace('*', '')} language`
-            );
-          }
 
           // If the user has selected a tone, writing style or target language, add a prompt to the request body
-          if (toneWritingStyleLanguagePrompt.length > 0) {
-            body.messages[0].content.parts[0] += `\n\nPlease write in ${toneWritingStyleLanguagePrompt.join(
-            ', '
-          )}.`;
+          if (tone?.Description) {
+            body.messages[0].content.parts[0] += `\n\nPlease write in ${tone.Description}.`;
           }
 
-          // console.log(template)
+          if(this.TargetLanguage){
+            body.messages[0].content.parts[0] += `\nPlease write in ${this.TargetLanguage} language.\n`;
+          }
+
+          if(this.WritingStyle){
+            body.messages[0].content.parts[0] += `\nPlease write in ${this.WritingStyles.find(w => w.ID === this.WritingStyle)?.prompt} writing style.`;
+          }
+
+          const fullPrompt = body.messages[0].content.parts[0];
+          const prompt = fullPrompt.slice(0,9000);
+
+          if( fullPrompt.slice(9000)?.length > 0 ){
+            IN_BOUND.longInputText = fullPrompt.slice(9000);
+            IN_BOUND.SelectedPromptTemplate = {...IN_BOUND.SelectedPromptTemplate, Prompt: IN_BOUND.longInputText };
+            IN_BOUND.sendBtnObserverForChunks();
+            // console.log('Big Prompt!')
+          }else {
+            IN_BOUND.longInputText = fullPrompt.slice(9000);
+            IN_BOUND.SelectedPromptTemplate = {...IN_BOUND.SelectedPromptTemplate, Prompt: IN_BOUND.longInputText };
+            IN_BOUND.selectPromptTemplateByIndex(null);
+          }
+          body.messages[0].content.parts[0] = prompt;
           // Stringify the modified request body and update the options object
           options.body = JSON.stringify(body);
           // Use the modified fetch function to make the request
-          console.log("Submit Prompt:  ",options.body);
+          // console.log("Submit Prompt:  ", prompt)
           // Clear the selected prompt template
-          this.selectPromptTemplateByIndex(null);
+          // this.selectPromptTemplateByIndex(null);
           return this.fetch(t[0], options);
         } catch(er) {
-          console.log('error:::', er);
+          // console.log('error:::', er)
           // If there was an error parsing the request body or modifying the request,
           // just use the original fetch function
           return this.fetch(...t);
         }
       };
+    },
+
+    observeForTextareaElemChanges() {
+      // Select the element you want to monitor
+      document.querySelector('#prompt-textarea');
+
+      // Use a MutationObserver to monitor changes to the DOM
+      const observer = new MutationObserver(mutationsList => {
+        mutationsList.forEach(mutation => {
+          // Check if the element is added or removed
+          if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach(node => {
+            });
+          }
+
+          if (mutation.removedNodes && mutation.removedNodes.length > 0) {
+            mutation.removedNodes.forEach(node => {
+            });
+          }
+        });
+      });
+
+      // Start observing changes in the entire document
+      observer.observe(document, { subtree: true, childList: true });
+
     },
 
     // This function is called for each new element added to the document body
@@ -2901,8 +8055,9 @@
 
       prompt.ID = prompt.ID ? prompt.ID : window.crypto.randomUUID() || (new Date()).getTime() + Math.random().toString(16).slice(2);
       prompt.PromptTypeNo = 1;
-      prompt.pin = false;
-      prompt.favourite = false;
+      prompt.teamID = this.selectedTeam;
+      // prompt.pin = false
+      // prompt.favourite = false
       prompt.CreationTime = (new Date()).toISOString();
 
       prompt.PromptTypeNo = prompt.Public
@@ -3044,28 +8199,57 @@
         notificationElement.id = notificationElementID;
       }
 
-      const severityClassName = {
-        [NotificationSeverity.SUCCESS]: 'bg-green-500',
-        [NotificationSeverity.WARNING]: 'bg-orange-500',
-        [NotificationSeverity.ERROR]: 'bg-red-500',
-      };
+      // notificationElement.innerHTML = /*html*/ `
+      //   <div style="z-index:999999999999999;" class="fixed flex justify-center w-full top-2 px-2 pointer-events-none">
+      //     <div class="${
+      //       severityClassName[severity]
+      //     } flex flex-row inline-flex pointer-events-auto px-6 py-3 rounded-md text-white" role="alert">
+      //       <div class="flex gap-4">
+      //         <p class="max-w-md">${message}</p>
+      //         <button>${svg('Cross')}</button>
+      //       </div>
+      //     </div>
+      //   </div>
+      // `;
 
-      notificationElement.innerHTML = /*html*/ `
-      <div style="z-index:999999999999999;" class="fixed flex justify-center w-full top-2 px-2 pointer-events-none">
-        <div class="${
-          severityClassName[severity]
-        } flex flex-row inline-flex pointer-events-auto px-6 py-3 rounded-md text-white" role="alert">
-          <div class="flex gap-4">
-            <p class="max-w-md">${message}</p>
-            <button>${svg('Cross')}</button>
-          </div>
+      notificationElement.innerHTML = `<div style="z-index:999999999999;" class="fixed top-0 right-0 p-6 space-y-4 max-w-md">` +  (severity === NotificationSeverity.SUCCESS ? `
+    <div class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2">
+        <div class="text-green-500 rounded-full bg-white mr-3">
+            <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-check-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.5 10.5L4 8l1.5-1.5L6.5 7l3-3L12 5l-5.5 5.5z"/>
+            </svg>
         </div>
+        <div class="text-white max-w-xs  text-xl ">
+        ${message}
+        </div>
+    </div>`
+    :
+    severity === NotificationSeverity.WARNING ? `
+  <div class="flex items-center bg-yellow-500 border-l-4 border-yellow-700 py-2 px-3 shadow-md mb-2">
+      <div class="text-yellow-500 rounded-full bg-white mr-3">
+          <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M7.938 2.016A.13.13 0 0 1 8 2h.001a.13.13 0 0 1 .095.047l6.857 9.5a.13.13 0 0 1-.034.154l-.034.034a.13.13 0 0 1-.183 0H1.217a.13.13 0 0 1-.183 0 .13.13 0 0 1-.034-.154l6.857-9.5a.13.13 0 0 1 .08-.047ZM7.002 12a1 1 0 1 0 2 0 1 1 0 0 0-2 0Zm.82-3.466a.563.563 0 1 1-1.22 0 .562.562 0 0 1 1.22 0Z"/>
+          </svg>
       </div>
-    `;
+      <div class="text-white max-w-xs  text-xl">
+      ${message}
+      </div>
+  </div>`
+  :
+    `<div class="flex items-center bg-red-500 border-l-4 border-red-700 py-2 px-3 shadow-md mb-2">
+  <div class="text-red-500 rounded-full bg-white mr-3">
+      <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+      </svg>
+  </div>
+  <div class="text-white max-w-xs text-xl">
+  ${message}
+  </div>
+</div>
 
+  `) + '</div>';
       // remove notificationElement from DOM on click
       notificationElement
-        .querySelector('button')
         .addEventListener('click', () => {
           notificationElement.remove();
         });
@@ -3155,7 +8339,7 @@
 
       savePromptModal.innerHTML = /*html*/ `
       <div style="z-index:1000;" class="fixed inset-0 text-center transition-opacity w-full ">
-        <div class="absolute bg-gray-900 inset-0 opacity-90">
+        <div onclick="IN_BOUND.hideModal('savePromptModal')" class="absolute bg-gray-900 inset-0 opacity-90">
         </div>
 
         <div class="fixed inset-0 overflow-y-auto">
@@ -3196,8 +8380,8 @@
                   <div class="flex" >
                     <div class="w-full mr-2">
                       <label>${extensionText.inputform.activity}</label>
-                      <input type="text" list="tagsList" name="Tags" id="Category" multiple 
-                      class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" >
+                      <input type="text" list="tagsList" name="Tags" id="Category" multiple placeholder="Comma Separated Tags"
+                        class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" >
                       <datalist id="tagsList" >
                         ${this.searchPredictionList.map(p => `
                               <option value="${p}">`
@@ -3219,12 +8403,14 @@
                                 )}">${sanitizeInput(tone.Label)}</option>`
                             )
                             .join('')}
-                        </select>` : `<p  py-2 px-2 mt-6>None Defined</p>`}
+                        </select>` : `<div class="w-full ml-2 items-start justify-center flex flex-col">
+                        <label>Pompt Variation</label>
+                          <select name="Tone" disabled class="mt-2 mb-3 dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-900 rounded w-full">
+                          <option  value="" selected  > None Defined </option>
+  
+                          </select>`}
 
-                        <label class="text-sm">
-                        <input name="companyTonesState" type="checkbox" class="mx-4 dark:bg-gray-700"> 
-                        Apply overall company tone
-                      </label>
+                        
                         
                         </div>
 
@@ -3235,19 +8421,19 @@
 
 
                 </div>
-                </div>
 
-                  
-
-                 ${ isEditPromptEvent ? "" : `<div class="block mx-6 mt-4">
+                ${ isEditPromptEvent ? "" : `<div class="block mx-6 mt-4 gap-4">
                     <label class="text-sm">
                       <input name="Public" value="true" type="checkbox" class="mx-4 dark:bg-gray-700"> 
                       ${extensionText.inputform.share}
                     </label>
                     
-                    
+                    <label class="text-sm mx-6">
+                        <input name="companyTonesState" type="checkbox" class="mx-4 dark:bg-gray-700"> 
+                        Apply overall company tone
+                      </label>
             
-                  <p class="mt-6 mx-4 text-[10px]">${extensionText.inputform.agreeText}</p>
+                  
                 </div>`}
             
                 <div class=" px-4 py-3 text-right">
@@ -3260,6 +8446,13 @@
                   <button type="submit" name="savePromptAsTemplate" class="bg-orange-500 hover:bg-orange-500/10 mr-2 px-4 py-2 mt-2 rounded text-white">${extensionText.inputform.save}
                   </button>
                 </div>
+
+
+                </div>
+
+                  
+
+                 
             
               </div>
             </form>
@@ -3314,6 +8507,43 @@
 
     async showSettingModal() {
 
+      this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal')) || [];
+
+      if(this.tonesOrderLocal?.index){
+        this.tonesOrderLocal = [this.tonesOrderLocal];
+      }
+
+      const arrayIndxes = this.tonesOrderLocal?.filter( i => i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder )[0]?.index || [];
+
+      if(arrayIndxes.length < this.userTones.length){
+        const newTones = this.userTones.filter( tone => !arrayIndxes.map( i => i[0] ).includes( tone.ID) );
+        newTones.map( t => {
+          arrayIndxes.push([t.ID, arrayIndxes.length]);
+        } );
+      }
+      
+      // Create a new array to store the rearranged items
+        const rearrangedArray = [];
+
+        // Iterate over the arrayIndxes array
+        for (const [id, index] of arrayIndxes) {
+          // console.log("ss-  ",id, index)
+          // Find the item in userTones array with matching ID
+          const item = this.userTones.find((tone) => tone.ID === id);
+
+          // If the item is found, add it to the rearranged array at the specified index
+          if (item) {
+            rearrangedArray[index] = item;
+          }
+        }
+
+        // Remove any undefined elements from the rearranged array
+        const sortedUserTones = rearrangedArray.filter((item) => item !== undefined);
+
+        // Print the rearranged array
+        // console.log(sortedUserTones);
+
+
       let settingModal = document.getElementById('settingModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -3327,7 +8557,7 @@
 
       settingModal.innerHTML =    `
       <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
-          <div class="absolute bg-gray-900 inset-0 opacity-90">
+          <div onclick="IN_BOUND.hideModal('settingModal')" class="absolute bg-gray-900 inset-0 opacity-90">
           </div>
 
             <div class="fixed inset-0 overflow-y-auto">
@@ -3358,6 +8588,7 @@
 
 
                 ${this.settingsActiveTab === "settings" ? `<div class="mr-4 w-1/5 text-left text-gray-900 dark:text-gray-400">
+                  <p class="text-right text-gray-500 dark:text-gray-400" >Version: 13.15.4</p>
                   <label>Extension Language</label>
                   <select id="languageExtSelect" name="Community" class="mt-2 mb-3 text-gray-500 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-900 rounded w-full" required>
                   ${Object.keys(extensionLanguages)
@@ -3370,12 +8601,9 @@
                     .join('')}
                   </select>
 
-                  
-
-
                 </div>` : ""}
 
-                
+
                 ${this.settingsActiveTab === "tones" ? `
 
                     <div class="flex justify-between items-center text-center ">
@@ -3390,10 +8618,19 @@
 
                               </div>
                     </div>
-                       ${ this.userTones.map( (tone) => ( `<div class="  ">
-                       <div class="flex items-center  justify-between m-2 bg-gray-50 dark:bg-white/5 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 border shadow border-gray-300 dark:border-gray-700 hover:shadow-lg transition duration-300 ease-in-out tw-border-2 tw-border-blue-500 tw-rounded-xl">
-                          <div> <p>${tone.Label}</p> </div>
+                    <div id="variationBox" class="list-group">
+                       ${ sortedUserTones.map( (tone) => ( `<div class=" list-group-item " data-id="${tone.ID}" >
+                       
+                       <div  class="flex items-center   justify-between m-2 bg-gray-50 dark:bg-gray-700  p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 border shadow border-gray-300 dark:border-gray-700 hover:shadow-lg transition duration-300 ease-in-out tw-border-2 tw-border-blue-500 tw-rounded-xl">
+                        <div class="flex gap-1 justify-center items-center">
+                          ${svg('drag-lines')}
+                           <p class="ml-5">${tone.Label}</p> 
+                        </div>
                           <div class="flex gap-1 justify-end items-start"> 
+
+                              <a title="Copy variation" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                              onclick =" ${this.hiddenVariations.indexOf(tone.ID) === -1 ? `IN_BOUND.hideVariation('${tone.ID}')"> ${svg('eye')}` : 
+                              `IN_BOUND.unHideVariation('${tone.ID}')"> ${svg('eye_off')}` }   </a>
 
                               <a title="Copy variation" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
                               onclick="IN_BOUND.copyToneFromSetting('${tone.ID}')"> ${svg('copy')}  </a>
@@ -3441,6 +8678,7 @@
                       </form>
 
                         </div></div>`)).join('')}
+                        </div>
                         
                 ` : ""}
 
@@ -3480,9 +8718,40 @@
         ?.querySelector('#languageExtSelect')
         ?.addEventListener('change', this.changeExtLanguage.bind(this));
 
-      // settingModal
-      //   ?.querySelector('#webAccess')
-      //   ?.addEventListener('change', this.changeWebAccess.bind(this));
+
+      const variationBox = settingModal?.querySelector('#variationBox');
+      if(variationBox){
+        Sortable.create(variationBox, {
+          forceFallback: true,
+          fallbackClass: "dragged-item",
+          animation: 100,  
+          easing: "cubic-bezier(1, 0, 0, 1)",
+          handle: ".drag-icon",
+          onEnd: function (/**Event*/evt) {
+            evt.item;  // dragged HTMLElement
+            evt.to;    // target list
+            evt.from;  // previous list
+            evt.oldIndex;  // element's old index within old parent
+            evt.newIndex;  // element's new index within new parent
+            evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+            evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+            evt.clone; // the clone element
+            evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+            let indexes = [];
+            Array.from(evt.target.children).forEach( (elem, index) => {
+              let data_id = elem.attributes['data-id'].value;
+              // console.log(data_id,index)
+              indexes.push([data_id,index]);
+            } );
+            const oldOrders = IN_BOUND.tonesOrderLocal?.filter( i => !(i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder ) ) || [];
+            // console.log("Old order: ",oldOrders)
+            localStorage.setItem('tonesOrderLocal',JSON.stringify([ ...oldOrders,  {index: indexes, company: IN_BOUND.selectedCompany, team: IN_BOUND.selectedTeam, folder: IN_BOUND.folderManager.selectedFolder} ]));
+            IN_BOUND.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'));
+            IN_BOUND.insertLanguageToneWritingStyleContinueActions();
+          },
+        });
+      }
+      
 
       const allSaveForms = settingModal.querySelectorAll('#saveToneForm');
 
@@ -3536,15 +8805,29 @@
       });
     },
 
+    hideVariation(id){
+      this.hiddenVariations.push(id);
+      localStorage.setItem('hiddenVariations',JSON.stringify(this.hiddenVariations));
+      this.showSettingModal();
+      this.insertLanguageToneWritingStyleContinueActions();
+    },
+
+    unHideVariation(id){
+      this.hiddenVariations = this.hiddenVariations.filter(d => d !== id);
+      localStorage.setItem('hiddenVariations',JSON.stringify(this.hiddenVariations));
+      this.showSettingModal();
+      this.insertLanguageToneWritingStyleContinueActions();
+    },
+
     async forkActivatedTonesInSetting(id){
-      const tone = this.companyTones.filter(d => d.ID === id)[0];
+      const tone = IN_BOUND.companyTones.filter(d => d.ID === id)[0];
       const randonUUID = Math.random().toString(36).substring(2) + '-' + (new Date().getTime()).toString(36);
       tone.ID = window.crypto?.randomUUID() || randonUUID;
       if(tone){
         const toneNew = {id: tone.ID, label: "Copy of: "+tone.Label, prompt:tone.Description, user:IN_BOUND.Client.User.Email, company:IN_BOUND.Company};
         await IN_BOUND.Client.saveEditTone(toneNew);
         await IN_BOUND.refreshActions();
-        this.showSettingModal();
+        IN_BOUND.showSettingModal();
         IN_BOUND.showNotification(
           NotificationSeverity.SUCCESS,
           'Variation added!'
@@ -3621,19 +8904,18 @@
       };
     },
 
-    changeWebAccess(){
-      this.WebAccess = !this.WebAccess;
-      window.localStorage.setItem('WebAccess','true');
-      this.showSettingModal();
-    },
-
     async showVariablesModal(template) {
+
+      const fileVariables = ["PdfRead"];
       
       // console.log(template)
 
       let prompt = template.Prompt;
       let variables_0 = prompt.split('{{');
       let variables = variables_0.map(d => d.indexOf('}}') > -1 ? d.split('}}')[0] : "").filter(d => d!== '');
+      // if(prompt.indexOf(PromptPlaceholder) > -1){
+      //   variables.push(`${PromptPlaceholder}:${template.PromptHint}`)
+      // }
       let variablesModal = document.getElementById('variablesModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -3650,9 +8932,11 @@
         document.body.appendChild(variablesModal);
       }
 
+      // console.log("Variables: ",variables)
+
       variablesModal.innerHTML = /*html*/ `
       <div style="z-index:1000;" class="fixed inset-0 text-center transition-opacity ">
-        <div class="absolute bg-gray-900 inset-0 opacity-90">
+        <div  class="absolute bg-gray-900 inset-0 opacity-90">
         </div>
 
         <div class="fixed inset-0 overflow-y-auto">
@@ -3663,18 +8947,27 @@
               class="align-center px-6 py-4 bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle sm:max-w-lg sm:my-8 sm:w-full text-left transform transition-all"
               role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
           
-                ${variables.map(variable => {
-                  return `
-                  <label>${variable}</label>
-                  <textarea name="{{${variable}}}" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" style="height: 120px;" required
-                            placeholder="Add ${variable}"
-                            title="Add ${variable}"></textarea>
-                  `
+                ${variables?.map(variable => {
+                  if( fileVariables?.indexOf(variable?.split(':')[0]) === -1 ){
+                    return `
+                    <label>${ variable?.split(':')[0] }</label>
+                    <textarea name="{{${variable?.split(':')[0] }" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" style="height: 120px;" required
+                              placeholder=" ${variable?.split(':')[1] || "" }"
+                              title=" ${variable?.split(':')[1] || "" }"></textarea>
+                    `
+                  }else {
+                    // console.log('File Variable!', variable)
+                    return `
+                    <label for="${variable?.split(':')[0]}" >PDF File:</label>
+                    <input type="file" id="${variable?.split(':')[0]}" accept="application/pdf" name="${variable?.split(':')[0]}" class=" rounded py-2 px-3 w-full">    
+                    `
+                  }
+                  
                 }).join('')}
             
                 <div class=" px-4 py-3 text-right">
-                  <button type="button" class="bg-gray-600 hover:bg-gray-400 mr-2 px-4 py-2 mt-2 rounded text-white"
-                          onclick="IN_BOUND.hideModal('variablesModal')"> Cancel
+                  <button type="button" class="IN_BOUND_hideVariablesModal bg-gray-600 hover:bg-gray-400 mr-2 px-4 py-2 mt-2 rounded text-white"
+                          > Cancel
                   </button>
                   <button type="submit" name="savePromptVariables" class="bg-orange-500 hover:bg-orange-500/10 mr-2 px-4 py-2 mt-2 rounded text-white"> Submit
                   </button>
@@ -3689,6 +8982,11 @@
     `;
 
       variables.length>0 ? variablesModal.style = 'display: block;' : variablesModal.style = 'display: none;';
+
+      variablesModal?.querySelector('.IN_BOUND_hideVariablesModal')?.addEventListener('click', () => {
+        IN_BOUND.hideModal('variablesModal');
+        this.selectPromptTemplate(null);
+      });
       
 
       // add event listener to close the modal on ESC
@@ -3705,28 +9003,117 @@
 
       for (const [key, value] of formData) {
         // console.log(prompt.indexOf(key), key, value)
+        // console.log(prompt)
 
-        if(key === "{{WebSearch}}"){
-          this.webResults = [];
-          this.Client.getDdgResults(value);
-          // console.log(results)
-          // prompt = await this.processDDGResults(results)
-        }else if(key === "{{WebNews}}"){
-          this.webResults = [];
-          this.Client.getGoogleNewsResults(value);
-          // console.log(results)
-          // prompt = await this.processGoogleNewsResults(results)
-        }else {
-          prompt = prompt.replace(key,value);
-        }
+        // if(key === "{{WebSearch"){
+        //   this.webResults = []
+        //   this.Client.getDdgResults(value)
+        // }else if(key === "{{WebNews"){
+        //   this.webResults = []
+        //   this.Client.getGoogleNewsResults(value)
+        // }else if(key === "{{WebContent"){
+        //   this.webResults = []
+        //   const result = await ( await fetch(`${APIEndpoint}/web-content?url=${value}`) ).json()
+        //   this.processWebContentResultsFromAPI(result)
+        //   // this.Client.getWebContentResults(value)
+        // }else if(key === PromptPlaceholder){
+        //   prompt = prompt.replace(key, value)
+        //   this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt}
+        // }else{
+          // console.log(typeof(value))
+          if(typeof(value) === 'object'){
+            const extractedText = this.sanitizeTextContent( await this.readPDFFile(value) );
+            // console.log('Extracted text:', extractedText);
+            prompt = prompt.split(key)[0] + extractedText + prompt.split(key)[1]?.split('}}')[1];
+          }else {
+            prompt = prompt.split(key)[0] + value + prompt.split(key)[1]?.slice(prompt.split(key)[1]?.indexOf('}}')+2);
+            // console.log('Variable: ', prompt)
+          }
+
+          if(prompt.length > 9000){
+            IN_BOUND.longInputText = prompt;
+            IN_BOUND.chunkProcessingState = false;
+          }
+          this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+        // }
         
       }
       // console.log(prompt)
 
       
-      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+
+      
+      
       // console.log(variables, this.SelectedPromptTemplate)
       this.hideModal('variablesModal');
+    },
+
+     readPDFFile(file) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = function () {
+          const typedArray = new Uint8Array(this.result);
+    
+          // Load the PDF file using the PDFJS library
+          pdfjsLib.getDocument(typedArray).promise
+            .then((pdfDoc) => {
+              const numPages = pdfDoc.numPages;
+              const pagesPromises = [];
+    
+              // Iterate through each page of the PDF
+              for (let i = 1; i <= numPages; i++) {
+                pagesPromises.push(pdfDoc.getPage(i));
+              }
+    
+              // Extract the text content from each page
+              Promise.all(pagesPromises)
+                .then((pages) => {
+                  const contentPromises = [];
+    
+                  // Iterate through each page and extract text
+                  for (let page of pages) {
+                    contentPromises.push(page.getTextContent());
+                  }
+    
+                  // Resolve the promise with the extracted text content
+                  Promise.all(contentPromises)
+                    .then((contents) => {
+                      let extractedText = '';
+    
+                      // Concatenate the text content from each page
+                      for (let content of contents) {
+                        for (let item of content.items) {
+                          extractedText += item.str + ' ';
+                        }
+                      }
+    
+                      resolve(extractedText);
+                    })
+                    .catch(reject);
+                })
+                .catch(reject);
+            })
+            .catch(reject);
+        };
+    
+        fileReader.readAsArrayBuffer(file);
+      });
+    },
+
+    sanitizeTextContent(text) {
+      // Remove extra spaces
+    text = text.replace(/\s+/g, ' ');
+
+    // Remove unused dots
+    text = text.replace(/\./g, '');
+
+    // Remove unreadable characters
+    text = text.replace(/[^\x00-\x7F]+/g, '');
+
+    // Clean up leading/trailing spaces
+    text = text.trim();
+
+    return text;
     },
 
     changeCompanyToneState(e){
@@ -3758,11 +9145,11 @@
       }
 
       // Get the Log out button as a reference
-      const colorModeButton = [...nav.children].find((child) =>
+      [...nav.children].find((child) =>
         child.innerText.includes('Log out')
       );
       // Insert the "Export Button" before the "Color Mode" button
-      nav.insertBefore(button, colorModeButton);
+      // nav.insertBefore(button, colorModeButton);
 
       // Create the "Version" element
       // const version = document.createElement('a');
@@ -3792,7 +9179,7 @@
     // This function gets the "New Chat" buttons
     getNewChatButtons() {
       // Get the sidebar and topbar elements
-      const sidebar = document.querySelector('nav');
+      const sidebar = document.querySelector('#nav');
       const topbar = document.querySelector('.sticky');
       // Get the "New Chat" button in the sidebar
       const newChatButton = [
@@ -3868,7 +9255,7 @@
 
     showLoadingInterface(txt) {
       this.getTheme();
-      console.log("Theme 1:"+this.themeMode, "Theme 2:"+this.Theme);
+      // console.log("Theme 1:"+this.themeMode, "Theme 2:"+this.Theme)
 
       const html = `
     <div id="custom__ripple_Loader" class="box">
@@ -3887,20 +9274,23 @@
      wrapper.className =
        'mt-2 md:flex items-start text-center gap-2.5 md:max-w-2xl lg:max-w-3xl m-auto text-sm';
 
-      let sideBarWrapper = document.getElementById('sideBarWrapper').querySelector('nav');
-      if (sideBarWrapper.querySelector('#templates-wrapper')) {
+      let sideBarWrapper = document.querySelector('#nav');
+      if (sideBarWrapper?.querySelector('#templates-wrapper')) {
         wrapper = sideBarWrapper.querySelector('#templates-wrapper');
       } else {
         sideBarWrapper.appendChild(wrapper);
       }
 
+      // wrapper.innerHTML = purify.sanitize(html, {
+      //   RETURN_TRUSTED_TYPE: true
+      // })
       wrapper.innerHTML = html;
-      // sideBarWrapper.classList.add("loading")
+      sideBarWrapper.classList.add("loading");
     },
 
     hideLoadingInterface(){
-      let sideBarWrapper = document.getElementById('sideBarWrapper').querySelector('nav');
-      sideBarWrapper.querySelector('.box').classList.add("not-show");
+      let sideBarWrapper = document?.querySelector('#nav');
+      sideBarWrapper?.querySelector('.box')?.classList?.add("not-show");
     },
 
     checkLoader() {
@@ -3911,6 +9301,407 @@
         this.insertPromptTemplatesSection();
       }
     },
+
+
+    showSavedSearchModal() {
+      
+      let savedSearchModal = document.getElementById('savedSearchModal');
+
+      // if modal does not exist, create it, add event listener on submit and append it to body
+      if (!savedSearchModal) {
+        savedSearchModal = document.createElement('div');
+        savedSearchModal.id = 'savedSearchModal';
+
+        document.body.appendChild(savedSearchModal);
+      }
+
+      savedSearchModal.innerHTML = `
+    <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
+          <div onclick="IN_BOUND.hideModal('savedSearchModal')"  class="absolute bg-gray-900 inset-0 opacity-90">
+          </div>
+
+            <div class="fixed inset-0 overflow-y-auto">
+              <div  class="flex items-center min-h-full justify-center flex-col">
+              <div class=" align-center px-4 py-4 bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle sm:max-w-lg sm:my-8 sm:w-full text-left transform transition-all"
+                role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
+
+              <div class="flex" style="justify-content:flex-end;">
+                <a title="Close" 
+                  class="pb-4 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                  onclick="IN_BOUND.hideModal('savedSearchModal')"  >  ${svg('Cross-Round')}</a>
+                </div>
+
+                <h2> Saved Searches </h2>
+              
+    <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4 max-w-lg">
+      ${this.savedSearchList.length > 0 ?this.savedSearchList?.map(tag => 
+        `<div class="flex-none p-2">
+        <button onclick="IN_BOUND.searchIntoPrompts('${tag}')" 
+        class="${css`saveSearchChips`} 
+        border-0 border border-gray-500" >${tag}</button> </div>`)
+        .join('') : `
+        <p class="text-gray-400" >No saved searches</p>
+        `}
+    </div>
+    </div></div></div></div>`;
+
+      
+
+      savedSearchModal.style = 'display: block;';
+
+      savedSearchModal
+        ?.querySelector('#InputToneCategory')
+        ?.addEventListener('change', this.changeInputToneCategory.bind(this));
+
+    },
+
+    showMultipleCompanyModal(){
+      
+      let multipleCompanyModal = document.getElementById('multipleCompanyModal');
+
+      // if modal does not exist, create it, add event listener on submit and append it to body
+      if (!multipleCompanyModal) {
+        multipleCompanyModal = document.createElement('div');
+        multipleCompanyModal.id = 'multipleCompanyModal';
+
+        document.body.appendChild(multipleCompanyModal);
+      }
+
+      multipleCompanyModal.innerHTML = `
+    <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
+          <div onclick="IN_BOUND.hideModal('multipleCompanyModal')"  class="absolute bg-gray-900 inset-0 opacity-90">
+          </div>
+
+            <div  class="fixed inset-0 overflow-y-auto">
+              <div  class="flex items-center min-h-full justify-center flex-col">
+              <div class=" align-center px-4 py-4 bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle sm:max-w-lg sm:my-8 sm:w-full text-left transform transition-all"
+                role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
+
+              <div  class="flex" style="justify-content:flex-end;">
+                <a title="Close" 
+                  class="pb-4 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                  onclick="IN_BOUND.hideModal('multipleCompanyModal')"  >  ${svg('Cross-Round')}</a>
+                </div>
+
+                <h2> Select Company </h2>
+              
+    <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4 max-w-lg">
+      ${this.allCompanies.length > 1 ?this.allCompanies?.map(company => 
+        `<div class="flex-none p-2">
+        <button onclick="IN_BOUND.selectCompany('${company.id}')" 
+        class="${css`saveSearchChips`} 
+          ${ company.id === this.selectedCompany ? "border" : "border-0" } border-gray-500" >${company.name}</button> </div>`)
+        .join('') : `
+        <p class="text-gray-400" >You're not member of multiple companies!</p>
+        `}
+    </div>
+    </div></div></div></div>`;
+
+      multipleCompanyModal.style = 'display: block;';
+
+    },
+
+    showMultipleTeamsModal(){
+      
+      let showMultipleTeamsModal = document.getElementById('showMultipleTeamsModal');
+
+      // if modal does not exist, create it, add event listener on submit and append it to body
+      if (!showMultipleTeamsModal) {
+        showMultipleTeamsModal = document.createElement('div');
+        showMultipleTeamsModal.id = 'showMultipleTeamsModal';
+
+        document.body.appendChild(showMultipleTeamsModal);
+      }
+
+      showMultipleTeamsModal.innerHTML = `
+    <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
+          <div onclick="IN_BOUND.hideModal('showMultipleTeamsModal')"  class="absolute bg-gray-900 inset-0 opacity-90">
+          </div>
+
+            <div  class="fixed inset-0 overflow-y-auto">
+              <div  class="flex items-center min-h-full justify-center flex-col">
+              <div class=" align-center px-4 py-4 bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle sm:max-w-lg sm:my-8 sm:w-full text-left transform transition-all"
+                role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
+
+              <div  class="flex" style="justify-content:flex-end;">
+                <a title="Close" 
+                  class="pb-4 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                  onclick="IN_BOUND.hideModal('showMultipleTeamsModal')"  >  ${svg('Cross-Round')}</a>
+                </div>
+
+                <h2> Select Company </h2>
+              
+    <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4 max-w-lg">
+      ${this.allTeams.length > 1 ? this.allTeams?.map(team => 
+        `<div class="flex-none p-2">
+        <button onclick="IN_BOUND.selectTeam('${team.id}')" 
+        class="${css`saveSearchChips`} 
+          ${ team.id === this.selectedTeam ? "border" : "border-0" } border-gray-500" >${team.tag}</button> </div>`)
+        .join('') : `
+        <p class="text-gray-400" >You're not member of multiple teams!</p>
+        `}
+    </div>
+    </div></div></div></div>`;
+
+      showMultipleTeamsModal.style = 'display: block;';
+
+    },
+
+    showFolderModal(){
+      
+      let showFolderModal = document.getElementById('showFolderModal');
+
+      // if modal does not exist, create it, add event listener on submit and append it to body
+      if (!showFolderModal) {
+        showFolderModal = document.createElement('div');
+        showFolderModal.id = 'showFolderModal';
+
+        document.body.appendChild(showFolderModal);
+      }
+
+      showFolderModal.innerHTML = `
+    <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
+          <div onclick="IN_BOUND.hideModal('showFolderModal')"  class="absolute bg-gray-900 inset-0 opacity-90">
+          </div>
+
+            <div  class="fixed inset-0 overflow-y-auto">
+              <div  class="flex items-center min-h-full justify-center flex-col">
+              <div class=" w-1/2 align-center px-4 py-4 bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle sm:max-w-lg sm:my-8 sm:w-full text-left transform transition-all"
+                role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
+
+              <div  class="flex" style="justify-content:flex-end;">
+                <a title="Close" 
+                  class="pb-4 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                  onclick="IN_BOUND.hideModal('showFolderModal')"  >  ${svg('Cross-Round')}</a>
+                </div>
+
+                <h2> Manage Folders </h2>
+
+                <div class="p-1 flex flex-row gap-4 justify-between w-full" >
+
+                <div class="flex items-center justify-centerflex-wrap w-full">
+                  <input id="folderName" type="text" title="Folder Name" required="" placeholder="Folder Name" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-=1 w-full">
+                </div>
+
+                <div class="flex items-center justify-center flex-wrap">
+                <button id="addFolder" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" >
+                    Add Folder 
+                </button></div>
+
+                <div  class="flex items-center justify-center flex-wrap" >
+                <a 
+                class="p-1 text-center rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                  onclick="IN_BOUND.folderManager.selectFolder('')"   >  Clear Selection </a>
+                </div>
+
+                </div>
+
+                
+              
+    <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4">
+      ${this.folderManager.folders.length > 1 ? this.folderManager.folders?.map(folder => 
+        `<div class="flex-none p-2 rounded border border-gray-500 dark:border-gray-600">
+        <button onclick="IN_BOUND.folderManager.selectFolder('${folder.name}')" 
+        class="rounded font-small bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white px-2 py-1
+          ${ folder.name === this.folderManager.selectedFolder ? "border" : "border-0" } border-gray-500" >${folder.name} </button> 
+          <button onclick="IN_BOUND.folderManager.deleteFolder('${folder.name}'); IN_BOUND.showFolderModal();" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" > 
+              ${svg("Cross")} </button>
+          </div>`)
+        .join('') : `
+        <p class="text-gray-400" >You're not member of multiple teams!</p>
+        `}
+    </div>
+    </div></div></div></div>`;
+
+      showFolderModal.style = 'display: block;';
+
+      showFolderModal.querySelector('#addFolder').addEventListener('click', () => {
+        IN_BOUND.folderManager.createFolder( document.querySelector('#folderName')?.value ); 
+        IN_BOUND.showFolderModal();
+      });
+
+    },
+
+    showFolderSelectionModal(){
+      
+      let showFolderSelectionModal = document.getElementById('showFolderSelectionModal');
+
+      // if modal does not exist, create it, add event listener on submit and append it to body
+      if (!showFolderSelectionModal) {
+        showFolderSelectionModal = document.createElement('div');
+        showFolderSelectionModal.id = 'showFolderSelectionModal';
+
+        document.body.appendChild(showFolderSelectionModal);
+      }
+
+      showFolderSelectionModal.innerHTML = `
+    <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
+          <div onclick="IN_BOUND.hideModal('showFolderSelectionModal')"  class="absolute bg-gray-900 inset-0 opacity-90">
+          </div>
+
+            <div  class="fixed inset-0 overflow-y-auto">
+              <div  class="flex items-center min-h-full justify-center flex-col">
+              <div class=" w-1/2 align-center px-4 py-4 bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle sm:max-w-lg sm:my-8 sm:w-full text-left transform transition-all"
+                role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
+
+              <div  class="flex" style="justify-content:flex-end;">
+                <a title="Close" 
+                  class="pb-4 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                  onclick="IN_BOUND.hideModal('showFolderSelectionModal')"  >  ${svg('Cross-Round')}</a>
+                </div>
+
+                <h2> Choose A Folder </h2>
+
+                
+              
+    <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4">
+      ${this.folderManager.folders.length > 1 ? this.folderManager.folders?.map(folder => 
+        `<div class="flex-none p-2">
+        <button onclick="IN_BOUND.promptSelectionManager.addToFolder('${folder.name}')" 
+        class="${css`saveSearchChips`} 
+          border-0 border-gray-500" >${folder.name}</button> </div>`)
+        .join('') : `
+        <p class="text-gray-400" >You're not member of multiple teams!</p>
+        `}
+    </div>
+    </div></div></div></div>`;
+
+      showFolderSelectionModal.style = 'display: block;';
+
+    },
+
+    selectTeam(id){
+      this.selectedTeam = id;
+      localStorage.setItem('team_id',id);
+      this.insertPromptTemplatesSection();
+      this.hideModal('showMultipleTeamsModal');
+    },
+
+    selectCompany(id){
+      this.selectedCompany = id;
+      localStorage.setItem('company_id',id);
+      localStorage.setItem('team_id',"");
+      this.selectTeam("");
+      this.reloadAllData();
+      this.hideModal('multipleCompanyModal');
+    },
+
+
+    folderManager: {
+      folders: [],
+      selectedFolder: "",
+      
+      initializeFolders() {
+        const storedFolders = localStorage.getItem('folders');
+        this.selectedFolder = localStorage.getItem('selectedFolder') || "";
+        if (storedFolders) {
+          this.folders = JSON.parse(storedFolders);
+        }
+      },
+      
+      saveFolders() {
+        localStorage.setItem('folders', JSON.stringify(this.folders));
+        // console.log('Folders saved successfully.');
+      },
+
+      selectFolder(name){
+        this.selectedFolder = name;
+        localStorage.setItem('selectedFolder', name);
+        // console.log('Folders selected successfully.');
+        IN_BOUND.hideModal('showFolderModal');
+        IN_BOUND.insertPromptTemplatesSection();
+      },
+      
+      createFolder(folderName) {
+        if (!folderName) {
+          // console.log('Folder name cannot be empty.');
+          return;
+        }
+      
+        const folder = {
+          name: folderName,
+          company: IN_BOUND.selectedCompany,
+          team: IN_BOUND.selectedTeam,
+          prompts: []
+        };
+        
+        this.folders.push(folder);
+        this.saveFolders();
+        // console.log(`Folder "${folderName}" created successfully.`);
+      },
+      
+      editFolder(folderName, newFolderName) {
+        const folder = this.getFolder(folderName);
+        if (folder) {
+          folder.name = newFolderName;
+          this.saveFolders();
+          // console.log(`Folder "${folderName}" renamed to "${newFolderName}" successfully.`);
+        }
+      },
+      
+      deleteFolder(folderName) {
+        const folderIndex = this.getFolderIndex(folderName);
+        if (folderIndex !== -1) {
+          this.folders.splice(folderIndex, 1);
+          this.saveFolders();
+          // console.log(`Folder "${folderName}" deleted successfully.`);
+        }
+      },
+      
+      addPrompt(folderName, promptID ) {
+        const folder = this.getFolder(folderName);
+        if (folder) {
+          const newPrompt = promptID;
+          const existingPrompt = folder.prompts.find(p => p === promptID);
+          if (existingPrompt) {
+            // console.log(`A prompt with the title "${title}" already exists in the folder "${folderName}".`);
+            return;
+          }
+          folder.prompts.push(newPrompt);
+          this.saveFolders();
+          // console.log(`Prompt added to folder "${folderName}" successfully.`);
+        }
+      },
+      
+      getFolder(folderName) {
+        return this.folders.find(folder => folder.name === folderName);
+      },
+      
+      getFolderIndex(folderName) {
+        return this.folders.findIndex(folder => folder.name === folderName);
+      }
+    },
+
+    promptSelectionManager: {
+      selectedIds: [],
+    
+      manageId: function(id) {
+        if (!this.selectedIds.includes(id)) {
+          this.selectedIds.push(id);
+          // console.log(`ID ${id} added successfully.`);
+        } else {
+          // console.log(`ID ${id} already exists.`);
+          const index = this.selectedIds.indexOf(id);
+          if (index > -1) {
+            this.selectedIds.splice(index, 1);
+            // console.log(`ID ${id} removed successfully.`);
+          }
+        }
+        IN_BOUND.insertPromptTemplatesSection();
+      },
+
+      addToFolder: function(folder) {
+        this.selectedIds?.map( id => {
+          IN_BOUND.folderManager.addPrompt(folder, id);
+        });
+
+        IN_BOUND.hideModal('showFolderSelectionModal');
+        this.selectedIds = [];
+        IN_BOUND.insertPromptTemplatesSection();
+      }
+    
+    },
+
 
     // This function inserts a section containing a list of prompt templates into the chat interface
     insertPromptTemplatesSection() {
@@ -3932,9 +9723,19 @@
         pin: template.pin === undefined ? false : template.pin,
         favourite: template.favourite === undefined ? false : template.favourite,
       }));
-      // console.log(templates)
+      // console.log("Initial All Templates: ",templates)
 
       templates = this.filterPromptTemplates(templates);
+      // if(this.selectedTeam){
+      //   templates = templates.filter(prompt => prompt.teamID === this.selectedTeam )
+      // }else{
+      //   templates = templates.filter(prompt => prompt?.teamID ? prompt?.teamID === "" : true )
+      // }
+
+      // if(this.folderManager.selectedFolder){
+      //   const folderData = IN_BOUND.folderManager.getFolder(IN_BOUND.folderManager.selectedFolder)
+      //   templates = templates.filter(prompt => folderData.prompts.indexOf(prompt.promptID) > -1 )
+      // }
 
       // console.log(templates)
 
@@ -3942,54 +9743,84 @@
       let normalTemplates = templates.filter(template => template.pin === false );
       templates = [...pinTemplates, ...normalTemplates];
 
-      // console.log(templates)
+      // console.log("All Templates: ",templates)
 
-      templates = this.feedSelected === "All" ? templates : templates.filter(prompt => prompt.favourite === true) || [];
-
-      // console.log(templates)
-
+      // if(this.PromptTemplatesType === PromptTemplatesType.OWN){
+        templates = this.feedSelected === "All" ? templates : templates.filter(prompt => prompt.favourite === true) || [];      
+      // }
+      let currentTemplates = templates;
       
+
+      if( this.PromptTemplatesType === PromptTemplatesType.OWN ){
+        
+        this.promptsOrderLocal = JSON.parse(localStorage.getItem('promptsOrderLocal'));
+        if(this.promptsOrderLocal?.index){
+          this.promptsOrderLocal = [this.promptsOrderLocal];
+        }
+        
+
+      const arrayIndxes = this.promptsOrderLocal?.filter( i => i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder )[0]?.index || [];
+
+      let newerPrompts = [];
+      
+      if(arrayIndxes.length < currentTemplates.length){
+        const newPrompt = currentTemplates.filter( prompt => !arrayIndxes.map( i => i[0] ).includes( prompt.promptID) );
+        newPrompt.map( t => {
+          // arrayIndxes.push([t.promptID, arrayIndxes.length])
+          newerPrompts.push(t);
+        } );
+      }
+      
+      // Create a new array to store the rearranged items
+        const rearrangedArray = [];
+
+        // Iterate over the arrayIndxes array
+        for (const [id, index] of arrayIndxes) {
+          // console.log("ID Match-  ",id, index)
+          // Find the item in userTones array with matching ID
+          const item = currentTemplates.find((prompt) => {
+            // console.log(prompt.promptID, id)
+            return prompt.promptID === id
+          });
+
+          // If the item is found, add it to the rearranged array at the specified index
+          if (item) {
+            rearrangedArray[index] = item;
+          }
+        }
+        // console.log('Rearranged Prompts', rearrangedArray)
+
+        // Remove any undefined elements from the rearranged array
+        const sortedPrompts = rearrangedArray.filter((item) => item !== undefined);
+
+        // Print the rearranged array
+        // console.log('Sorted Prompts',sortedPrompts, currentTemplates);
+        // console.log("New Prrompts", newerPrompts)
+        // const newerPrompts = currentTemplates.filter( prompt => !sortedPrompts.map( i => i.promptID ).includes( prompt.promptID) )
+        sortedPrompts.length > 0? currentTemplates = [...newerPrompts, ...sortedPrompts] : currentTemplates;
+        // console.log("Length: ",sortedPrompts.length > 0)
+        currentTemplates = currentTemplates.filter(template => template.pin === false );
+        // console.log(currentTemplates)
+      }
+
       // Get the current page number and page size from the promptTemplateSection object
       const { currentPage, pageSize } = this.PromptTemplateSection;
       // Calculate the start and end indices of the current page of prompt templates
       const start = pageSize * currentPage;
       const end = Math.min(pageSize * (currentPage + 1), templates.length);
       // Get the current page of prompt templates
-      let currentTemplates = templates.slice(start, end);
+      // currentTemplates = currentTemplates.slice(start, end);
 
-
-      let dragSortList = [];
-      let savedList = window.localStorage.getItem('promptCardOrder')?.split(',');
-      let currenTemplatesList = currentTemplates.slice();
-      // console.log(savedList)
-      let promptTypeGetting = this.PromptTemplatesType === PromptTemplatesType.OWN;
-  // console.log(promptTypeGetting)
-      if(savedList && promptTypeGetting){
-        for(let i=0; i< savedList.length; i++){
-          let item = currenTemplatesList.filter( el => el.promptID === savedList[i])[0];
-          if(!item);else {
-            dragSortList.push(item);
-            currenTemplatesList = currenTemplatesList.filter( el => el.promptID !== savedList[i]);
-            // console.log(currenTemplatesList)
-          }
-        }
-        currenTemplatesList.length > 0 ? dragSortList = [...currenTemplatesList, ...dragSortList] : "";
-        currentTemplates = dragSortList;
-      }
       this.current_active_prompts = currentTemplates;
       // console.log("Templates: ", currentTemplates)
 
       /**
        * Add search typed prediction words to a list
        */
-      let predict = currentTemplates.map(t => '#' + t.Tags);
+      let predict = currentTemplates.map(t => t.Tags.toString().split(',')).flat(1);
       this.searchPredictionList = Array.from(new Set(predict));
 
-      // Pagination buttons (conditionally rendered, depending on the number of prompt templates)
-
-      const paginationContainerTop = ``;
-
-    //   const paginationContainerTop = /*html*/ `
+      // const paginationContainerTop = /*html*/ `
       
 
     //   <div class="flex flex-1 gap-3.5 justify-between items-center sm:flex-col ">
@@ -4001,6 +9832,27 @@
     //     </div>
     //   </div>
     // `;
+
+    const tools = this.allCompanies.length > 1 ? `
+        <div id="show_chips_modal" class="flex items-center overflow-hidden space-x-2 px-2 min-w-xs max-w-md">
+      ${ ""}
+
+          ${ ""}
+
+
+          ${ this.allCompanies.length > 1 ? `<div class="flex-none">
+          <button onclick="IN_BOUND.showMultipleCompanyModal()" 
+          class="${css`saveSearchChips`} 
+          border-0 border border-gray-500" > ${this.allCompanies?.filter(c => c.id === IN_BOUND.selectedCompany)[0]?.name || "Companies"}  </button> </div>` : ""}
+
+          ${ this.allTeams.length === "djdghwyeiwudb" ? `<div class="flex-none">
+          <button onclick="IN_BOUND.showMultipleTeamsModal()" 
+          class="${css`saveSearchChips`} 
+          border-0 border border-gray-500" >Teams</button> </div>` : ""}
+
+      </div>
+  ` : "";
+    // const tools = ''
 
       const paginationContainerBottom = /*html*/ `
     
@@ -4047,8 +9899,8 @@
         </div>
         <div  class="flex gap-1 justify-end items-start" >
         
-        <div>
-          <input list="prediction" id="promptSearchInput" type="text" class="bg-gray-100 border-0 text-sm rounded block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0 md:w-full" placeholder="${extensionText.search}" 
+       ${this.features.search?.allow ? `<div class="flex flex-row items-center " >
+          <input list="prediction" id="promptSearchInput" type="text" class="bg-gray-100 border-0 text-sm rounded-l block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0 md:w-full" placeholder="${extensionText.search}" 
           value="${sanitizeInput(
             this.PromptSearch
           )}" onfocus="this.value = this.value">
@@ -4057,7 +9909,8 @@
               `<option style="font-size:small; padding:0;" value="${p}"></option>`
             )).join('')}
             </datalist>
-        </div>
+            ${ "" }
+        </div>`: ''}
 
         </div>
       </div>
@@ -4070,19 +9923,19 @@
 
         <div class="flex flex-1 gap-3.5 justify-start items-start sm:flex-col ">
       
-      ${this.import? '' : ` <div>
+       <div>
           <select id="promptTypeSelect" class="bg-gray-100 pr-7 border-0 text-xs rounded block w-full dark:bg-gray-600 dark:border-gray-600 dark:hover:bg-gray-700 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0">
             
-          <option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.PUBLIC}" ${
+          ${this.features.public_prompts?.allow ? `<option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.PUBLIC}" ${
             this.PromptTemplatesType === PromptTemplatesType.PUBLIC ? 'selected' : ''
-          }>${extensionText.tabsLabel[0]}</option>
+          }>${extensionText.tabsLabel[0]}</option>` : ""}
 
-          <option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.OWN}" ${
+          ${this.features.private_prompts?.allow ? `<option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.OWN}" ${
             this.PromptTemplatesType === PromptTemplatesType.OWN ? 'selected' : ''
-          }>${extensionText.tabsLabel[1]}</option>
+          }>${extensionText.tabsLabel[1]}</option>`: ""}
             
           </select>
-        </div>`}
+        </div>
 
         
         
@@ -4091,54 +9944,51 @@
 
       <div class="flex gap-1 justify-end items-start">
 
-      <a title="Reload All Data" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.reloadAllData()">${svg('reload')}</a>
+      ${this.features.reload?.allow ?   `<a title="Reload All Data" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.reloadAllData()">${svg('reload')}</a>`:""}
       
-      <a title="${extensionText.titleOnTopIcons[0]}" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.showSettingModal()">${svg('setting')}</a>
+       ${this.features.setting?.allow ?  `<a title="${extensionText.titleOnTopIcons[0]}" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.showSettingModal()">${svg('setting')}</a>`: ''}
         
-        <a title="${extensionText.titleOnTopIcons[1]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.showSavePromptModal()">${svg('add')}</a>
+        ${this.features.add_prompt?.allow ? `<a title="${extensionText.titleOnTopIcons[1]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.showSavePromptModal()">${svg('add')}</a>`:""}
 
-        <a title="${extensionText.titleOnTopIcons[2]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.clickeFileInput()">${this.import? svg('import-yellow') : svg('import')} <input id="dropzone-file589" type="file" accept=".json" class="hidden" /></a>
+        ${this.features.import_export?.allow ? `<a title="${extensionText.titleOnTopIcons[2]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.clickeFileInput()"> ${svg('import')} <input id="dropzone-file589" type="file" accept=".json" class="hidden" /></a>` : "" }
 
-        ${this.import? '' :`<a title="${extensionText.titleOnTopIcons[5]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedSelect('${this.feedSelected === "All" ? "Favourites":"All"}')">
-        ${this.feedSelected === "All"? svg`star-gray` : svg`star-yellow`} </a>`}
+        ${this.features.favourites?.allow ? `<a title="${extensionText.titleOnTopIcons[5]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedSelect('${this.feedSelected === "All" ? "Favourites":"All"}')">
+        ${this.feedSelected === "All"? svg`star-gray` : svg`star-yellow`} </a>`: ''}
   
-        <a title="${extensionText.titleOnTopIcons[3]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedView('list')">
-        ${this.feedView ==="list"? svg`list-yellow`: svg`list`} </a>
+        ${this.features.expanded_view?.allow ? `<a title="${extensionText.titleOnTopIcons[3]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedView('list')">
+        ${this.feedView ==="list"? svg`list-yellow`: svg`list`} </a>` : ""}
   
-        <a title="${extensionText.titleOnTopIcons[4]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedView('grid')">
-        ${this.feedView ==="grid"? svg`grid-yellow`: svg`grid`} </a>
+        ${this.features.collapsed_view?.allow ? `<a title="${extensionText.titleOnTopIcons[4]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedView('grid')">
+        ${this.feedView ==="grid"? svg`grid-yellow`: svg`grid`} </a>` : ''}
 
       </div>
 
       </div>
       </div>
 
-<div class="flex flex-1 gap-3.5 justify-between items-center sm:flex-col ">
-        
-      
 
-    </div>
 
-      ${
-        templates.length > this.PromptTemplateSection.pageSize
-          ? paginationContainerTop
-          : ''
-      }
-      
-      <ul class="${css`ul`} grid grid-cols-1 lg:grid-cols-1 ">
-        ${this.feedView === "list"? currentTemplates
-          .map(
+       ${tools}
+
+
+        ${this.feedSelected !== "All" ? currentTemplates.length === 0 ? "<p>No Favourite Prompts!</p>" : "" : currentTemplates.length === 0 ? "<p>No Prompts!</p>" : ""  } 
+
+
+      ${pinTemplates.length > 0 ? `<div class="${css`ul`} grid grid-cols-1 "  >
+        ${this.feedView === "list"? pinTemplates
+          ?.map(
             (template) => /*html*/ `
-          <button onclick="IN_BOUND.selectPromptTemplateByIndex(${
-            template.ID
-          })" data-id="${template.promptID}" class="${css`card`} relative group  ">
+          <button  data-id="${template.promptID}" class="${css`card`} relative group  " >
             <div class="flex items-center w-full justify-between">
 
             <div class="text-gray-500 text-xs flex  max-w-full">
+
+            ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
              
               ${
                 template.AuthorURL && template.AuthorName
@@ -4158,81 +10008,93 @@
               )}" class="mx-1">${formatAgo(template.RevisionTime)}</span>
 
             </div>
+
+            ${
+              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+              template.PromptTypeNo === 2
+                ?`
               
             ${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
-               <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
-            </div>` : ""}
 
-            <div class="${this.access.cardMenuInDots ? "hidden absolute right-9 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible " ${this.access.cardMenuInDots ? `onmouseleave="IN_BOUND.hideOptionsVisibility('PromptCardOptions-${template.ID}')"` : ""} id="PromptCardOptions-${template.ID}">
+            ${ ""}
+
+            ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+
+               <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>` : ""}`  : 
+          
+            `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${this.features.favourites?.allow ? `<a title="${template.favourite? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite? 'voteThumbsDown' :'voteThumbsUp'}('${
+              template.promptID
+            }')">${svg(template.favourite? 'star-yellow' : 'star-gray')}</a>`: ''}
+
+            ${this.features.pin?.allow ? ` <a title="${template.pin? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin? 'removePin' :'addToPin'}('${
+              template.promptID
+            }')">${svg(template.pin? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+
+               <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>`}
+
+
+
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-2 justify-center  mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
 
                 ${
                   this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-                  !template.OwnPrompt
+                  template.PromptTypeNo === 2
                     ? /*html*/ `
-                    ${this.import? '' : `<a title="${template.favourite? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite? 'voteThumbsDown' :'voteThumbsUp'}('${
-                      template.promptID
-                    }')">${svg(template.favourite? 'star-yellow' : 'star-gray')}</a>`}
-
-                      <a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>
-
-                      
-
-                      ${this.import? '' : `<a title="${template.pin? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin? 'removePin' :'addToPin'}('${
-                        template.promptID
-                      }')">${svg(template.pin? 'pin-yellow' : 'pin-gray')}</a>
-                      
-                      
-                    `}
-
-                      
-                  
-                    `
-                    : `<a title="${template.favourite? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite? 'voteThumbsDown' :'voteThumbsUp'}('${
-                      template.promptID
-                    }')">${svg(template.favourite? 'star-yellow' : 'star-gray')}</a>
-
-                      ${this.import? '' : `<a title="${template.pin? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin? 'removePin' :'addToPin'}('${
-                        template.promptID
-                      }')">${svg(template.pin? 'pin-yellow' : 'pin-gray')}</a>
-                      
-                      <a title="${extensionText.cardIconsTitle[6]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
-                        template.promptID
-                      }')">${svg('export')}</a>
-
-                      <a title="Drag" class=" PromptCardSelector p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      >${svg('drag-hand')}</a>
-
-                      
-
-                      
                     
-                    `}`
+                    ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+
+                    `
+                    : `
+                      
+                      
+
+                    `
                 }
                 
                 ${
                   this.PromptTemplatesType === PromptTemplatesType.OWN ||
-                  template.OwnPrompt ||
+                  template.PromptTypeNo === 1 ||
                   this.isAdminMode()
                     ? /*html*/ `
 
-                    <a title="Copy Prompt" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                    onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')}</a>
+                    ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
 
-                  <a title="${extensionText.editPrmptTitle}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
-                    template.ID
-                  })">${svg('Edit')}</a>
-                  <a title="${extensionText.dltPrmptTitle}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
-                    template.ID
-                  })">${svg('Cross')}</a>
+                      <a title="Add to Folder" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.showFolderSelectionModal()">
+                      ${svg('folder')} Add to Folder</a>
 
-                  
-                  `
+                    `  : `
+                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
+                      template.ID
+                    })">${svg('Edit')} Edit</a>`: ""}
+
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
+                      template.promptID
+                    }')">${svg('export')} Download</a>` : ""}
+
+                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
+                      template.ID
+                    })">${svg('trash')} Delete</a>`: ""}
+                    
+                    ` }`
                     : ''
                 }
+
+
               </div>
             </div>      
 
+            <div onclick="IN_BOUND.selectPromptTemplateByIndex(${
+              template.ID
+            })" class="w-full">
             <h4 class="${css`h3`}" style="overflow-wrap: anywhere;">${sanitizeInput(
               template.Title
             )}</h4>
@@ -4241,7 +10103,7 @@
               title="${sanitizeInput(template.Teaser)}">
               ${sanitizeInput(template.Teaser)}
             </p>
-
+            </div>
             
 
         </button>
@@ -4249,75 +10111,81 @@
           )
           .join('')
         :
-        currentTemplates
-          .map(
+        pinTemplates
+          ?.map(
             (template) => /*html*/ `
-          <button onclick="IN_BOUND.selectPromptTemplateByIndex(${
-            template.ID
-          })" class="${css`card`} relative group "  data-id="${template.promptID}"  >
-            <div  class="flex items-start w-full justify-between">
-              <h4 class="${css`h3`}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${sanitizeInput(
+          <button  class="${css`card`} relative group  "  data-id="${template.promptID}"  >
+            <div   class="flex gap-2 items-center w-full justify-between">
+            
+            ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+
+              <h4 onclick="IN_BOUND.selectPromptTemplateByIndex(${
+                template.ID
+              })" class="${css`h3`}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:100%; ">${sanitizeInput(
                 template.Title
             )}</h4>
 
-            ${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+            ${
+              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+              template.PromptTypeNo === 2
+                ?
+                    
+            `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${ ""}
+
+            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a> ` : ""}
+
+
+            <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>` : ""}`
+             : 
+             `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${ this.features.favourites?.allow? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' :'voteThumbsUp'}('${
+              template.promptID
+            }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ""}
+
+            ${this.features.pin?.allow ? `<a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' :'addToPin'}('${
+              template.promptID
+            }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+
             <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
-            </div>` : ""}
+            </div>` : ""}`}
+            
 
-            <div class="${this.access.cardMenuInDots ? "hidden absolute right-9 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible " ${this.access.cardMenuInDots ? `onmouseleave="IN_BOUND.hideOptionsVisibility('PromptCardOptions-${template.ID}')"` : ""} id="PromptCardOptions-${template.ID}">
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 flex flex-col px-1 py-1 gap-2 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-                  !template.OwnPrompt
-                    ? /*html*/ `
-                      <a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' :'voteThumbsUp'}('${
-                        template.promptID
-                      }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>
-
-                      <a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>
-
-                      
-
-                      <a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' :'addToPin'}('${
-                        template.promptID
-                      }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>
-                      
-                  
-                    `
-                    : `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' :'voteThumbsUp'}('${
-                      template.promptID
-                    }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>
-
-                    <a title="${extensionText.cardIconsTitle[6]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
-                      template.promptID
-                    }')">${svg('export')}</a>
-
-                    <a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' :'addToPin'}('${
-                      template.promptID
-                    }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>
-                    
-                    
-                    
-                    `
-                }
-                
                 ${
                   this.PromptTemplatesType === PromptTemplatesType.OWN ||
-                  template.OwnPrompt ||
+                  template.PromptTypeNo === 1 ||
                   this.isAdminMode()
                     ? /*html*/ `
 
-                    <a title="Copy Prompt" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                    onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')}</a>
+                    ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
 
-                  <a title="${extensionText.editPrmptTitle}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
-                    template.ID
-                  })">${svg('Edit')}</a>
-                  <a title="${extensionText.dltPrmptTitle}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
-                    template.ID
-                  })">${svg('Cross')}</a>
-                  `
+                      <a title="Add to Folder" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.showFolderSelectionModal()">
+                      ${svg('folder')} Add to Folder</a>
+
+                    `  : `
+                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
+                      template.ID
+                    })">${svg('Edit')} Edit</a>`: ""}
+
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
+                      template.promptID
+                    }')">${svg('export')} Download</a>` : ""}
+
+                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
+                      template.ID
+                    })">${svg('trash')} Delete</a>`: ""}
+                    
+                    ` }`
                     : ''
                 }
               </div>
@@ -4332,9 +10200,261 @@
           )
           .join('')
       }
+      
+      </div>` : ""}
+
+
+      
+      <div class="${css`ul`} grid grid-cols-1 list-group" id="promptsContainer" >
+        ${this.feedView === "list"? currentTemplates
+          ?.map(
+            (template) => /*html*/ `
+          <button ${ formatAgo(template.RevisionTime).indexOf('seconds') > -1 ? 'style="border: 1px gray solid; "' : ""}  data-id="${template.promptID}" class="${css`card`} relative group list-group-item  " >
+            <div class="flex items-center w-full justify-between">
+
+            <div class="text-gray-500 text-xs flex  max-w-full">
+
+            ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+              
+             
+              ${
+                template.AuthorURL && template.AuthorName
+                  ? /*html*/ `
+                    <a href="#" class="mx-1 overflow-hidden text-ellipsis flex-1"
+                      style="white-space: nowrap;"
+                      onclick="event.stopPropagation()"
+                      rel="noopener noreferrer" 
+                      title="${extensionText.authorTitle} ${sanitizeInput(template.AuthorName)} - ${sanitizeInput(template.AuthorURL)}">
+                      ${sanitizeInput(template.AuthorName).slice(0,15)}
+                    </a>`
+                  : ''
+              }            
+              · 
+              <span title="${extensionText.timeTitle} ${formatDateTime(
+                template.RevisionTime
+              )}" class="mx-1">${formatAgo(template.RevisionTime)}</span>
+
+            </div>
+
+            ${
+              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+              template.PromptTypeNo === 2
+                ?`
+              
+            ${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${ ""}
+
+            ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+
+               <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>` : ""}`  : 
+          
+            `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${this.features.favourites?.allow ? `<a title="${template.favourite? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite? 'voteThumbsDown' :'voteThumbsUp'}('${
+              template.promptID
+            }')">${svg(template.favourite? 'star-yellow' : 'star-gray')}</a>`: ''}
+
+            ${this.features.pin?.allow ? ` <a title="${template.pin? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin? 'removePin' :'addToPin'}('${
+              template.promptID
+            }')">${svg(template.pin? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+
+               <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>`}
+
+
+
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-2 justify-center  mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
+
+                ${
+                  this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                  template.PromptTypeNo === 2
+                    ? /*html*/ `
+                    
+                    ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+
+                    `
+                    : `
+                      
+                      
+
+                    `
+                }
+                
+                ${
+                  this.PromptTemplatesType === PromptTemplatesType.OWN ||
+                  template.PromptTypeNo === 1 ||
+                  this.isAdminMode()
+                    ? /*html*/ `
+
+                    ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
+
+                      <a title="Add to Folder" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.showFolderSelectionModal()">
+                      ${svg('folder')} Add to Folder</a>
+
+                    `  : `
+                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
+                      template.ID
+                    })">${svg('Edit')} Edit</a>`: ""}
+
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
+                      template.promptID
+                    }')">${svg('export')} Download</a>` : ""}
+
+                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
+                      template.ID
+                    })">${svg('trash')} Delete</a>`: ""}
+                    
+                    ` }`
+                    : ''
+                }
+
+
+              </div>
+            </div>      
+
+            <div onclick="IN_BOUND.selectPromptTemplateByIndex(${
+              template.ID
+            })" class="w-full">
+
+            <div class=" flex flex-row gap-2 items-center " >
+            ${ this.PromptTemplatesType === PromptTemplatesType.OWN ? svg('drag-prompt') : ""}
+
+            <h4 class="${css`h3`}" style="overflow-wrap: anywhere;">${sanitizeInput(
+              template.Title
+            )}</h4>
+            </div>
             
-        
-      </ul>
+            <p class="${css`p`} text-gray-600 dark:text-gray-200 overflow-hidden text-ellipsis" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;"
+              title="${sanitizeInput(template.Teaser)}">
+              ${sanitizeInput(template.Teaser)}
+            </p>
+            </div>
+            
+
+        </button>
+      `
+          )
+          .join('')
+        :
+        currentTemplates
+          ?.map(
+            (template) => /*html*/ `
+          <button  class="${css`card`} relative group list-group-item "  data-id="${template.promptID}"  >
+            <div   class="flex gap-2 items-center w-full justify-between">
+
+            ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+
+
+            <span class="w-5 h-5" >
+            ${ this.PromptTemplatesType === PromptTemplatesType.OWN ? svg('drag-prompt') : ""}
+            </span>
+
+              <h4 onclick="IN_BOUND.selectPromptTemplateByIndex(${
+                template.ID
+              })" class="${css`h3`}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:100%; ">${sanitizeInput(
+                template.Title
+            )}</h4>
+
+            ${
+              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+              template.PromptTypeNo === 2
+                ?
+                    
+            `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${ ""}
+
+            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a> ` : ""}
+
+
+            <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>` : ""}`
+             : 
+             `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+
+            ${ this.features.favourites?.allow? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' :'voteThumbsUp'}('${
+              template.promptID
+            }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ""}
+
+            ${this.features.pin?.allow ? `<a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' :'addToPin'}('${
+              template.promptID
+            }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+
+            <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
+            </div>` : ""}`}
+            
+
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute flex flex-col px-2 py-2 gap-1 right-9 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
+
+                ${
+                  this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                  template.PromptTypeNo === 2
+                    ? /*html*/ `
+                    
+                     
+                      
+                    `
+                    : `
+
+                    
+                    
+                    `
+                }
+                
+                ${
+                  this.PromptTemplatesType === PromptTemplatesType.OWN ||
+                  template.PromptTypeNo === 1 ||
+                  this.isAdminMode()
+                    ? /*html*/ `
+
+                    ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
+
+                      <a title="Add to Folder" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.showFolderSelectionModal()">
+                      ${svg('folder')} Add to Folder</a>
+
+                    `  : `
+                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
+                      template.ID
+                    })">${svg('Edit')} Edit</a>`: ""}
+
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
+                      template.promptID
+                    }')">${svg('export')} Download</a>` : ""}
+
+                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
+                      template.ID
+                    })">${svg('trash')} Delete</a>`: ""}
+                    
+                    ` }`
+                    : ''
+                }
+              </div>
+            </div>      
+
+            <div class="-mt-0.5 text-gray-500 text-xs pb-1 max-w-full">
+              
+            </div>
+
+        </button>
+      `
+          )
+          .join('')
+      }
+      
+      </div>
     
       ${
         templates.length > this.PromptTemplateSection.pageSize
@@ -4350,7 +10470,7 @@
      wrapper.className =
        'mt-2 md:flex items-start text-center gap-2.5 md:max-w-2xl lg:max-w-3xl m-auto text-sm';
 
-       let sideBarWrapper = document.getElementById('sideBarWrapper').querySelector('nav');
+       let sideBarWrapper = document.querySelector('#nav');
       if (sideBarWrapper.querySelector('#templates-wrapper')) {
        wrapper = sideBarWrapper.querySelector('#templates-wrapper');
      } else {
@@ -4360,6 +10480,49 @@
       wrapper.innerHTML = html;
 
       // Add event listeners for topic, activity, sort by select, search input and prompts per page select
+
+
+
+      const promptsContainer = wrapper?.querySelector('#promptsContainer');
+      if(promptsContainer){
+        this.sortElems = Sortable.create(promptsContainer, {
+          // forceFallback: true,
+          // fallbackClass: "dragging-prompt",
+          animation: 200,  
+          easing: "cubic-bezier(0.37, 0, 0.63, 1)",
+          handle: ".drag-icon-prompt",
+          dataIdAttr: 'data-id',
+          ghostClass: 'sortable-ghost',
+          swapThreshold: 2, // Threshold of the swap zone
+          onEnd: function (/**Event*/evt) {
+            // console.log('drag end prompt')
+            evt.item;  // dragged HTMLElement
+            evt.to;    // target list
+            evt.from;  // previous list
+            evt.oldIndex;  // element's old index within old parent
+            evt.newIndex;  // element's new index within new parent
+            evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+            evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+            evt.clone; // the clone element
+            evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+            let indexes = [];
+            Array.from(evt.target.children).forEach( (elem, index) => {
+              let data_id = elem.attributes['data-id'].value;
+              // console.log(data_id,index)
+              indexes.push([data_id,index]);
+            } );
+            const oldOrders = IN_BOUND.promptsOrderLocal?.filter( i => !(i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder ) ) || [];
+            // console.log("Old order: ",oldOrders)
+            localStorage.setItem('promptsOrderLocal',JSON.stringify([ ...oldOrders,  {index: indexes, company: IN_BOUND.selectedCompany, team: IN_BOUND.selectedTeam, folder: IN_BOUND.folderManager.selectedFolder} ]));
+            IN_BOUND.promptsOrderLocal = JSON.parse(localStorage.getItem('promptsOrderLocal'));
+            // console.log("New Order: ",IN_BOUND.promptsOrderLocal)
+            setTimeout(() => {
+              IN_BOUND.insertPromptTemplatesSection();
+            }, 300);
+          },
+        });
+      }
+      
       
       
 
@@ -4367,9 +10530,11 @@
         ?.querySelector('#promptTypeSelect')
         ?.addEventListener('change', this.changePromptTemplatesType.bind(this));
 
-      // wrapper
-      //   ?.querySelector('#activitySelect')
-      //   ?.addEventListener('change', this.changePromptActivity.bind(this));
+      
+
+      wrapper
+        ?.querySelector('#save_search')
+        ?.addEventListener('click', this.savedSearch.bind(this));
 
       // wrapper
       //   ?.querySelector('#sortBySelect')
@@ -4409,6 +10574,10 @@
       let options = document.getElementById(id);
       // console.log(options)
       options.className.split(' ').includes('hidden')? options.className = options.className.replace('hidden ',"flex ") : options.className = options.className.replace('flex ',"hidden ");
+      
+      // options.addEventListener('blur', () => {
+      //   options.className.replace('flex ',"hidden ")
+      // })
     },
 
     hideOptionsVisibility(id){
@@ -4485,7 +10654,8 @@
     },
 
      async saveImportedPrompt(data){
-      let prompt = data;
+      const {Title,PromptHint,Prompt,Tags,Teaser } = data;
+      let prompt = {Title,PromptHint,Prompt,Tags,Teaser };
       if(prompt.Prompt === "" || prompt.Prompt === undefined){
         IN_BOUND.showNotification(
           NotificationSeverity.ERROR,
@@ -4496,15 +10666,19 @@
 
       prompt.AuthorName = this.Client.User.Name;
       prompt.AuthorURL = this.Client.User.Email;
-      prompt.ID = window.crypto.randomUUID() || (new Date()).getTime() + Math.random().toString(16).slice(2);
+      const idRandom = window.crypto.randomUUID() || (new Date()).getTime() + Math.random().toString(16).slice(2);
+      prompt.ID  = idRandom;
+      prompt.id = idRandom;
       prompt.CreationTime = "";
       prompt.RevisionTime = "";
       prompt.PromptTypeNo = 1;
       prompt.pin = false;
+      prompt.OwnPrompt = true;
       prompt.favourite = false;
-      prompt.Title = "Copy via Import: " + prompt.Title;
+      
+      prompt.teamID = this.selectedTeam;
 
-      // console.log(prompt)
+      // console.log("Saving json: ",prompt)
 
       this.showNotification(
         NotificationSeverity.SUCCESS,
@@ -4579,6 +10753,7 @@
       prompt.PromptTypeNo = 1;
       prompt.pin = false;
       prompt.favourite = false;
+      prompt.teamID = this.selectedTeam;
       // console.log(prompt)
       this.showNotification(
         NotificationSeverity.SUCCESS,
@@ -4603,6 +10778,8 @@
       prompt.CreationTime = (new Date()).toISOString();
       prompt.RevisionTime = (new Date()).toISOString();
       prompt.PromptTypeNo = 1;
+      prompt._id ? delete prompt['_id'] : "";
+      prompt.teamID = this.selectedTeam;
       // console.log(prompt)
       this.showNotification(
         NotificationSeverity.SUCCESS,
@@ -4665,6 +10842,7 @@
 
     changeFeedSelect(val){
       this.feedSelected = val;
+      localStorage.setItem('feedSelected',val);
       this.insertPromptTemplatesSection();
     },
 
@@ -4736,6 +10914,32 @@
       searchInput.focus();
       
     },
+
+    savedSearch(){
+      this.savedSearchList.push(this.PromptSearch);
+      localStorage.setItem('savedSearchList',JSON.stringify(this.savedSearchList));
+      setTimeout(() => {
+        IN_BOUND.insertPromptTemplatesSection();
+      }, 200);
+    },
+
+    searchIntoPrompts(keyword){
+      this.PromptSearch = keyword;
+
+      this.PromptTemplateSection.currentPage = 0;
+
+      this.insertPromptTemplatesSection();
+
+      const searchInput = document.querySelector('#promptSearchInput');
+      searchInput.value = keyword;
+
+      searchInput.selectionStart = searchInput.selectionEnd =
+        searchInput.value.length;
+      searchInput.focus();
+
+      IN_BOUND.hideModal('savedSearchModal');
+      
+    },
     
     changePromptTemplatesType(e) {
       const type = e.target.value;
@@ -4744,6 +10948,7 @@
       }
 
       this.PromptTemplatesType = type;
+      localStorage.setItem('PromptTemplatesType', type);
 
       this.PromptTemplateSection.currentPage = 0;
 
@@ -4878,7 +11083,7 @@
 
       editToneModal.innerHTML = /*html*/ `
       <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50">
-        <div class="absolute bg-gray-900 inset-0 opacity-90">
+        <div onclick="IN_BOUND.hideModal('editToneModal')"  class="absolute bg-gray-900 inset-0 opacity-90">
         </div>
 
         <div class="fixed inset-0 overflow-y-auto">
@@ -4999,7 +11204,7 @@
 
       newToneModal.innerHTML = /*html*/ `
       <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50">
-        <div class="absolute bg-gray-900 inset-0 opacity-90">
+        <div onclick="IN_BOUND.hideModal('newToneModal')" class="absolute bg-gray-900 inset-0 opacity-90">
         </div>
 
         <div class="fixed inset-0 overflow-y-auto">
@@ -5114,6 +11319,40 @@
 
     // Insert language select and continue button above the prompt textarea input
     insertLanguageToneWritingStyleContinueActions() {
+
+
+      this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'))?.index || [];
+
+      const arrayIndxes = this.tonesOrderLocal;
+      if(arrayIndxes.length < this.userTones.length){
+        const newTones = this.userTones.filter( tone => !arrayIndxes.map( i => i[0] ).includes( tone.ID) );
+        newTones.map( t => {
+          arrayIndxes.push([t.ID, arrayIndxes.length]);
+        } );
+      }
+      
+      // Create a new array to store the rearranged items
+        const rearrangedArray = [];
+
+        // Iterate over the arrayIndxes array
+        for (const [id, index] of arrayIndxes) {
+          // console.log("ss-  ",id, index)
+          // Find the item in userTones array with matching ID
+          const item = this.userTones.find((tone) => tone.ID === id);
+
+          // If the item is found, add it to the rearranged array at the specified index
+          if (item) {
+            rearrangedArray[index] = item;
+          }
+        }
+
+        // Remove any undefined elements from the rearranged array
+        const sortedUserTones = rearrangedArray.filter((item) => item !== undefined);
+
+        // Print the rearranged array
+        // console.log(sortedUserTones);
+
+
       // this.tone === undefined ? this.tone = this.SelectedPromptTemplate?.Tone : ""
       // console.log(this.tone, this.SelectedPromptTemplate?.Tone)
       let wrapper = document.createElement('div');
@@ -5134,26 +11373,16 @@
       if (!textarea) return;
 
       // Hide the spacer for absolutely positioned prompt input
-      const spacer = document.querySelector(
+      document.querySelector(
         '.w-full.h-32.md\\:h-48.flex-shrink-0'
       );
 
-      if (spacer) {
-        spacer.style = 'display: none';
-      }
+      // if (spacer) {
+      //   spacer.style = 'display: none';
+      // }
 
       // Remove the absolute positioning from the prompt input parent
-      const formParent = textarea.form.parentElement;
-
-      if (formParent) {
-        formParent.classList.remove(
-          'absolute',
-          'md:!bg-transparent',
-          'md:border-t-0',
-          'md:dark:border-transparent',
-          'md:border-transparent'
-        );
-      }
+      textarea.form.parentElement;
 
       // Get the parent of the textarea
       const parent = textarea.parentElement;
@@ -5164,6 +11393,9 @@
       // Add padding to the parent element
       parent.classList.add('pr-4');
 
+      // this.Tone = this.Tone?.filter(t => t !== '')
+      
+
       // Get existing language select wrapper or create a new one
       if (parent.querySelector(`#${wrapper.id}`)) {
         wrapper = parent.querySelector(`#${wrapper.id}`);
@@ -5173,8 +11405,8 @@
 
       // Create the HTML for the language select section
       wrapper.innerHTML = /*html*/ `
-    <div class="flex w-full">
-      <div>
+    <div class="flex w-full justify-between">
+     ${this.features.languages?.allow ? `<div>
         <select id="languageSelect" class="${css('select')} pr-10">
           <option value ${
             !this.TargetLanguage ? ' selected' : ''
@@ -5192,11 +11424,10 @@
           `
           ).join('')}
         </select>
-      </div>
+      </div>`:""}
       
 
-      <div class="ml-2">
-      
+      ${ this.features.writing_styles?.allow ? `<div class="ml-2">
         <select id="writingStyleSelect" class="${css('select')} pr-10">
           <option value ${
             !this.WritingStyle ? ' selected' : ''
@@ -5212,14 +11443,16 @@
           `
           ).join('')}
         </select>
-      </div>
+      </div>` : ""}
 
-      <div class="ml-2">
+      ${ ""}
+
+      ${ this.features.variations.allow ? `<div class="ml-2">
         <select id="toneSelect" class="${css('select')} pr-10">
 
         <option value="" selected > No Variation</option>
 
-          ${this.userTones.map(
+          ${sortedUserTones.filter(d => !IN_BOUND.hiddenVariations.includes(d.ID) ).map(
             (tone) => `
             <option value="${tone.ID}" ${
               this.Tone === tone.ID ? ' selected' : ''
@@ -5229,7 +11462,7 @@
           `
           ).join('')}
         </select>
-      </div>
+      </div>` : ""}
 
     </div>
 
@@ -5254,13 +11487,34 @@
 
       // Add event listener to language select to update the target language on change
       wrapper
-        .querySelector('#languageSelect')
-        .addEventListener('change', this.changeTargetLanguage.bind(this));
+        ?.querySelector('#languageSelect')
+        ?.addEventListener('change', this.changeTargetLanguage.bind(this));
 
       // Add event listener to tone select to update the tone on change
       wrapper
         ?.querySelector('#toneSelect')
         ?.addEventListener('change', this.changeTone.bind(this));
+
+        
+      wrapper.querySelector('#variationButton')?.addEventListener('click', function() {
+        wrapper.querySelector('#variationButtonContent')?.classList.toggle('hidden');
+      });
+
+      // const checkboxes = wrapper.querySelector('#variationButtonContent')?.getElementsByTagName('input');
+      // for (let i = 0; i < checkboxes?.length; i++) {
+      //   checkboxes[i].addEventListener('change', function() {
+      //     let selectedOptions = [];
+      //     for (let j = 0; j < checkboxes.length; j++) {
+      //       if (checkboxes[j].checked) {
+      //         selectedOptions.push(checkboxes[j].value);
+      //       }
+      //     }
+      //     IN_BOUND.changeTone(selectedOptions);
+      //     const VariationLabels = sortedUserTones.filter(d => IN_BOUND.Tone?.includes(d.ID) ).map( t => t.Label).join(', ')
+      //     wrapper.querySelector('#variationButton').innerText = selectedOptions.length > 0 ? VariationLabels : 'Select Variations';
+      //     // console.log(selectedOptions)
+      //   });
+      // }
 
       // wrapper
       //   ?.querySelector('#toneCategorySelect')
@@ -5268,13 +11522,17 @@
 
       // Add event listener to writing style select to update the writing style on change
       wrapper
-        .querySelector('#writingStyleSelect')
-        .addEventListener('change', this.changeWritingStyle.bind(this));
+        ?.querySelector('#writingStyleSelect')
+        ?.addEventListener('change', this.changeWritingStyle.bind(this));
 
       // Add event listener to continue action select to update the continue action on change
       wrapper
-        .querySelector('#continueActionSelect')
-        .addEventListener('change', this.changeContinueAction.bind(this));
+        ?.querySelector('#continueActionSelect')
+        ?.addEventListener('change', this.changeContinueAction.bind(this));
+    },
+
+    hideLanguageToneWritingStyleContinueActions(){
+      // document.querySelector('#language-select-wrapper')?.remove()
     },
 
     // Change the TargetLanguage on selection change
@@ -5286,10 +11544,12 @@
     },
 
     // Change the Tone on selection change
-    changeTone(event) {
-      this.Tone = event.target.value;
-      // console.log(event.target.value)
-      this.insertLanguageToneWritingStyleContinueActions();
+    changeTone(ev) {
+      const tone = ev.target.value;
+      // this.Tone?.indexOf(selectedTones) > -1 ? this.Tone = this.Tone?.filter(d => d !== selectedTones) : this.Tone?.push(selectedTones)
+      this.Tone = tone;
+      // console.log(tone)
+      // this.insertLanguageToneWritingStyleContinueActions()
     },
     changeToneCategory(ev){
       const value = ev.target.value;
@@ -5306,13 +11566,13 @@
 
     // Change the WritingStyle on selection change
     changeWritingStyle(event) {
-      this.WritingStyle = parseInt(event.target.value);
+      this.WritingStyle = event.target.value;
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
     // Change the ContinueAction on selection change and submit the continue action prompt
     changeContinueAction(event) {
-      const continueActionID = parseInt(event.target.value);
+      const continueActionID = event.target.value;
 
       // Get prompt for the selected continue action
       const continueAction = this.ContinueActions.find(
@@ -5369,6 +11629,15 @@
 
       // Click the "Submit" button
       button.click();
+
+       const enterKeyEvent = new KeyboardEvent("keydown", {
+        bubbles: true,
+        cancelable: true,
+        keyCode: 13,
+      });
+      textarea.dispatchEvent(enterKeyEvent);
+
+
     },
 
     hideContinueActionsButton() {
@@ -5772,7 +12041,6 @@
       if (!templates || !Array.isArray(templates)) return;
 
       this.selectPromptTemplate(templates[idx]);
-      this.Tone = templates[idx]?.Tone;
       // console.log("current tone: ",templates[idx]?.Tone)
 
       // Hide the "Continue Writing" button (prompt selected/new chat)
@@ -5788,6 +12056,19 @@
       this.forkPrompt(promptID);
     },
 
+     isObserverExist(element) {
+      const observerEntries = window.performance.getEntriesByType('layout-shift');
+      
+      for (const entry of observerEntries) {
+        if (entry.source && entry.source.node === element) {
+          return true;
+        }
+      }
+      
+      return false;
+    },
+    
+
     /**
      * Select a prompt template and show it in the prompt input field
      *
@@ -5795,6 +12076,8 @@
      */
     selectPromptTemplate(template) {
       const textarea = document.querySelector('textarea');
+      if(!textarea)
+        return
       const parent = textarea.parentElement;
       let wrapper = document.createElement('div');
       wrapper.id = 'prompt-wrapper';
@@ -5809,11 +12092,11 @@
       if (template) {
 
         
-        // this.Tone = template.Tone
+        this.Tone = template?.Tone ? template?.Tone : this.Tone;
         this.companyTonesState = template.companyTonesState || false;
         // console.log(template, this.Tone)
 
-        this.showVariablesModal(template);
+        this.features.variables?.allow && this.showVariablesModal(template);
 
         this.activePromptID = template.ID;
         // console.log(this.activePromptID)
@@ -5839,8 +12122,8 @@
         // textarea.placeholder = template.PromptHint;
         textarea.placeholder = "Enter your prompt";
         this.SelectedPromptTemplate = template;
-        if( template.Prompt.indexOf('[PROMPT]') > -1 ){
-          textarea.innerHTML = '   ';
+        if( template.Prompt.indexOf(PromptPlaceholder) > -1 ){
+          textarea.value = ' ';
           textarea.nextElementSibling.disabled = false;
         }
         textarea.focus();
@@ -5853,7 +12136,7 @@
         url.searchParams.set(queryParamPromptID, template.ID);
       } else {
         wrapper.innerHTML = '';
-        textarea.placeholder = '';
+        // textarea.placeholder = '';
         this.SelectedPromptTemplate = null;
 
         // Remove query param IN_BOUND_PromptID
@@ -5990,13 +12273,30 @@
 
     if(window.location.hostname === "chat.openai.com"){
       setTimeout(function(){
-        fetch(`${APIEndpoint}/user?user=${window.__NEXT_DATA__.props.pageProps.user.email}`)
-        .then(res => res.json())
-        .then( usr => {
-          console.log(usr);
-          usr ? window.IN_BOUND.init() : "";
-        });
-      },500);
+        // fetch(`${APIEndpoint}/user?user=${window.__NEXT_DATA__.props.pageProps.user.email}`)
+        // .then(res => res.json())
+        // .then( usr => {
+        //   // console.log(usr)
+        //   usr ? window.IN_BOUND.init() : ""
+        // })
+        window.IN_BOUND.init();
+      },200);
     }
+    
+    // else if(window.location.hostname === "bard.google.com"){
+    //   setTimeout(function(){
+    //       const profile = document.querySelector('header').querySelectorAll('a')
+    //       const email_username = profile[profile.length-1].attributes['aria-label'].value
+    //       const email = email_username.split('(')[1].replace(')','')
+          // console.log(email)
+    //     fetch(`${APIEndpoint}/user?user=${email}`)
+    //     .then(res => res.json())
+    //     .then( usr => {
+          // console.log(usr)
+    //       window.IN_BOUND = IN_BOUND_BARD
+    //       usr ? window.IN_BOUND.init() : ""
+    //     })
+    //   },500)
+    // }
 
 })();

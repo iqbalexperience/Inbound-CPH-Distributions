@@ -23,7 +23,7 @@
         "storage"
     ],
     "web_accessible_resources" : [{
-        "resources": ["app.js", "https://inbound.iqbalnawaz.repl.co/bundle.js", "https://inbound.iqbalnawaz.repl.co/style.css"],
+        "resources": ["app.js"],
         "matches": ["<all_urls>"],
         "use_dynamic_url": true
     }],
