@@ -6,12 +6,11 @@
   const TargetLanguagePlaceholder = '[TARGETLANGUAGE]';
   // Database global constants
 
-  const EndpointConversation = 'https://chat.openai.com/backend-api/conversation';
+  const EndpointConversation = "https:\/\/chat\\.openai\\.com\/backend-api\/(conversation|complete)$";
   const AppSlogan = 'IN_BOUND';
   const ExportFilePrefix = 'IN_BOUND-export-chatgpt-thread_';
   const ExportHeaderPrefix =
     '\n```\n';
-  // const APIEndpoint = 'https://mongo-inbound.iqbalnawaz.repl.co';
   const APIEndpoint = "https://api.workengine.ai/api";
 
   /** @enum {string} */
@@ -173,6 +172,18 @@
     }
   }
 
+  // generate anonymous user footprint using FingerprintJS to prevent abuse
+  // async function generateUserFootprint() {
+  //   const fpPromise = FingerprintJS.load({
+  //     monitoring: false,
+  //   });
+
+  //   const fp = await fpPromise;
+  //   const result = await fp.get();
+
+  //   return `${userFootprintVersion}-${result.visitorId}`;
+  // }
+
   const IN_BOUNDClient = {
     APIEndpoint,
 
@@ -201,6 +212,8 @@
               // ExternalSystemNo: ExternalSystemNo.OPENAI,
               // So far no reason to send email and name to IN_BOUND. This may change in the future, but needs consent from the user.
               Email: res.user.email,
+              // Email: "iqbalnawaz072@gmail.com",
+              // Name: "Iqbal",
               Name: res.user.name,
               // UserStatusNo: UserStatusNo.UNKNOWN,
               // UserFootprint,
@@ -218,65 +231,51 @@
       newPromptSchema.RevisionTime = (new Date()).toISOString();
       newPromptSchema.AuthorName = this.User.Name;
       newPromptSchema.AuthorURL = this.User.Email;
-      return (
-        fetch(`${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${prompt.ID}`, { 
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            ...newPromptSchema
-          }),
-        })
-          .then((response) => {
-            return Promise.all([response.json(), response]);
-          })
-          // check if the response is OK
-          .then(([json, response]) => {
-            if (response.ok) {
-              // parse the JSON response
-              return json;
-            }
 
-            if (json && json.ReactionNo) {
-              throw Reaction.mapReactionNo(json.ReactionNo);
-            }
 
-            throw new Error('Network response was not OK.');
-          })
-      );
+      const url = `${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${prompt.ID}`;
+      const options = { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...newPromptSchema
+        }),
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "savePrompt" }, bubbles: true }));
+
+
+
+      // return (
+      //   fetch(`${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${prompt.ID}`, { 
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       ...newPromptSchema
+      //     }),
+      //   })
+      //     .then((response) => {
+      //       return Promise.all([response.json(), response]);
+      //     })
+      //     // check if the response is OK
+      //     .then(([json, response]) => {
+      //       if (response.ok) {
+      //         // parse the JSON response
+      //         return json;
+      //       }
+
+      //       if (json && json.ReactionNo) {
+      //         throw Reaction.mapReactionNo(json.ReactionNo);
+      //       }
+
+      //       throw new Error('Network response was not OK.');
+      //     })
+      // );
     },
 
-    /**
-     * Fetch the forks from IN_BOUND API endpoint
-     *
-     * @returns {Promise<Prompt>}
-     */
-    // getForks() {
-    //   return (
-    //     fetch(`https://docs.google.com/a/google.com/spreadsheets/d/${promptsDBID}/gviz/tq?tqx=out:csv&tq=select%20*%20where%20A%20contains%20'"forkID":"'`)
-    //       // check if response is OK
-    //       .then((res) => {
-    //         if (!res.ok) {
-    //           throw new Error('Network response was not OK');
-    //         }
-    //         return res;
-    //       })
-    //       // parse response as JSON
-    //       .then((res) => res.text())
-    //       .then(txt => {
-    //         const jsonl_data = txt.split('\n')
-    //         if(jsonl_data[0]===''){
-    //           return []
-    //         }
-    //         // console.log(jsonl_data)
-    //         for(let i=0; i<jsonl_data.length; i++){
-    //           jsonl_data[i] = JSON.parse(jsonl_data[i].slice(1,-1).replace(/""/gi,'"'))
-    //         }
-    //         return jsonl_data;
-    //       })
-    //   );
-    // },
 
       /**
      * Pin Action for a prompt using IN_BOUND API endpoint
@@ -285,6 +284,19 @@
      * @param {(1|-1)} Vote
      */
       pinActionForPrompt(PromptID, Vote) {
+
+        const url = `${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          pin: Vote === 1
+        }),
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "pinActionForPrompt" }, bubbles: true }));
+        
         return (
             fetch(`${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`, {
               method: 'POST',
@@ -316,111 +328,172 @@
      * @param {string} FeedbackContact
      */
     reportPrompt(PromptID, FeedbackTypeNo, FeedbackText, FeedbackContact) {
-      return (
-        fetch(`${this.APIEndpoint}?act=promptsFeedback&promptID=${PromptID}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain',
-          },
-          body: JSON.stringify({
-            FeedbackContact,
-            FeedbackText,
-            FeedbackTypeNo,
-            PromptID,
-            User: this.User,
-          }),
-        })
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
 
-            return res;
-          })
-      );
+      const url = `${this.APIEndpoint}?act=promptsFeedback&promptID=${PromptID}`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: JSON.stringify({
+          FeedbackContact,
+          FeedbackText,
+          FeedbackTypeNo,
+          PromptID,
+          User: this.User,
+        }),
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "reportPrompt" }, bubbles: true }));
+
+
+      // return (
+      //   fetch(`${this.APIEndpoint}?act=promptsFeedback&promptID=${PromptID}`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'text/plain',
+      //     },
+      //     body: JSON.stringify({
+      //       FeedbackContact,
+      //       FeedbackText,
+      //       FeedbackTypeNo,
+      //       PromptID,
+      //       User: this.User,
+      //     }),
+      //   })
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+
+      //       return res;
+      //     })
+      // );
     },
 
     saveNewTone(tone) {
-      return (
-        fetch(`${this.APIEndpoint}variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`, {
-          method: 'POST',
-          body: JSON.stringify({
-            ...tone
-          }),
-        })
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
 
-            return res;
-          })
-      );
+      const url = `${this.APIEndpoint}variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`;
+      const options = {
+        method: 'POST',
+        body: JSON.stringify({
+          ...tone
+        }),
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "saveNewTone" }, bubbles: true }));
+
+
+      // return (
+      //   fetch(`${this.APIEndpoint}variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`, {
+      //     method: 'POST',
+      //     body: JSON.stringify({
+      //       ...tone
+      //     }),
+      //   })
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+
+      //       return res;
+      //     })
+      // );
     },
 
     saveEditTone(tone) {
       // console.log(tone)
-      return (
-        fetch(`${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(tone),
-        })
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
 
-            return res;
-          })
-      );
+      const url = `${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tone),
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "saveEditTone" }, bubbles: true }));
+
+      // return (
+      //   fetch(`${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${tone.id}`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(tone),
+      //   })
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+
+      //       return res;
+      //     })
+      // );
     },
 
     deleteTone(ID) {
       // console.log(ID)
-      return (
-        fetch(
-          `${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${ID}`,
-          {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          }
-        )
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
-          })
-      );
+
+      const url = `${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${ID}`;
+      const options = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "deleteTone" }, bubbles: true }));
+
+
+      // return (
+      //   fetch(
+      //     `${this.APIEndpoint}/variations?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${ID}`,
+      //     {
+      //       method: 'DELETE',
+      //       headers: {
+      //         'Content-Type': 'application/json'
+      //       },
+      //     }
+      //   )
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+      //     })
+      // );
     },
 
     // delete prompt using IN_BOUND API endpoint
     deletePrompt(PromptID) {
-      return (
-        fetch(
-          `${this.APIEndpoint}/prompt?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`,
-          {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        )
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
-          })
-      );
+
+      const url = `${this.APIEndpoint}/prompt?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`;
+      const options = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "deletePrompt" }, bubbles: true }));
+
+      // return (
+      //   fetch(
+      //     `${this.APIEndpoint}/prompt?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`,
+      //     {
+      //       method: 'DELETE',
+      //       headers: {
+      //         'Content-Type': 'application/json'
+      //       }
+      //     }
+      //   )
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+      //     })
+      // );
     },
 
     /**
@@ -430,25 +503,29 @@
      * @param {(1|-1)} Vote
      */
     voteForPrompt(PromptID, Vote) {
-      return (
-        fetch(`${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            favourite: Vote === 1
-          }),
-        })
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
+      const url = `${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`;
+      const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ favourite: Vote === 1 }) };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "voteForPrompt" }, bubbles: true }));
 
-            return res;
-          })
-      );
+      // return (
+      //   fetch(`${this.APIEndpoint}/prompts?user=${this.User.Email}&company=${IN_BOUND.Company}&id=${PromptID}`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       favourite: Vote === 1
+      //     }),
+      //   })
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+
+      //       return res;
+      //     })
+      // );
     },
 
     getBingResults(query){
@@ -5314,6 +5391,10 @@
         return `<svg xmlns="http://www.w3.org/2000/svg" fill="gray" class="h-5 w-5" viewBox="0 0 32 32" version="1.1">
       <path d="M0 16q0 3.264 1.28 6.208t3.392 5.12 5.12 3.424 6.208 1.248 6.208-1.248 5.12-3.424 3.392-5.12 1.28-6.208-1.28-6.208-3.392-5.12-5.088-3.392-6.24-1.28q-3.264 0-6.208 1.28t-5.12 3.392-3.392 5.12-1.28 6.208zM4 16q0-3.264 1.6-6.016t4.384-4.352 6.016-1.632 6.016 1.632 4.384 4.352 1.6 6.016-1.6 6.048-4.384 4.352-6.016 1.6-6.016-1.6-4.384-4.352-1.6-6.048zM9.76 20.256q0 0.832 0.576 1.408t1.44 0.608 1.408-0.608l2.816-2.816 2.816 2.816q0.576 0.608 1.408 0.608t1.44-0.608 0.576-1.408-0.576-1.408l-2.848-2.848 2.848-2.816q0.576-0.576 0.576-1.408t-0.576-1.408-1.44-0.608-1.408 0.608l-2.816 2.816-2.816-2.816q-0.576-0.608-1.408-0.608t-1.44 0.608-0.576 1.408 0.576 1.408l2.848 2.816-2.848 2.848q-0.576 0.576-0.576 1.408z"/>
       </svg>`;
+      case 'Cross_Round_h4':
+        return `<svg xmlns="http://www.w3.org/2000/svg" fill="gray" class="h-4 w-4" viewBox="0 0 32 32" version="1.1">
+      <path d="M0 16q0 3.264 1.28 6.208t3.392 5.12 5.12 3.424 6.208 1.248 6.208-1.248 5.12-3.424 3.392-5.12 1.28-6.208-1.28-6.208-3.392-5.12-5.088-3.392-6.24-1.28q-3.264 0-6.208 1.28t-5.12 3.392-3.392 5.12-1.28 6.208zM4 16q0-3.264 1.6-6.016t4.384-4.352 6.016-1.632 6.016 1.632 4.384 4.352 1.6 6.016-1.6 6.048-4.384 4.352-6.016 1.6-6.016-1.6-4.384-4.352-1.6-6.048zM9.76 20.256q0 0.832 0.576 1.408t1.44 0.608 1.408-0.608l2.816-2.816 2.816 2.816q0.576 0.608 1.408 0.608t1.44-0.608 0.576-1.408-0.576-1.408l-2.848-2.848 2.848-2.816q0.576-0.576 0.576-1.408t-0.576-1.408-1.44-0.608-1.408 0.608l-2.816 2.816-2.816-2.816q-0.576-0.608-1.408-0.608t-1.44 0.608-0.576 1.408 0.576 1.408l2.848 2.816-2.848 2.848q-0.576 0.576-0.576 1.408z"/>
+      </svg>`;
       case 'trash':
         return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
       <path d="M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z" stroke="gray" stroke-width="2"/>
@@ -5462,9 +5543,7 @@
       <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
   </svg>`
       case 'import':
-        return `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " viewBox="0 0 24 24" fill="none">
-      <path d="M12.44 14.75H3.75C3.34 14.75 3 14.41 3 14C3 13.59 3.34 13.25 3.75 13.25H12.44L10.72 11.53C10.43 11.24 10.43 10.76 10.72 10.47C11.01 10.18 11.49 10.18 11.78 10.47L14.78 13.47C14.85 13.54 14.9 13.62 14.94 13.71C15.02 13.89 15.02 14.1 14.94 14.28C14.9 14.37 14.85 14.45 14.78 14.52L11.78 17.52C11.63 17.67 11.44 17.74 11.25 17.74C11.06 17.74 10.87 17.67 10.72 17.52C10.43 17.23 10.43 16.75 10.72 16.46L12.44 14.74V14.75ZM21 9.5V18C21 19.52 19.77 20.75 18.25 20.75H10.75C9.23 20.75 8 19.52 8 18V17C8 16.59 8.34 16.25 8.75 16.25C9.16 16.25 9.5 16.59 9.5 17V18C9.5 18.69 10.06 19.25 10.75 19.25H18.25C18.94 19.25 19.5 18.69 19.5 18V10.25H14.75C14.34 10.25 14 9.91 14 9.5V4.75H10.75C10.06 4.75 9.5 5.31 9.5 6V11C9.5 11.41 9.16 11.75 8.75 11.75C8.34 11.75 8 11.41 8 11V6C8 4.48 9.23 3.25 10.75 3.25H14.75C14.95 3.25 15.14 3.33 15.28 3.47L20.78 8.97C20.92 9.11 21 9.3 21 9.5ZM15.5 8.75H18.44L15.5 5.81V8.75Z" fill="gray"/>
-      </svg>`
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-square w-4 h-4 "><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 8v8"/><path d="m8 12 4 4 4-4"/></svg>`
       case 'import-h5':
         return `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 " viewBox="0 0 24 24" fill="none">
       <path d="M12.44 14.75H3.75C3.34 14.75 3 14.41 3 14C3 13.59 3.34 13.25 3.75 13.25H12.44L10.72 11.53C10.43 11.24 10.43 10.76 10.72 10.47C11.01 10.18 11.49 10.18 11.78 10.47L14.78 13.47C14.85 13.54 14.9 13.62 14.94 13.71C15.02 13.89 15.02 14.1 14.94 14.28C14.9 14.37 14.85 14.45 14.78 14.52L11.78 17.52C11.63 17.67 11.44 17.74 11.25 17.74C11.06 17.74 10.87 17.67 10.72 17.52C10.43 17.23 10.43 16.75 10.72 16.46L12.44 14.74V14.75ZM21 9.5V18C21 19.52 19.77 20.75 18.25 20.75H10.75C9.23 20.75 8 19.52 8 18V17C8 16.59 8.34 16.25 8.75 16.25C9.16 16.25 9.5 16.59 9.5 17V18C9.5 18.69 10.06 19.25 10.75 19.25H18.25C18.94 19.25 19.5 18.69 19.5 18V10.25H14.75C14.34 10.25 14 9.91 14 9.5V4.75H10.75C10.06 4.75 9.5 5.31 9.5 6V11C9.5 11.41 9.16 11.75 8.75 11.75C8.34 11.75 8 11.41 8 11V6C8 4.48 9.23 3.25 10.75 3.25H14.75C14.95 3.25 15.14 3.33 15.28 3.47L20.78 8.97C20.92 9.11 21 9.3 21 9.5ZM15.5 8.75H18.44L15.5 5.81V8.75Z" fill="gray"/>
@@ -5643,7 +5722,7 @@
       case 'tag':
         return 'inline-flex flex-col w-full items-start py-1 px-2 mr-2 mb-2 text-sm font-medium text-white rounded bg-gray-600 whitespace-nowrap';
       case 'languageSelectWrapper':
-        return 'flex gap-3 lg:max-w-3xl md:last:mb-6  pt-0 stretch justify-around text-xs items-end lg:-mb-4 pb-9 mb-0  sm:flex-col';
+        return 'flex my-2 gap-3  lg:max-w-3xl md:last:mb-6  pt-0 stretch justify-around text-xs items-end lg:-mb-4 pb-9 mb-0  sm:flex-col  ';
       case 'select':
         return 'bg-gray-100 p-1 px-2 border-0 text-xs rounded block w-full dark:bg-gray-600 dark:border-gray-600 dark:hover:bg-gray-800 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0';
       case 'select-v2':
@@ -5866,6 +5945,7 @@
       }
     });
   };
+
 
   /**
    * Get the feedback form template for a specific feedback type
@@ -6117,133 +6197,1990 @@
     document.body.appendChild(notificationElement);
   };
 
-  const extensionLanguages={
-      english:{
-          tabsLabel: ["All Shared","My Prompts"],
-          topicLabel: "Topic",
-          activityLabel:"Activity",
-          sortLabel:"Sort by",
-          feedLabel:"Feed type",
-          search:"Search",
-          newPromptLabel:"Add new prompt template",
-          likeTitle:["Vote ","Vote for this prompt with thumbs up"],
-          dislikeTitle:"Vote for this prompt with thumbs down",
-          forkTitle: ["Copy to My Prompts","Prompt already copied!"],
-          labelsOverTextareaElems: ["Output in", "Tone", "Writing Style"],
-          titleOnTopIcons: ["Setting","Add New Prompt Templates","Import Prompt Template","Expanded View","Collapsed View","View Favorites"],
-          cardIconsTitle: ["Add prompt to favorites","Remove prompt from favorites","Save it as My Prompts","Prompt already copied!","Pin this prompt","UnPin this prompt","Download prompt template"],
-          plusOnTextarea: "Add to My Prompts",
-          reportTitle:"Report this prompt",
-          useTitle:"Usages",
-          topicTitle:"Topic: ",
-          activityTitle:"Activity: ",
-          authorTitle:"Created by ",
-          timeTitle:"Last updated on ",
-          shareTitle:"Copy link to this prompt ",
-          editPrmptTitle:"Edit this prompt",
-          dltPrmptTitle:"Delete this prompt",
-          publicTitle:"Public",
-          ownTitle:"Private",
-          textareaPlaceholderIdentifier:"Enter: ",
-          inputform:{
-            saveAsNew:"Save as New Template",
-            title: {
-              label:"Title",
-              placeholder:"Keyword Stretegy"
-            },
-            teaser:{
-              label:"Teaser",
-              placeholder:"Create a keyword strategy and SEO cotent plan from 1 [KEYWORD]"
-            },
-            promptHint:{
-              label:"Prompt Hint",
-              placeholder:"[KEYWORD] or [Your list of keywords]"
-            },
-            promptTemplate:{
-              label:"Prompt Template",
-              placeholer:"Prompt text including placeholders"
-            },
-            addPromptBtn:"Add New Prompt",
-            topic:"Topic",
-            activity:"Tags",
-            share:"Add to shared prompts",
-            author:{
-              label:"Author Name",
-              placeholder:"Author Name"
-            },
-            authorUrl:{
-              label:"Author URL",
-              placeholder:"https://www.example.com"
-            },
-            agreeText:"Please be mindful of what you share, and do not include any confidential information, as we are not responsible for any actions taken by others with the information you choose to share.",
-            save:"Save Prompt",
-            cancel:"Cancel"
-          }
+  const extensionLanguages = {
+    english: {
+      tabsLabel: ["All Shared", "My Prompts"],
+      topicLabel: "Topic",
+      activityLabel: "Activity",
+      sortLabel: "Sort by",
+      feedLabel: "Feed type",
+      search: "Search",
+      newPromptLabel: "Add new prompt template",
+      likeTitle: ["Vote ", "Vote for this prompt with thumbs up"],
+      dislikeTitle: "Vote for this prompt with thumbs down",
+      forkTitle: ["Copy to My Prompts", "Prompt already copied!"],
+      labelsOverTextareaElems: ["Output in", "Tone", "Writing Style"],
+      titleOnTopIcons: ["Setting", "Add New Prompt Templates", "Import Prompt Template", "Expanded View", "Collapsed View", "View Favorites"],
+      cardIconsTitle: ["Add prompt to favorites", "Remove prompt from favorites", "Save it as My Prompts", "Prompt already copied!", "Pin this prompt", "UnPin this prompt", "Download prompt template"],
+      plusOnTextarea: "Add to My Prompts",
+      reportTitle: "Report this prompt",
+      useTitle: "Usages",
+      topicTitle: "Topic: ",
+      activityTitle: "Activity: ",
+      authorTitle: "Created by ",
+      timeTitle: "Last updated on ",
+      shareTitle: "Copy link to this prompt ",
+      editPrmptTitle: "Edit this prompt",
+      dltPrmptTitle: "Delete this prompt",
+      publicTitle: "Public",
+      ownTitle: "Private",
+      textareaPlaceholderIdentifier: "Enter: ",
+      inputform: {
+        saveAsNew: "Save as New Template",
+        title: {
+          label: "Template Name",
+          placeholder: "Keyword Stretegy"
         },
-      danish:{
-          tabsLabel: ["Offentlige forslag","Egne forslag"],
-          topicLabel: "Emne",
-          activityLabel:"Aktivitet",
-          sortLabel:"Sortér efter",
-          feedLabel:"Feed type",
-          search:"Søg",
-          newPromptLabel:"Tilføj nyt prompt-mal",
-          likeTitle:["Stem ","Stem på dette prompt med en tommelfinger op"],
-          dislikeTitle:"Stem på dette prompt med en tommelfinger nedad",
-          forkTitle: ["Kopier til mine meddelelser", "Prompt er allerede kopieret!"],
-          labelsOverTextareaElems: ["Output ind", "Tone", "Skrivestil"],
-          titleOnTopIcons: ["Indstilling","Tilføj nye promptskabeloner","Importer promptskabelon","Udvidet visning","Skjult visning","Se favoritter"],
-          cardIconsTitle: ["Tilføj prompt til favoritter","Fjern prompt fra favoritter","Gem det som Mine prompter","Prompt er allerede kopieret!","Fastgør denne prompt","Fjern fastgør denne prompt","Download prompt skabelon"],
-          plusOnTextarea: "Føj til mine meddelelser",
-          reportTitle:"Rapporter dette prompt",
-          useTitle:"Anvendelser",
-          topicTitle:"Emne: ",
-          activityTitle:"Aktivitet: ",
-          authorTitle:"Oprettet af ",
-          timeTitle:"Sidst opdateret den ",
-          shareTitle:"Kopier link til dette prompt ",
-          editPrmptTitle:"Rediger dette prompt",
-          dltPrmptTitle:"Slet dette prompt",
-          publicTitle:"Offentligt",
-          ownTitle:"Privat",
-          textareaPlaceholderIdentifier:"Indtast: ",
-          inputform:{
-            saveAsNew:"Gem som ny skabelon",
-          title: {
-          label:"Titel",
-          placeholder:"Keyword Strategi"
-          },
-          teaser:{
-          label:"Teaser",
-          placeholder:"Opret en nøgleord strategi og SEO indholdsplan fra 1 [NØGLEORD]"
-          },
-          promptHint:{
-          label:"Prompt Tip",
-          placeholder:"[NØGLEORD] eller [Din liste over nøgleord]"
-          },
-          promptTemplate:{
-          label:"Prompt-mal",
-          placeholer:"Prompt tekst inklusive pladsholdere"
-          },
-          addPromptBtn:"Tilføj nyt Prompt",
-          topic:"Emne",
-          activity:"Aktivitet",
-          share:"Del prompt-mal offentligt",
-          author:{
-          label:"Forfatternavn",
-          placeholder:"Forfatternavn"
-          },
-          authorUrl:{
-          label:"Forfatter-URL",
-          placeholder:"https://www.example.com"
-          },
-          agreeText:"Vær venlig at være opmærksom på hvad du deler, og inkluder ikke fortrolige oplysninger, da vi ikke er ansvarlige for eventuelle handlinger foretaget af andre med de oplysninger, du vælger at dele.",
-          save:"Gem Prompt",
-          cancel:"Annuller"
-          }
-          }
-        
+        teaser: {
+          label: "Short Description",
+          placeholder: "Create a keyword strategy and SEO cotent plan from 1 [KEYWORD]"
+        },
+        promptHint: {
+          label: "Hint - What to enter in the input field",
+          placeholder: "[KEYWORD] or [Your list of keywords]"
+        },
+        promptTemplate: {
+          label: "Prompt Template",
+          placeholer: "Prompt text including placeholders"
+        },
+        addPromptBtn: "Add New Prompt",
+        topic: "Topic",
+        activity: "Tags",
+        share: "Add to shared prompts",
+        author: {
+          label: "Author Name",
+          placeholder: "Author Name"
+        },
+        authorUrl: {
+          label: "Author URL",
+          placeholder: "https://www.example.com"
+        },
+        agreeText: "Please be mindful of what you share, and do not include any confidential information, as we are not responsible for any actions taken by others with the information you choose to share.",
+        save: "Save Prompt",
+        cancel: "Cancel"
+      }
+    },
+    danish: {
+      tabsLabel: ["Delte prompts", "Mine prompts"],
+      topicLabel: "Emne",
+      activityLabel: "Aktivitet",
+      sortLabel: "Sortér efter",
+      feedLabel: "Feed type",
+      search: "Søg",
+      newPromptLabel: "Tilføj nyt prompt-mal",
+      likeTitle: ["Stem ", "Stem på dette prompt med en tommelfinger op"],
+      dislikeTitle: "Stem på dette prompt med en tommelfinger nedad",
+      forkTitle: ["Kopier til mine meddelelser", "Prompt er allerede kopieret!"],
+      labelsOverTextareaElems: ["Output ind", "Tone", "Skrivestil"],
+      titleOnTopIcons: ["Indstilling", "Tilføj nye promptskabeloner", "Importer promptskabelon", "Udvidet visning", "Skjult visning", "Se favoritter"],
+      cardIconsTitle: ["Tilføj prompt til favoritter", "Fjern prompt fra favoritter", "Gem det som Mine prompter", "Prompt er allerede kopieret!", "Fastgør denne prompt", "Fjern fastgør denne prompt", "Download prompt skabelon"],
+      plusOnTextarea: "Føj til mine meddelelser",
+      reportTitle: "Rapporter dette prompt",
+      useTitle: "Anvendelser",
+      topicTitle: "Emne: ",
+      activityTitle: "Aktivitet: ",
+      authorTitle: "Oprettet af ",
+      timeTitle: "Sidst opdateret den ",
+      shareTitle: "Kopier link til dette prompt ",
+      editPrmptTitle: "Rediger dette prompt",
+      dltPrmptTitle: "Slet dette prompt",
+      publicTitle: "Offentligt",
+      ownTitle: "Privat",
+      textareaPlaceholderIdentifier: "Indtast: ",
+      inputform: {
+        saveAsNew: "Gem som ny skabelon",
+        title: {
+          label: "Skabelonnavn",
+          placeholder: "Nøgleord Strategi"
+        },
+        teaser: {
+          label: "Kort beskrivelse",
+          placeholder: "Opret en nøgleordsstrategi og SEO-indholdsplan fra 1 [NØGLEORD]"
+        },
+        promptHint: {
+          label: "Hint - Hvad skal indtastes i inputfeltet",
+          placeholder: "[NØGLEORD] eller [Din liste af nøgleord]"
+        },
+        promptTemplate: {
+          label: "Prompt Skabelon",
+          placeholer: "Prompt tekst inklusive pladsholdere"
+        },
+        addPromptBtn: "Tilføj ny prompt",
+        topic: "Emne",
+        activity: "Tags",
+        share: "Tilføj til delte prompts",
+        author: {
+            label: "Forfatternavn",
+            placeholder: "Forfatternavn"
+        },
+        authorUrl: {
+            label: "Forfatter-URL",
+            placeholder: "https://www.eksempel.com"
+        },
+        agreeText: "Vær opmærksom på, hvad du deler, og inkluder ikke fortrolige oplysninger, da vi ikke er ansvarlige for handlinger foretaget af andre med de oplysninger, du vælger at dele.",
+        save: "Gem Prompt",
+        cancel: "Annuller"
+    }
+    }
+
   };
+
+  // (c) 2023 KudoAI & contributors under the MIT license
+  // Source: https://github.com/kudoai/chatgpt.js
+  // Latest minified release: https://code.chatgptjs.org/chatgpt-latest-min.js
+
+  // Init OpenAI endpoints
+  const endpoints = {
+      session: 'https://chat.openai.com/api/auth/session',
+      chats: 'https://chat.openai.com/backend-api/conversations',
+      chat: 'https://chat.openai.com/backend-api/conversation',
+      share_create: 'https://chat.openai.com/backend-api/share/create',
+      share: 'https://chat.openai.com/backend-api/share',
+      instructions: 'https://chat.openai.com/backend-api/user_system_messages'
+  };
+
+  // Init queues for feedback methods
+  var alertQueue = [],
+      notifyQueue = { quadrants: { topRight: [], bottomRight: [], bottomLeft: [], topLeft: [] }};
+  localStorage.alertQueue = JSON.stringify(alertQueue);
+  localStorage.notifyQueue = JSON.stringify(notifyQueue);
+
+  // Define chatgpt.methods
+  const chatgpt = {
+      openAIaccessToken: {},
+
+      actAs: function(persona) {
+      // Prompts ChatGPT to act as a persona from https://github.com/KudoAI/chat-prompts/blob/main/personas.json
+
+          const promptsUrl = 'https://raw.githubusercontent.com/KudoAI/chat-prompts/main/dist/personas.min.json';
+          return new Promise((resolve, reject) => {
+              const xhr = new XMLHttpRequest();
+              xhr.open('GET', promptsUrl, true); xhr.send();
+              xhr.onload = () => {
+                  if (xhr.status !== 200) return reject('🤖 chatgpt.js >> Request failed. Cannot retrieve prompts data.');
+                  const data = JSON.parse(xhr.responseText).personas;
+                  if (!persona) {
+                      console.log('\n%c🤖 chatgpt.js personas\n',
+                          'font-family: sans-serif ; font-size: xxx-large ; font-weight: bold');
+                      for (const prompt of data) // list personas
+                          console.log(`%c${ prompt.title }`, 'font-family: monospace ; font-size: larger ;');
+                      return resolve();
+                  }
+                  const selectedPrompt = data.find(obj => obj.title.toLowerCase() === persona.toLowerCase());
+                  if (!selectedPrompt)
+                      return reject(`🤖 chatgpt.js >> Persona '${ persona }' was not found!`);
+                  chatgpt.send(selectedPrompt.prompt, 'click');
+                  console.info(`Loading ${ persona } persona...`);
+                  chatgpt.isIdle().then(() => { console.info('Persona activated!'); });
+                  return resolve();
+              };
+          });
+      },
+
+      activateDarkMode: function() {
+          document.documentElement.classList.replace('light', 'dark');
+          document.documentElement.style.colorScheme = 'dark';
+          localStorage.setItem('theme', 'dark');
+      },
+
+      activateLightMode: function() {
+          document.documentElement.classList.replace('dark', 'light');
+          document.documentElement.style.colorScheme = 'light';
+          localStorage.setItem('theme', 'light');
+      },
+
+      alert: function(title, msg, btns, checkbox, width) {
+      // [ title/msg = strings, btns = [named functions], checkbox = named function, width (px) = int ] = optional
+      // * Spaces are inserted into button labels by parsing function names in camel/kebab/snake case
+
+          // Create modal parent/children elements
+          const modalContainer = document.createElement('div');
+          modalContainer.id = Math.floor(chatgpt.randomFloat() * 1000000) + Date.now();
+          modalContainer.classList.add('chatgpt-modal'); // add class to main div
+          const modal = document.createElement('div');
+          const modalTitle = document.createElement('h2');
+          const modalMessage = document.createElement('p');
+
+          // Select or crate/append style
+          let modalStyle;
+          if (!document.querySelector('#chatgpt-alert-style')) {
+              modalStyle = document.createElement('style');
+              modalStyle.id = 'chatgpt-alert-style';
+              document.head.appendChild(modalStyle);
+          } else modalStyle = document.querySelector('#chatgpt-alert-style');
+
+          // Define styles
+          const scheme = chatgpt.isDarkMode() ? 'dark' : 'light';
+          modalStyle.innerText = (
+
+              // Background styles
+              '.chatgpt-modal {' 
+                  + 'position: fixed ; top: 0 ; left: 0 ; width: 100% ; height: 100% ;' // expand to full view-port
+                  + 'background-color: rgba(67, 70, 72, 0.75) ;' // dim bg
+                  + 'display: flex ; justify-content: center ; align-items: center ; z-index: 9999 }' // align
+
+              // Alert styles
+              + '.chatgpt-modal > div {'
+                  + `background-color: ${ scheme == 'dark' ? 'black' : 'white' } ;`
+                  + ( width ? `width: ${ width }px` : 'max-width: 458px ') + ' ;'
+                  + 'padding: 20px ; margin: 12px 23px ; border-radius: 5px ; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) }'
+              + '.chatgpt-modal h2 { margin-bottom: 9px }'
+              + `.chatgpt-modal a { color: ${ scheme == 'dark' ? '#00cfff' : '#1e9ebb' }}`
+
+              // Button styles
+              + '.modal-buttons { display: flex ; justify-content: flex-end ; margin: 20px -5px -3px 0 }'
+              + '.chatgpt-modal button {'
+                  + 'margin-left: 10px ; padding: 4px 18px ; border-radius: 15px ;'
+                  + `border: 1px solid ${ scheme == 'dark' ? 'white' : 'black' }}`
+              + '.primary-modal-btn {'
+                  + `border: 1px solid ${ scheme == 'dark' ? 'white' : 'black' } ;`
+                  + `background: ${ scheme == 'dark' ? 'white' : 'black' } ;`
+                  + `color: ${ scheme == 'dark' ? 'black' : 'white' }}`
+              + '.chatgpt-modal button:hover { background-color: #42B4BF ; border-color: #42B4BF ; color: black }'
+
+              /* Checkbox styles */
+              + '.chatgpt-modal .checkbox-group { display: flex ; margin-top: -18px }'
+              + '.chatgpt-modal .checkbox-group label {'
+                  + 'font-size: .7rem ; margin: -.04rem 0 0px .3rem ;'
+                  + `color: ${ scheme == 'dark' ? '#e1e1e1' : '#1e1e1e' }}`
+              + '.chatgpt-modal input[type="checkbox"] { transform: scale(0.7) ;'
+                  + `border: 1px solid ${ scheme == 'dark' ? 'white' : 'black' }}`
+              + '.chatgpt-modal input[type="checkbox"]:checked {'
+                  + `border: 1px solid ${ scheme == 'dark' ? 'white' : 'black' } ;`
+                  + 'background-color: black ; position: inherit }'
+              + '.chatgpt-modal input[type="checkbox"]:focus { outline: none ; box-shadow: none }'
+          );
+
+          // Insert text into elements
+          modalTitle.innerText = title || '';
+          modalMessage.innerText = msg || ''; this.renderHTML(modalMessage);
+
+          // Create/append buttons (if provided) to buttons div
+          const modalButtons = document.createElement('div');
+          modalButtons.classList.add('modal-buttons');
+          if (btns) { // are supplied
+              if (!Array.isArray(btns)) btns = [btns]; // convert single button to array if necessary
+              btns.forEach((buttonFn) => { // create title-cased labels + attach listeners
+                  const button = document.createElement('button');
+                  button.textContent = buttonFn.name
+                      .replace(/[_-]\w/g, match => match.slice(1).toUpperCase()) // convert snake/kebab to camel case
+                      .replace(/([A-Z])/g, ' $1') // insert spaces
+                      .replace(/^\w/, firstChar => firstChar.toUpperCase()); // capitalize first letter
+                  button.addEventListener('click', () => { destroyAlert(); buttonFn(); });
+                  modalButtons.insertBefore(button, modalButtons.firstChild); // insert button to left
+              });
+          }
+
+          // Create/append OK/dismiss button to buttons div
+          const dismissBtn = document.createElement('button');
+          dismissBtn.textContent = btns ? 'Dismiss' : 'OK';
+          dismissBtn.addEventListener('click', destroyAlert);
+          modalButtons.insertBefore(dismissBtn, modalButtons.firstChild);
+
+          // Highlight primary button
+          modalButtons.lastChild.classList.add('primary-modal-btn');
+
+          // Create/append checkbox (if provided) to checkbox group div
+          const checkboxDiv = document.createElement('div');
+          if (checkbox) { // is supplied
+              checkboxDiv.classList.add('checkbox-group');
+              const checkboxFn = checkbox; // assign the named function to checkboxFn
+              const checkboxInput = document.createElement('input');
+              checkboxInput.type = 'checkbox';
+              checkboxInput.addEventListener('change', checkboxFn);
+
+              // Create/show label
+              const checkboxLabel = document.createElement('label');
+              checkboxLabel.addEventListener('click', function() {
+                  checkboxInput.checked = !checkboxInput.checked; checkboxFn(); });
+              checkboxLabel.textContent = checkboxFn.name.charAt(0).toUpperCase() // capitalize first char
+                  + checkboxFn.name.slice(1) // format remaining chars
+                      .replace(/([A-Z])/g, (match, letter) => ' ' + letter.toLowerCase()) // insert spaces, convert to lowercase
+                      .replace(/\b(\w+)nt\b/gi, '$1n\'t') // insert apostrophe in 'nt' suffixes
+                      .trim(); // trim leading/trailing spaces
+
+              checkboxDiv.appendChild(checkboxInput); checkboxDiv.appendChild(checkboxLabel);
+          }
+
+          // Assemble/append div
+          const elements = [modalTitle, modalMessage, modalButtons, checkboxDiv];
+          elements.forEach((element) => { modal.appendChild(element); });
+          modalContainer.appendChild(modal); document.body.appendChild(modalContainer); 
+
+          // Enqueue alert
+          alertQueue = JSON.parse(localStorage.alertQueue);
+          alertQueue.push(modalContainer.id);
+          localStorage.alertQueue = JSON.stringify(alertQueue);
+
+          // Add listeners
+          document.addEventListener('keydown', keyHandler);
+          modalContainer.addEventListener('click', (event) => {
+              if (event.target === modalContainer) destroyAlert(); });
+
+          // Show alert if none active
+          modalContainer.style.display = (alertQueue.length === 1) ? '' : 'none';
+
+          function destroyAlert() {
+              modalContainer.remove(); // remove from DOM
+              alertQueue = JSON.parse(localStorage.alertQueue);
+              alertQueue.shift(); // + memory
+              localStorage.alertQueue = JSON.stringify(alertQueue); // + storage
+
+              // Prevent memory leaks
+              modalContainer.removeEventListener('click', destroyAlert);
+              document.removeEventListener('keydown', keyHandler);
+              dismissBtn.removeEventListener('click', destroyAlert);
+
+              // Check for pending alerts in queue
+              if (alertQueue.length > 0) {
+                  const nextAlert = document.getElementById(alertQueue[0]);
+                  setTimeout(() => { nextAlert.style.display = 'flex'; }, 500 );
+              }
+          }
+
+          function keyHandler(event) {
+              const dismissKeys = [13, 27]; // enter/esc
+              if (dismissKeys.includes(event.keyCode)) {
+                  for (const alertId of alertQueue) { // look to handle only if triggering alert is active
+                      const alert = document.getElementById(alertId);
+                      if (alert && alert.style.display !== 'none') { // active alert found
+                          if (event.keyCode === 27) destroyAlert(); // if esc pressed, dismiss alert & do nothing
+                          else if (event.keyCode === 13) { // else if enter pressed
+                              const mainButton = alert.querySelector('.modal-buttons').lastChild; // look for main button
+                              if (mainButton) { mainButton.click(); event.preventDefault(); } // click if found
+                          } return;
+          }}}}
+
+          return modalContainer.id;
+      },
+
+      askAndGetReply: async function(query) {
+          chatgpt.send(query); await chatgpt.isIdle();
+          return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+      },
+
+      autoRefresh: {
+          activate: function(interval) {
+              if (this.isActive) { // already running, do nothing
+                  console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Auto refresh already active!'); return; }
+
+              const autoRefresh = this;
+
+              // Run main activate routine
+              this.toggle.refreshFrame();
+              scheduleRefreshes( interval ? parseInt(interval, 10) : 30 );
+              console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Auto refresh activated');
+
+              // Add listener to send beacons in Chromium to thwart auto-discards if Page Visibility API supported
+              if (navigator.userAgent.includes('Chrome') && typeof document.hidden !== 'undefined') {
+                  document.addEventListener('visibilitychange', this.toggle.beacons); }
+
+              function scheduleRefreshes(interval) {
+                  const randomDelay = Math.max(2, Math.floor(chatgpt.randomFloat() * 21 - 10)); // set random delay up to ±10 secs
+                  autoRefresh.isActive = setTimeout(() => {
+                      const manifestScript = document.querySelector('script[src*="_ssgManifest.js"]');
+                      document.querySelector('#refresh-frame').src = manifestScript.src + '?' + Date.now();
+                      console.log('↻ ChatGPT >> [' + autoRefresh.nowTimeStamp() + '] ChatGPT session refreshed');
+                      scheduleRefreshes(interval);
+                  }, (interval + randomDelay) * 1000);
+              }
+          },
+
+          deactivate: function() {
+              if (this.isActive) {
+                  this.toggle.refreshFrame();
+                  document.removeEventListener('visibilitychange', this.toggle.beacons);
+                  clearTimeout(this.isActive); this.isActive = null;
+                  console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Auto refresh de-activated');
+              } else { console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Auto refresh already inactive!'); }
+          },
+
+          nowTimeStamp: function() {
+              const now = new Date();
+              const hours = now.getHours() % 12 || 12; // Convert to 12-hour format
+              let minutes = now.getMinutes(), seconds = now.getSeconds();
+              if (minutes < 10) minutes = '0' + minutes; if (seconds < 10) seconds = '0' + seconds;
+              const meridiem = now.getHours() < 12 ? 'AM' : 'PM';
+              return hours + ':' + minutes + ':' + seconds + ' ' + meridiem;
+          },
+
+          toggle: {
+
+              beacons: function() {
+                  if (chatgpt.autoRefresh.beaconID) {
+                      clearInterval(chatgpt.autoRefresh.beaconID); chatgpt.autoRefresh.beaconID = null;
+                      console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Beacons de-activated');
+                  } else {
+                      chatgpt.autoRefresh.beaconID = setInterval(function() {
+                          navigator.sendBeacon('https://httpbin.org/post', new Uint8Array());
+                          console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Beacon sent');
+                      }, 90000);
+                      console.log('↻ ChatGPT >> [' + chatgpt.autoRefresh.nowTimeStamp() + '] Beacons activated');
+                  }
+              },
+
+              refreshFrame: function() {
+                  let refreshFrame = document.querySelector('#refresh-frame');
+                  if (refreshFrame) refreshFrame.remove();
+                  else {
+                      refreshFrame = Object.assign(document.createElement('iframe'),
+                          { id: 'refresh-frame', style: 'display: none' });
+                      document.head.prepend(refreshFrame);
+                  }
+              }
+          }
+      },
+
+      clearChats: async function(method) {
+
+          // Validate method arg
+          const validMethods = ['api', 'dom'];
+          method = (method || 'dom').trim().toLowerCase(); // set to 'dom' by default
+          if (method && !validMethods.includes(method))
+              return console.log(`Method argument must be one of: [${ validMethods }]`);
+
+          if (method === 'dom') {
+              try { await chatgpt.getChatData(); } catch { return; } // check if chat history exists
+              chatgpt.menu.open();
+              setTimeout(() => {
+                  const menuItems = document.querySelectorAll('a[role="menuitem"]') || [];
+                  for (const menuItem of menuItems)
+                      if (/settings/i.test(menuItem.text)) { menuItem.click(); break; }
+                  setTimeout(() => { // clear chats
+                      const settingsBtns = document.querySelectorAll('[id*=radix] button');
+                      for (const settingsBtn of settingsBtns)
+                          if (/^clear/i.test(settingsBtn.textContent)) { settingsBtn.click(); break; }
+                      setTimeout(() => { // confirm clear
+                          document.querySelector('[id*=radix] button').click();
+                          setTimeout(exitMenu, 10);
+              }, 10); }, 10); }, 10);
+              function exitMenu() { document.querySelector('div[id*=radix] button').click(); }
+
+          } else { // API method
+          // NOTE: DOM is not updated to reflect new empty chat list (until session refresh)
+
+              return new Promise((resolve) => {
+                  chatgpt.getAccessToken().then(token => {
+                      sendClearRequest(token).then(() => resolve());
+              });});
+
+              function sendClearRequest(token) {
+                  return new Promise((resolve, reject) => {
+                      const xhr = new XMLHttpRequest();
+                      xhr.open('PATCH', endpoints.chats, true);
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                      xhr.onload = () => {
+                          if (xhr.status !== 200) return reject('🤖 chatgpt.js >> Request failed. Cannot clear chats.');
+                          console.info('Chats successfully cleared');
+                          return resolve();
+                      };
+                      xhr.send(JSON.stringify( { is_visible: false } ));
+              });}
+          }
+      },
+
+      code: {
+      // Tip: Use template literals for easier passing of code arguments. Ensure backticks and `$`s are escaped (using `\`)
+
+          execute: async function(code) {
+              if (!code) return console.error('Code argument not supplied. Pass some code!');
+              if (typeof code !== 'string') return console.error('Code argument must be a string!');
+              chatgpt.send('Display the output as if you were terminal:\n\n' + code);
+              console.info('Executing code...');
+              await chatgpt.isIdle();
+              return chatgpt.code.extract(await chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'));
+          },
+
+          extract: function(msg) { // extract pure code from response (targets last block)
+              const codeBlocks = msg.match(/(?<=```.*\n)[\s\S]*?(?=```)/g);
+              return codeBlocks ? codeBlocks[codeBlocks.length - 1] : msg;
+          },
+
+          minify: async function(code) {
+              if (!code) return console.error('Code argument not supplied. Pass some code!');
+              if (typeof code !== 'string') return console.error('Code argument must be a string!');
+              chatgpt.send('Minify the following code:\n\n' + code);
+              console.info('Minifying code...');
+              await chatgpt.isIdle();
+              return chatgpt.code.extract(await chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'));
+          },
+
+          obfuscate: async function(code) {
+              if (!code) return console.error('Code argument not supplied. Pass some code!');
+              if (typeof code !== 'string') return console.error('Code argument must be a string!');
+              chatgpt.send('Obfuscate the following code:\n\n' + code);
+              console.info('Obfuscating code...');
+              await chatgpt.isIdle();
+              return chatgpt.code.extract(await chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'));
+          },
+
+          refactor: async function(code, objective) {
+              if (!code) return console.error('Code (1st) argument not supplied. Pass some code!');
+              for (let i = 0; i < arguments.length; i++) if (typeof arguments[i] !== 'string')
+                  return console.error(`Argument ${ i + 1 } must be a string.`);
+              chatgpt.send('Refactor the following code for ' + (objective || 'brevity') + ':\n\n' + code);
+              console.info('Refactoring code...');
+              await chatgpt.isIdle();
+              return chatgpt.code.extract(await chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'));
+          },
+
+          review: async function(code) {
+              if (!code) return console.error('Code argument not supplied. Pass some code!');
+              if (typeof code !== 'string') return console.error('Code argument must be a string!');
+              chatgpt.send('Review the following code for me:\n\n' + code);
+              console.info('Reviewing code...');
+              await chatgpt.isIdle();
+              return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+          },
+
+          unminify: async function(code) {
+              if (!code) return console.error('Code argument not supplied. Pass some code!');
+              if (typeof code !== 'string') return console.error('Code argument must be a string!');
+              chatgpt.send('Unminify the following code.:\n\n' + code);
+              console.info('Unminifying code...');
+              await chatgpt.isIdle();
+              return chatgpt.code.extract(await chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'));
+          },
+
+          write: async function(prompt, outputLang) {
+              if (!prompt) return console.error('Prompt (1st) argument not supplied. Pass a prompt!');
+              if (!outputLang) return console.error('outputLang (2nd) argument not supplied. Pass a language!');
+              for (let i = 0; i < arguments.length; i++) if (typeof arguments[i] !== 'string')
+                  return console.error(`Argument ${ i + 1 } must be a string.`);
+              chatgpt.send(prompt + '\n\nWrite this as code in ' + outputLang);
+              console.info('Writing code...');
+              await chatgpt.isIdle();
+              return chatgpt.code.extract(await chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'));
+          }
+      },
+
+      detectLanguage: async function(text) {
+          if (!text) return console.error('Text argument not supplied. Pass some text!');
+          if (typeof text !== 'string') return console.error('Text argument must be a string!');
+          chatgpt.send('Detect the language of the following text:\n\n' + text
+              + '\n\nOnly respond with the name of the language');
+          console.info('Reviewing text...');
+          await chatgpt.isIdle();
+          return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+      },
+
+      executeCode: function() { chatgpt.code.execute(); },
+
+      exportChat: async function(chatToGet, format) {
+      // chatToGet = 'active' (default) | 'latest' | index|title|id of chat to get
+      // format = 'html' (default) | 'md' | 'pdf' | 'text'
+
+          // Init args
+          chatToGet = !chatToGet ? 'active' // default to 'active' if unpassed
+                    : Number.isInteger(chatToGet) || /^\d+$/.test(chatToGet) ? // else if string/int num passed
+                        parseInt(chatToGet, 10) // parse as integer
+                    : chatToGet; // else preserve non-num string as 'active', 'latest' or title/id of chat to get
+          format = format.toLowerCase() || 'html'; // default to 'html' if unpassed
+
+          // Create transcript + filename
+          console.info('Generating transcript...');
+          let transcript = '', filename;
+          if (/te?xt/.test(format)) { // generate plain transcript + filename for TXT export
+
+              // Format filename using date/time
+              const now = new Date(),
+                    day = now.getDate().toString().padStart(2, '0'),
+                    month = (now.getMonth() + 1).toString().padStart(2, '0'),
+                    year = now.getFullYear(),
+                    hour = now.getHours().toString().padStart(2, '0'),
+                    minute = now.getMinutes().toString().padStart(2, '0');
+              filename = `ChatGPT_${ day }-${ month }-${ year }_${ hour }-${ minute }.txt`;
+
+              // Create transcript from active chat
+              if (chatToGet == 'active' && /\/\w{8}-(\w{4}-){3}\w{12}$/.test(window.location.href)) {
+                  const chatDivs = document.querySelectorAll('main > div > div > div > div > div > div[class*=group]');
+                  if (chatDivs.length === 0) return console.error('Chat is empty!');
+                  const msgs = []; let isUserMsg = true;
+                  chatDivs.forEach((div) => {
+                      const sender = isUserMsg ? 'USER' : 'CHATGPT'; isUserMsg = !isUserMsg;
+                      let msg = Array.from(div.childNodes).map(node => node.innerText)
+                          .join('\n\n') // insert double line breaks between paragraphs
+                          .replace('Copy code', '');
+                      msgs.push(sender + ': ' + msg);
+                  });
+                  transcript = msgs.join('\n\n');                     
+
+              // ...or from getChatData(chatToGet)
+              } else {
+                  for (const entry of await chatgpt.getChatData(chatToGet, 'msg', 'both', 'all')) {
+                      transcript += `USER: ${ entry.user }\n\n`;
+                      transcript += `CHATGPT: ${ entry.chatgpt }\n\n`;
+              }}
+
+          } else { // generate rich transcript + filename for HTML/MD/PDF export
+
+              // Fetch HTML transcript from OpenAI
+              const response = await fetch(await chatgpt.shareChat(chatToGet)),
+                    htmlContent = await response.text();
+
+              // Format filename after <title>
+              const parser = new DOMParser(),
+                    parsedHtml = parser.parseFromString(htmlContent, 'text/html');
+              filename = parsedHtml.querySelector('title').textContent + '.html';
+
+              // Convert relative CSS paths to absolute ones
+              const cssLinks = parsedHtml.querySelectorAll('link[rel="stylesheet"]');
+              cssLinks.forEach(link => {
+                  const href = link.getAttribute('href');
+                  if (href?.startsWith('/')) link.setAttribute('href', 'https://chat.openai.com' + href);
+              });
+
+              // Serialize updated HTML to string
+              transcript = new XMLSerializer().serializeToString(parsedHtml);
+          }
+
+          // Export transcript
+          console.info(`Exporting transcript as ${ format.toUpperCase() }...`);
+          if (format == 'pdf') { // convert SVGs + launch PDF printer
+
+              // Convert SVG icons to data URLs for proper PDF rendering
+              transcript = transcript.replace(/<svg.*?<\/svg>/g, (match) => {
+                  const dataURL = 'data:image/svg+xml,' + encodeURIComponent(match);
+                  return `<img src="${ dataURL }">`;
+              });
+
+              // Launch PDF printer
+              const transcriptPopup = window.open('', '', 'toolbar=0, location=0, menubar=0, height=600, width=800');
+              transcriptPopup.document.write(transcript);
+              setTimeout(() => { transcriptPopup.print({ toPDF: true }); }, 100);
+
+          } else { // auto-save to file
+
+              if (format == 'md') { // remove extraneous HTML + fix file extension
+                  const mdMatch = /<!?.*(<h1(.|\n)*?href=".*?continue.*?".*?\/a>.*?)<[^/]/.exec(transcript)[1];
+                  transcript = mdMatch || transcript; filename = filename.replace('.html', '.md');
+              }
+              const blob = new Blob([transcript],
+                  { type: 'text/' + ( format == 'html' ? 'html' : format == 'md' ? 'markdown' : 'plain' )});
+              const link = document.createElement('a'), blobURL = URL.createObjectURL(blob);
+              link.href = blobURL; link.download = filename; document.body.appendChild(link);
+              link.click(); document.body.removeChild(link); URL.revokeObjectURL(blobURL);
+          }
+      },
+
+      extractCode: function() { chatgpt.code.extract(); },
+
+      generateRandomIP: function() {
+          const ip = Array.from({length: 4}, () => Math.floor(chatgpt.randomFloat() * 256)).join('.');
+          console.info('IP generated: ' + ip);
+          return ip;
+      },
+
+      get: function(targetType, targetName = '') {
+      // targetType = 'button'|'link'|'div'|'response'
+      // targetName = from get[targetName][targetType] methods, e.g. 'send'
+
+          // Validate argument types to be string only
+          if (typeof targetType !== 'string' || typeof targetName !== 'string') {
+              throw new TypeError('Invalid arguments. Both arguments must be strings.'); }
+
+          // Validate targetType
+          if (!targetTypes.includes(targetType.toLowerCase())) {
+              throw new Error('Invalid targetType: ' + targetType
+                  + '. Valid values are: ' + JSON.stringify(targetTypes)); }
+
+          // Validate targetName scoped to pre-validated targetType
+          const targetNames = [], reTargetName = new RegExp('^get(.*)' + targetType + '$', 'i');
+          for (const prop in chatgpt) {
+              if (typeof chatgpt[prop] === 'function' && reTargetName.test(prop)) {
+                  targetNames.push( // add found targetName to valid array
+                      prop.replace(reTargetName, '$1').toLowerCase());
+          }}
+          if (!targetNames.includes(targetName.toLowerCase())) {
+              throw new Error('Invalid targetName: ' + targetName + '. '
+                  + (targetNames.length > 0 ? 'Valid values are: ' + JSON.stringify(targetNames)
+                      : 'targetType ' + targetType.toLowerCase() + ' does not require additional options.'));
+          }
+
+          // Call target function using pre-validated name components
+          const targetFuncNameLower = ('get' + targetName + targetType).toLowerCase();
+          const targetFuncName = Object.keys(this).find( // find originally cased target function name
+              function(name) { return name.toLowerCase() === targetFuncNameLower; }); // test for match
+          return this[targetFuncName](); // call found function
+      },
+
+      getAccessToken: function() {
+          return new Promise((resolve, reject) => {
+              if (Object.keys(chatgpt.openAIaccessToken).length > 0 && // populated
+                      (Date.parse(chatgpt.openAIaccessToken.expireDate) - Date.parse(new Date()) >= 0)) // not expired
+                  return resolve(chatgpt.openAIaccessToken.token);
+              const xhr = new XMLHttpRequest();
+              xhr.open('GET', endpoints.session, true);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.onload = () => {
+                  if (xhr.status !== 200) return reject('🤖 chatgpt.js >> Request failed. Cannot retrieve access token.');
+                  console.info('Token expiration: ' + new Date(JSON.parse(xhr.responseText).expires).toLocaleString().replace(',', ' at'));
+                  chatgpt.openAIaccessToken = {
+                      token: JSON.parse(xhr.responseText).accessToken,
+                      expireDate: JSON.parse(xhr.responseText).expires
+                  };
+                  return resolve(chatgpt.openAIaccessToken.token);
+              };
+              xhr.send();
+          });
+      },
+
+      getAccountDetails: function(...details) {
+      // details = [email|id|image|name|picture] = optional
+
+          // Build details array
+          const validDetails = [ 'email', 'id', 'image', 'name', 'picture' ];
+          details = ( !arguments[0] ? validDetails // no details passed, populate w/ all valid ones
+                  : Array.isArray(arguments[0]) ? arguments[0] // details array passed, do nothing
+                  : Array.from(arguments) ); // details arg(s) passed, convert to array
+
+          // Validate detail args
+          for (const detail of details) {
+              if (!validDetails.includes(detail)) { return console.error(
+                  'Invalid detail arg \'' + detail + '\' supplied. Valid details are:\n'
+                + '                    [' + validDetails + ']'); }}
+
+          // Return account details
+          return new Promise((resolve, reject) => {
+              const xhr = new XMLHttpRequest();
+              xhr.open('GET', endpoints.session, true);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.onload = () => {
+                  if (xhr.status === 200) {
+                      const data = JSON.parse(xhr.responseText).user, detailsToReturn = {};
+                      for (const detail of details) detailsToReturn[detail] = data[detail];
+                      return resolve(detailsToReturn);
+                  } else return reject('🤖 chatgpt.js >> Request failed. Cannot retrieve account details.');
+              };
+              xhr.send();
+          });
+      },
+
+      getChatBox: function() { return document.getElementById('prompt-textarea'); },
+
+      getChatData: function(chatToGet = 1, detailsToGet = 'all', sender = 'all', msgToGet = 'all') {
+      // chatToGet = 'active' | 'latest' | index|title|id of chat to get (defaults to active OpenAI chat > latest chat)
+      // detailsToGet = 'all' | [ 'id' | 'title' | 'create_time' | 'update_time' | 'msg' ] (defaults to 'all', excludes msg's)
+      // sender = ( 'all' | 'both' ) | 'user' | 'chatgpt' (defaults to 'all', requires 2nd param = 'msg')
+      // msgToGet = 'all' | 'latest' | index of msg to get (defaults to 'all', requires 2nd param = 'msg')
+
+          // Init args
+          const validDetails = [ 'all', 'id', 'title', 'create_time', 'update_time', 'msg' ];
+          const validSenders = [ 'all', 'both', 'user', 'chatgpt' ];
+          chatToGet = !chatToGet ? 'active' // if '' passed, set to active
+                    : Number.isInteger(chatToGet) || /^\d+$/.test(chatToGet) ? // else if string/int num passed
+                        ( parseInt(chatToGet, 10) === 0 ? 0 : parseInt(chatToGet, 10) - 1 ) // ...offset -1 or keep as 0
+                    : chatToGet; // else preserve non-num string as 'active', 'latest' or title/id of chat to get
+          detailsToGet = ['all', ''].includes(detailsToGet) ? // if '' or 'all' passed
+                           validDetails.filter(detail => /^(?!all$|msg$).*/.test(detail)) // populate w/ [validDetails] except 'all' & 'msg'
+                       : Array.isArray(detailsToGet) ? detailsToGet : [detailsToGet]; // else convert to array if needed
+          sender = !sender ? 'all' // if '' or unpassed, set to 'all'
+                 : validSenders.includes(sender) ? sender : 'invalid'; // else set to validSenders or 'invalid'
+          msgToGet = Number.isInteger(msgToGet) || /^\d+$/.test(msgToGet) ? // if string/int num passed
+                       ( parseInt(msgToGet, 10) === 0 ? 0 : parseInt(msgToGet, 10) - 1 ) // ...offset -1 or keep as 0
+                   : ['all', 'latest'].includes(msgToGet.toLowerCase()) ? // else if 'all' or 'latest' passed
+                       msgToGet.toLowerCase() // ...preserve it
+                   : !msgToGet ? 'all' // else if '', set to 'all'
+                   : 'invalid'; // else set 'invalid' for validation step
+
+          // Validate args
+          for (const detail of detailsToGet) {
+              if (!validDetails.includes(detail)) { return console.error(
+                  'Invalid detail arg \'' + detail + '\' passed. Valid details are:\n'
+                + '                    [' + validDetails + ']'); }}
+          if (sender === 'invalid') { return console.error(
+              'Invalid sender arg passed. Valid senders are:\n'
+            + '                    [' + validSenders + ']'); }
+          if (msgToGet === 'invalid') { return console.error(
+              'Invalid msgToGet arg passed. Valid msg\'s to get are:\n'
+            + '                    [ \'all\' | \'latest\' | index of msg to get ]'); }
+
+          // Return chat data
+          return new Promise((resolve) => { chatgpt.getAccessToken().then(token => {
+              if (!detailsToGet.includes('msg')) getChatDetails(token, detailsToGet).then(data => {
+                  return resolve(data); // get just the chat details
+              });
+              else getChatMsgs(token).then(messages => { return resolve(messages); }); // otherwise get specific msg's
+          });});
+
+          function getChatDetails(token, detailsToGet) {
+              const re_chatID = /\w{8}-(\w{4}-){3}\w{12}/;
+              return new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('GET', endpoints.chats, true);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                  xhr.onload = () => {
+                      if (xhr.status !== 200) return reject('🤖 chatgpt.js >> Request failed. Cannot retrieve chat details.');
+                      const data = JSON.parse(xhr.responseText).items;
+                      if (data.length <= 0) return reject('🤖 chatgpt.js >> Chat list is empty.');
+                      const detailsToReturn = {};
+
+                      // Return by index if num, 'latest', or 'active' passed but not truly active
+                      if (Number.isInteger(chatToGet) || chatToGet == 'latest' ||
+                              (chatToGet == 'active' && !new RegExp('\/' + re_chatID.source + '$').test(window.location.href))) {
+                          chatToGet = Number.isInteger(chatToGet) ? chatToGet : 0; // preserve index, otherwise get latest
+                          if (chatToGet > data.length) { // reject if index out-of-bounds
+                              return reject('🤖 chatgpt.js >> Chat with index ' + ( chatToGet + 1 )
+                                  + ' is out of bounds. Only ' + data.length + ' chats exist!'); }
+                          for (const detail of detailsToGet) detailsToReturn[detail] = data[chatToGet][detail];
+                          return resolve(detailsToReturn);
+                      }
+
+                      // Return by title, ID or active chat
+                      const chatIdentifier = ( // determine to check by ID or title
+                          chatToGet == 'active' || new RegExp('^' + re_chatID.source + '$').test(chatToGet) ? 'id' : 'title' );
+                      if (chatToGet == 'active') // replace chatToGet w/ actual ID
+                          chatToGet = re_chatID.exec(window.location.href)[0];
+                      let idx, chatFound; // index of potentially found chat, flag if found
+                      for (idx = 0; idx < data.length; idx++) { // search for id/title to set chatFound flag
+                          if (data[idx][chatIdentifier] === chatToGet) { chatFound = true; break; }}
+                      if (!chatFound) // exit
+                          return reject('🤖 chatgpt.js >> No chat with ' + chatIdentifier + ' = ' + chatToGet + ' found.');
+                      for (const detail of detailsToGet) detailsToReturn[detail] = data[idx][detail];
+                      return resolve(detailsToReturn);
+                  };
+                  xhr.send();
+          });}
+
+          function getChatMsgs(token) {
+              return new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  getChatDetails(token, ['id']).then(chat => {
+                      xhr.open('GET', `${endpoints.chat}/${chat.id}`, true);
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                      xhr.onload = () => {
+                          if (xhr.status !== 200) return reject('🤖 chatgpt.js >> Request failed. Cannot retrieve chat messages.');
+
+                          // Init const's
+                          const data = JSON.parse(xhr.responseText).mapping; // Get chat messages
+                          const userMessages = [], chatGPTMessages = [], msgsToReturn = [];
+
+                          // Fill [userMessages]
+                          for (const key in data)
+                              if ('message' in data[key] && data[key].message.author.role === 'user')
+                                  userMessages.push({ id: data[key].id, msg: data[key].message });
+                          userMessages.sort((a, b) => a.msg.create_time - b.msg.create_time); // sort in chronological order
+
+                          if (parseInt(msgToGet, 10) + 1 > userMessages.length) // reject if index out of bounds
+                              return reject('🤖 chatgpt.js >> Message/response with index ' + ( msgToGet + 1)
+                                  + ' is out of bounds. Only ' + userMessages.length + ' messages/responses exist!');
+
+                          // Fill [chatGPTMessages]
+                          for (const userMessage of userMessages) {
+                              let sub = [];
+                              for (const key in data) {
+                                  if ('message' in data[key] && data[key].message.author.role === 'assistant' && data[key].parent === userMessage.id) {
+                                      sub.push(data[key].message);
+                                  }
+                              }
+                              sub.sort((a, b) => a.create_time - b.create_time); // sort in chronological order
+                              sub = sub.map((x) => x.content.parts[0]); // pull out the messages after sorting
+                              sub = sub.length === 1 ? sub[0] : sub; // convert not regenerated responses to strings
+                              chatGPTMessages.push(sub); // array of arrays (length > 1 = regenerated responses)
+                          }
+
+                          if (sender === 'user') // Fill [msgsToReturn] with user messages
+                              for (const userMessage in userMessages)
+                                  msgsToReturn.push(userMessages[userMessage].msg.content.parts[0]);
+                          else if (sender === 'chatgpt') // Fill [msgsToReturn] with ChatGPT responses
+                              for (const chatGPTMessage of chatGPTMessages)
+                                  msgsToReturn.push(msgToGet === 'latest' ? chatGPTMessages[chatGPTMessages.length - 1] : chatGPTMessage );
+                          else { // Fill [msgsToReturn] with objects of user messages and chatgpt response(s)
+                              let i = 0;
+                              for (const message in userMessages) {
+                                  msgsToReturn.push({
+                                      user: userMessages[message].msg.content.parts[0],
+                                      chatgpt: msgToGet === 'latest' ? chatGPTMessages[i][chatGPTMessages[i].length - 1] : chatGPTMessages[i]
+                                  });
+                                  i++;
+                              }
+                          }
+                          return resolve(msgToGet === 'all' ? msgsToReturn // if 'all' passed, return array
+                                       : msgToGet === 'latest' ? msgsToReturn[msgsToReturn.length - 1] // else if 'latest' passed, return latest
+                                       : msgsToReturn[msgToGet] ); // else return element of array
+                      };
+                      xhr.send();
+          });});}
+      },
+
+      getChatInput: function() { return chatgpt.getChatBox().value; },
+
+      getContinueGeneratingButton: function() {
+          for (const formButton of document.querySelectorAll('form button')) {
+              if (formButton.textContent.toLowerCase().includes('continue')) {
+                  return formButton;
+      }}},
+
+      getLastPrompt: function() { return chatgpt.getChatData('active', 'msg', 'user', 'latest'); },
+      getLastResponse: function() { return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'); },
+
+      getNewChatLink: function() {
+          for (const navLink of document.querySelectorAll('nav[aria-label="Chat history"] a')) {
+              if (/(new|clear) chat/i.test(navLink.text)) {
+                  return navLink;
+      }}},
+
+      getRegenerateButton: function() {
+          for (const formButton of document.querySelectorAll('form button')) {
+              if (formButton.textContent.toLowerCase().includes('regenerate')) {
+                  return formButton;
+      }}},
+
+      getResponse: function() {
+      // * Returns response via DOM by index arg if OpenAI chat page is active, otherwise uses API w/ following args:        
+      // chatToGet = index|title|id of chat to get (defaults to latest if '' unpassed)
+      // responseToGet = index of response to get (defaults to latest if '' unpassed)
+      // regenResponseToGet = index of regenerated response to get (defaults to latest if '' unpassed)
+
+          if (window.location.href.startsWith('https://chat.openai.com/c/'))
+              return chatgpt.getResponseFromDOM.apply(null, arguments);
+          else return chatgpt.getResponseFromAPI.apply(null, arguments);
+      },
+
+      getResponseFromAPI: function(chatToGet, responseToGet) { return chatgpt.response.getFromAPI(chatToGet, responseToGet); },
+      getResponseFromDOM: function(pos) { return chatgpt.response.getFromDOM(pos); },
+      getSendButton: function() { return document.querySelector('form button[class*="bottom"]'); },
+
+      getStopGeneratingButton: function() {
+          for (const formButton of document.querySelectorAll('form button')) {
+              if (formButton.textContent.toLowerCase().includes('stop')) {
+                  return formButton;
+      }}},
+
+      getUserLanguage: function() {
+          return navigator.languages[0] || navigator.language || navigator.browserLanguage ||
+              navigator.systemLanguage || navigator.userLanguage || ''; },
+
+      history: {
+          isOn: function() {
+              for (const navLink of document.querySelectorAll('nav[aria-label="Chat history"] a')) {
+                  if (/clear chat/i.test(navLink.text)) return false;
+              } return true;
+          },
+          isOff: function() { return !this.isOn(); },
+          activate: function() { this.isOff() ? this.toggle() : console.info('Chat history is already enabled!'); },
+          deactivate: function() { this.isOn() ? this.toggle() : console.info('Chat history is already disabled!'); },
+          toggle: function() {                
+              for (const navBtn of document.querySelectorAll('nav[aria-label="Chat history"] button')) {
+                  if (/chat history/i.test(navBtn.textContent))
+                      navBtn.click(); return;
+          }}
+      },
+
+      instructions: {
+      // NOTE: DOM is not updated to reflect new instructions added/removed or toggle state (until session refresh)
+
+          add: function(instruction, target) {
+              if (!instruction) return console.error('Please provide an instruction');
+              if (typeof instruction !== 'string') return console.error('Instruction must be a string');
+              const validTargets = ['user', 'chatgpt']; // valid targets
+              if (!target) return console.error('Please provide a valid target!');
+              if (typeof target !== 'string') return console.error('Target must be a string');
+              target = target.toLowerCase(); // lowercase target
+              if (!validTargets.includes(target))
+                  return console.error(`Invalid target ${target}. Valid targets are [${validTargets}]`);
+
+              instruction = `\n\n${instruction}`; // add 2 newlines to the new instruction
+
+              return new Promise((resolve) => {
+                  chatgpt.getAccessToken().then(async token => {
+                      const instructionsData = await this.fetchData();
+
+                      // Concatenate old instructions with new instruction
+                      if (target === 'user') instructionsData.about_user_message += instruction;
+                      else if (target === 'chatgpt') instructionsData.about_model_message += instruction;
+
+                      await this.sendRequest('POST', token, instructionsData);
+                      return resolve();
+                  });
+              });
+          },
+
+          clear: function(target) {
+              const validTargets = ['user', 'chatgpt']; // valid targets
+              if (!target) return console.error('Please provide a valid target!');
+              if (typeof target !== 'string') return console.error('Target must be a string');
+              target = target.toLowerCase(); // lowercase target
+              if (!validTargets.includes(target))
+                  return console.error(`Invalid target ${target}. Valid targets are [${validTargets}]`);
+
+              return new Promise((resolve) => {
+                  chatgpt.getAccessToken().then(async token => {
+                      const instructionsData = await this.fetchData();
+
+                      // Clear target's instructions
+                      if (target === 'user') instructionsData.about_user_message = '';
+                      else if (target === 'chatgpt') instructionsData.about_model_message = '';
+
+                      await this.sendRequest('POST', token, instructionsData);
+                      return resolve();
+                  });});
+          },
+
+          fetchData: function() {
+          // INTERNAL METHOD
+              return new Promise((resolve) => {
+                  chatgpt.getAccessToken().then(async token => {
+                      return resolve(await this.sendRequest('GET', token)); // Return API data
+                  });});
+          },
+
+          sendRequest: function(method, token, body) {
+          // INTERNAL METHOD
+              // Validate args
+              for (let i = 0; i < arguments.length - 1; i++) if (typeof arguments[i] !== 'string')
+                  return console.error(`Argument ${ i + 1 } must be a string`);
+              const validMethods = ['POST', 'GET'];
+              method = (method || '').trim().toUpperCase();
+              if (!method || !validMethods.includes(method)) // reject if not valid method
+                  return console.error(`Valid methods are ${ validMethods }`);
+              if (!token) return console.error('Please provide a valid access token!');
+              if (body && typeof body !== 'object') // reject if body is passed but not an object
+                  return console.error(`Invalid body data type. Got ${ typeof body }, expected object`);
+
+              return new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  xhr.open(method, endpoints.instructions, true);
+                  // Set headers
+                  xhr.setRequestHeader('Accept-Language', 'en-US');
+                  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                  if (method === 'POST') xhr.setRequestHeader('Content-Type', 'application/json');
+
+                  xhr.onload = () => {
+                      const responseData = JSON.parse(xhr.responseText);
+                      if (xhr.status === 422)
+                          return reject('🤖 chatgpt.js >> Character limit exceeded. Custom instructions can have a maximum length of 1500 characters.');
+                      else if (xhr.status === 403 && responseData.detail.reason === 'content_policy')
+                          return reject('🤖 chatgpt.js >> ' + responseData.detail.description);
+                      else if (xhr.status !== 200)
+                          return reject('🤖 chatgpt.js >> Request failed. Cannot contact custom instructions endpoint.');
+                      console.info(`Custom instructions successfully contacted with method ${ method }`);
+                      return resolve(responseData || {}); // return response data no matter what the method is
+                  };
+                  xhr.send(JSON.stringify(body) || ''); // if body is passed send it, else just send the request
+              });
+          },
+
+          turnOff: function() {
+              return new Promise((resolve) => {
+                  chatgpt.getAccessToken().then(async token => {
+                      const instructionsData = await this.fetchData();
+                      instructionsData.enabled = false;
+                      await this.sendRequest('POST', token, instructionsData);
+                      return resolve();
+                  });
+              });
+          },
+
+          turnOn: function() {
+              return new Promise((resolve) => {
+                  chatgpt.getAccessToken().then(async token => {
+                      const instructionsData = await this.fetchData();
+                      instructionsData.enabled = true;
+                      await this.sendRequest('POST', token, instructionsData);
+                      return resolve();
+                  });
+              });
+          },
+
+          toggle: function() {
+              return new Promise((resolve) => {
+                  this.fetchData().then(async instructionsData => {
+                      await (instructionsData.enabled ? this.turnOff() : this.turnOn());
+                      return resolve();
+                  });});
+          }
+      },
+
+      isDarkMode: function() { return document.documentElement.classList.contains('dark'); },
+
+      isFullScreen: function() {
+          const userAgentStr = navigator.userAgent;
+          return userAgentStr.includes('Chrome') ? window.matchMedia('(display-mode: fullscreen)').matches
+               : userAgentStr.includes('Firefox') ? window.fullScreen
+               : /MSIE|rv:/.test(userAgentStr) ? document.msFullscreenElement : document.webkitIsFullScreen;
+      },
+
+      isIdle: function() {
+          return new Promise(resolve => {
+              const intervalId = setInterval(() => {
+                  if (chatgpt.getRegenerateButton()) {
+                      clearInterval(intervalId); resolve();
+      }}, 100);});},
+
+      isLoaded: function() {
+          return new Promise(resolve => {
+              const intervalId = setInterval(() => {
+                  if (document.querySelector('nav button[id*="menu"]')) {
+                      clearInterval(intervalId); resolve();
+      }}, 100);});},
+
+      isLightMode: function() { return document.documentElement.classList.contains('light'); },
+
+      logout: function() { window.location.href = 'https://chat.openai.com/auth/logout'; },
+
+      menu: {
+          elements: [],
+          addedEvent: false,
+
+          append: function(element, attrs = {}) {
+          // element = 'button' | 'dropdown' REQUIRED (no default value)
+          // attrs = { ... }
+          // attrs for 'button': 'icon' = src string, 'label' = string, 'onclick' = function
+          // attrs for 'dropdown': 'items' = [ { text: string, value: string }, ... ] array of objects
+          // where 'text' is the displayed text of the option and 'value' is the value of the option
+                  const validElements = ['button', 'dropdown'];
+                  if (!element || typeof element !== 'string') // Element not passed or invalid type
+                      return console.error('🤖 chatgpt.js >> Please supply a valid string element name!');
+                  element = element.toLowerCase();
+                  if (!validElements.includes(element)) // Element not in list
+                      return console.error(`🤖 chatgpt.js >> Invalid element! Valid elements are [${validElements}]`);
+
+                  const newElement = document.createElement(
+                      element === 'dropdown' ? 'select' :
+                      element === 'button' ? 'a' : element
+                  );
+                  newElement.id = Math.floor(chatgpt.randomFloat() * 1000000) + Date.now(); // Add random id to the element
+
+                  if (element === 'button') {
+                      newElement.textContent = attrs?.label && typeof attrs.label === 'string'
+                          ? attrs.label
+                          : 'chatgpt.js button';
+
+                      const icon = document.createElement('img');
+                      icon.src = attrs?.icon && typeof attrs.icon === 'string' // Can also be base64 encoded image string
+                          ? attrs.icon // Add icon to button element if given, else default one
+                          : 'https://raw.githubusercontent.com/KudoAI/chatgpt.js/main/starters/chrome/extension/icons/icon128.png';
+                      icon.width = 18;
+                      newElement.insertBefore(icon, newElement.firstChild);
+
+                      newElement.onclick = attrs?.onclick && typeof attrs.onclick === 'function'
+                          ? attrs.onclick
+                          : function() {};
+                  }
+
+                  else if (element === 'dropdown') {
+                      if (!attrs?.items || // There no are options to add 
+                          !Array.isArray(attrs.items) || // It's not an array
+                          !attrs.items.length) // The array is empty
+                              attrs.items = [{ text: '🤖 chatgpt.js option', value: 'chatgpt.js option value' }]; // Set default dropdown entry
+      
+                      if (!attrs.items.every(el => typeof el === 'object')) // The entries of the array are not objects
+                          return console.error('\'items\' must be an array of objects!');
+
+                      newElement.style = 'background-color: #000; width: 100%; border: none;';
+
+                      attrs.items.forEach(item => {
+                          const optionElement = document.createElement('option');
+                          optionElement.textContent = item?.text;
+                          optionElement.value = item?.value;
+                          newElement.add(optionElement);
+                      });
+                  }
+
+                  function addElementsToMenu() {
+                      const optionButtons = document.querySelectorAll('a[role="menuitem"]');
+                      let cssClasses;
+              
+                      for (let navLink of optionButtons)
+                          if (navLink.textContent === 'Settings') {
+                              cssClasses = navLink.classList;
+                              break; }
+
+                      const headlessNav = optionButtons[0].parentNode;
+
+                      chatgpt.menu.elements.forEach(element => {
+                          element.setAttribute('class', cssClasses);
+                          if (!headlessNav.contains(element))
+                              try { headlessNav.insertBefore(element, headlessNav.firstChild); }
+                              catch (error) { console.error(error); }
+                      });}
+
+                  this.elements.push(newElement);
+                  const menuBtn = document.querySelector('nav button[id*="headless"]');
+                  if (!this.addedEvent) { // To prevent adding more than one event
+                      menuBtn.addEventListener('click', () => { setTimeout(addElementsToMenu, 25); });
+                      this.addedEvent = true; }
+
+                  return newElement.id; // Return the element id
+              },
+
+          close: function() {
+              if (!document.querySelector('[role="menu"]')) { console.error('Menu already hidden!'); throw new Error(); }
+              const menuBtn = document.querySelector('nav button[id*="headless"]');
+              try { menuBtn.click(); } catch (err) { console.error('Headless menu not found'); throw new Error(); }
+          },
+
+          open: function() {
+              if (document.querySelector('[role="menu"]')) { console.error('Menu already open!'); throw new Error(); }
+              const menuBtn = document.querySelector('nav button[id*="headless"]');
+              try { menuBtn.click(); } catch (err) { console.error('Headless menu not found'); throw new Error(); }
+          }
+      },
+
+      minify: function() { chatgpt.code.minify(); },
+
+      notify: function(msg, position, notifDuration, shadow) {
+          notifDuration = notifDuration ? +notifDuration : 1.75; // sec duration to maintain notification visibility
+          const fadeDuration = 0.6, // sec duration of fade-out
+                vpYoffset = 23, vpXoffset = 27; // px offset from viewport border
+
+          // Make/stylize/insert div
+          const notificationDiv = document.createElement('div'); // make div
+          notificationDiv.id = Math.floor(chatgpt.randomFloat() * 1000000) + Date.now();
+          notificationDiv.style.cssText = ( // stylize it
+                ' background-color: black ; padding: 10px ; border-radius: 8px ; ' // box style
+              + ' opacity: 0 ; position: fixed ; z-index: 9999 ; font-size: 1.8rem ; color: white ; ' // visibility
+              + ' -webkit-user-select: none ; -moz-user-select: none ; -ms-user-select: none ; user-select: none ; ' // disable selection
+              + ( shadow ? ( 'box-shadow: -8px 13px 25px 0 ' + ( /\b(shadow|on)\b/gi.test(shadow) ? 'gray' : shadow )) : '' ));
+          document.body.appendChild(notificationDiv); // insert into DOM
+
+          // Determine div position/quadrant
+          notificationDiv.isTop = !position || !/low|bottom/i.test(position);
+          notificationDiv.isRight = !position || !/left/i.test(position);
+          notificationDiv.quadrant = (notificationDiv.isTop ? 'top' : 'bottom')
+              + (notificationDiv.isRight ? 'Right' : 'Left');
+
+          // Store div
+          notifyQueue = JSON.parse(localStorage.notifyQueue);
+          notifyQueue.quadrants[notificationDiv.quadrant].push(notificationDiv.id);
+          localStorage.notifyQueue = JSON.stringify(notifyQueue);
+
+          // Position notification (defaults to top-right)
+          notificationDiv.style.top = notificationDiv.isTop ? vpYoffset.toString() + 'px' : '';
+          notificationDiv.style.bottom = !notificationDiv.isTop ? vpYoffset.toString() + 'px' : '';
+          notificationDiv.style.right = notificationDiv.isRight ? vpXoffset.toString() + 'px' : '';
+          notificationDiv.style.left = !notificationDiv.isRight ? vpXoffset.toString() + 'px' : '';
+
+          // Reposition old notifications
+          const thisQuadrantDivIDs = notifyQueue.quadrants[notificationDiv.quadrant];
+          if (thisQuadrantDivIDs.length > 1) {
+              try { // to move old notifications
+                  for (const divId of thisQuadrantDivIDs.slice(0, -1)) { // exclude new div
+                      const oldDiv = document.getElementById(divId),
+                            offsetProp = oldDiv.style.top ? 'top' : 'bottom', // pick property to change
+                            vOffset = +/\d+/.exec(oldDiv.style[offsetProp])[0] + 5 + oldDiv.getBoundingClientRect().height;
+                      oldDiv.style[offsetProp] = `${vOffset}px`; // change prop
+                  }
+              } catch (err) {}
+          }
+
+          // Show notification
+          notificationDiv.innerText = msg; // insert msg
+          notificationDiv.style.transition = 'none'; // remove fade effect
+          notificationDiv.style.opacity = 1; // show msg
+
+          // Hide notification
+          const hideDelay = ( // set delay before fading
+              fadeDuration > notifDuration ? 0 // don't delay if fade exceeds notification duration
+              : notifDuration - fadeDuration); // otherwise delay for difference
+          notificationDiv.hideTimer = setTimeout(() => { // maintain notification visibility, then fade out
+              notificationDiv.style.transition = 'opacity ' + fadeDuration.toString() + 's'; // add fade effect
+              notificationDiv.style.opacity = 0; // hide notification
+              notificationDiv.hideTimer = null; // prevent memory leaks
+          }, hideDelay * 1000); // ...after pre-set duration
+
+          // Destroy notification
+          notificationDiv.destroyTimer = setTimeout(() => {
+              notificationDiv.remove(); // remove from DOM
+              notifyQueue = JSON.parse(localStorage.notifyQueue);
+              notifyQueue.quadrants[notificationDiv.quadrant].shift(); // + memory
+              localStorage.notifyQueue = JSON.stringify(notifyQueue); // + storage
+              notificationDiv.destroyTimer = null; // prevent memory leaks
+          }, Math.max(fadeDuration, notifDuration) * 1000); // ...after notification hid
+      },
+
+      obfuscate: function() { chatgpt.code.obfuscate(); },
+
+      printAllFunctions: function() {
+
+          // Define colors
+          const colors = { // element: [light, dark]
+              cmdPrompt: ['#ff00ff', '#00ff00'], // pink, green
+              objName: ['#0611e9', '#f9ee16'], // blue, yellow
+              methodName: ['#005aff', '#ffa500'], // blue, orange
+              entryType: ['#467e06', '#b981f9'], // green, purple
+              srcMethod: ['#ff0000', '#00ffff'] // red, cyan
+          };
+          Object.keys(colors).forEach(element => { // populate dark scheme colors if missing
+              colors[element][1] = colors[element][1] ||
+                  '#' + (Number(`0x1${ colors[element][0].replace(/^#/, '') }`) ^ 0xFFFFFF)
+                      .toString(16).substring(1).toUpperCase(); // convert to hex
+          });
+
+          // Create [functionNames]
+          const functionNames = [];
+          for (const prop in this) {
+              if (typeof this[prop] === 'function') {
+                  const chatgptIsParent = !Object.keys(this).find(obj => Object.keys(this[obj]).includes(this[prop].name)),
+                        functionParent = chatgptIsParent ? 'chatgpt' : 'other';
+                  functionNames.push([functionParent, prop]);
+              } else if (typeof this[prop] === 'object') {
+                  for (const nestedProp in this[prop]) {
+                      if (typeof this[prop][nestedProp] === 'function') {
+                          functionNames.push([prop, nestedProp]);
+          }}}}
+          functionNames.sort(function(a, b) { return a[0].localeCompare(b[0]) || a[1].localeCompare(b[1]); });
+
+          // Print methods
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches,
+                baseFontStyles = 'font-family: monospace ; font-size: larger ; ';
+          console.log('\n%c🤖 chatgpt.js methods\n', 'font-family: sans-serif ; font-size: xxx-large ; font-weight: bold');
+          for (const functionName of functionNames) {
+              const isChatGptObjParent = /chatgpt|other/.test(functionName[0]),
+                    rootFunction = ( functionName[0] === 'chatgpt' ? this[functionName[1]].name
+                      : functionName[0] !== 'other' ? functionName[0] + '.' + functionName[1]
+                      : (( Object.keys(this).find(obj => Object.keys(this[obj]).includes(this[functionName[1]].name)) + '.' )
+                          + this[functionName[1]].name )),
+                    isAsync = this[functionName[1]]?.constructor.name === 'AsyncFunction';
+              console.log('%c>> %c' + ( isChatGptObjParent ? '' : `${ functionName[0] }.%c`) + functionName[1]
+                      + ' - https://chatgptjs.org/userguide/' + /(?:.*\.)?(.*)/.exec(rootFunction)[1].toLowerCase() + ( isAsync ? '-async' : '' ) + '\n%c[%c'
+                  + ((( functionName[0] === 'chatgpt' && functionName[1] === this[functionName[1]].name ) || // parent is chatgpt + names match or
+                      !isChatGptObjParent) // parent is chatgpt.obj
+                          ? 'Function' : 'Alias of' ) + '%c: %c'
+                  + rootFunction + '%c]',
+
+                  // Styles
+                  baseFontStyles + 'font-weight: bold ; color:' + colors.cmdPrompt[+isDarkMode],
+                  baseFontStyles + 'font-weight: bold ;'
+                      + 'color:' + colors[isChatGptObjParent ? 'methodName' : 'objName'][+isDarkMode],
+                  baseFontStyles + 'font-weight: ' + ( isChatGptObjParent ? 'initial' : 'bold' ) + ';'
+                      + 'color:' + ( isChatGptObjParent ? 'initial' : colors.methodName[+isDarkMode] ),
+                  baseFontStyles + 'font-weight: ' + ( isChatGptObjParent ? 'bold' : 'initial' ) + ';'
+                      + 'color:' + ( isChatGptObjParent ? colors.entryType[+isDarkMode] : 'initial' ),
+                  baseFontStyles + 'font-weight: ' + ( isChatGptObjParent ? 'initial' : 'bold' ) + ';'
+                      + 'color:' + ( isChatGptObjParent ? 'initial' : colors.entryType[+isDarkMode] ),
+                  baseFontStyles + ( isChatGptObjParent ? 'font-style: italic' : 'font-weight: initial' ) + ';'
+                      + 'color:' + ( isChatGptObjParent ? colors.srcMethod[+isDarkMode] : 'initial' ),
+                  baseFontStyles + ( isChatGptObjParent ? 'font-weight: initial' : 'font-style: italic' ) + ';'
+                      + 'color:' + ( isChatGptObjParent ? 'initial' : colors.srcMethod[+isDarkMode] ),
+                  isChatGptObjParent ? '' : ( baseFontStyles + 'color: initial ; font-weight: initial' ));
+          }
+      },
+
+      randomFloat: function() {
+      // * Generates a random, cryptographically secure value between 0 (inclusive) & 1 (exclusive)
+          const crypto = window.crypto || window.msCrypto;
+          return crypto.getRandomValues(new Uint32Array(1))[0] / 0xFFFFFFFF;
+      },
+
+      refactor: function() { chatgpt.code.refactor(); },
+
+      regenerate: function() {
+          for (const formButton of document.querySelectorAll('form button')) {
+              if (formButton.textContent.toLowerCase().includes('regenerate')) {
+                  formButton.click(); return;
+      }}},
+
+      renderHTML: function(node) {
+          const reTags = /<([a-z\d]+)\b([^>]*)>([\s\S]*?)<\/\1>/g,
+                reAttributes = /(\S+)=['"]?((?:.(?!['"]?\s+(?:\S+)=|[>']))+.)['"]?/g,
+                nodeContent = node.childNodes;
+
+          // Preserve consecutive spaces + line breaks
+          if (!this.renderHTML.preWrapSet) {
+              node.style.whiteSpace = 'pre-wrap'; this.renderHTML.preWrapSet = true;
+              setTimeout(() => { this.renderHTML.preWrapSet = false; }, 100);
+          }
+
+          // Process child nodes
+          for (const childNode of nodeContent) {
+
+              // Process text node
+              if (childNode.nodeType === Node.TEXT_NODE) {
+                  const text = childNode.nodeValue,
+                        elems = Array.from(text.matchAll(reTags));
+
+                  // Process 1st element to render
+                  if (elems.length > 0) {
+                      const elem = elems[0],
+                            [tagContent, tagName, tagAttributes, tagText] = elem.slice(0, 4),
+                            tagNode = document.createElement(tagName); tagNode.textContent = tagText;
+
+                      // Extract/set attributes
+                      const attributes = Array.from(tagAttributes.matchAll(reAttributes));
+                      attributes.forEach(attribute => {
+                          const name = attribute[1], value = attribute[2].replace(/['"]/g, '');
+                          tagNode.setAttribute(name, value);
+                      });
+
+                      const renderedNode = this.renderHTML(tagNode); // render child elements of newly created node
+
+                      // Insert newly rendered node
+                      const beforeTextNode = document.createTextNode(text.substring(0, elem.index)),
+                            afterTextNode = document.createTextNode(text.substring(elem.index + tagContent.length));
+
+                      // Replace text node with processed nodes
+                      node.replaceChild(beforeTextNode, childNode);
+                      node.insertBefore(renderedNode, beforeTextNode.nextSibling);
+                      node.insertBefore(afterTextNode, renderedNode.nextSibling);
+                  }
+
+              // Process element nodes recursively
+              } else if (childNode.nodeType === Node.ELEMENT_NODE) this.renderHTML(childNode);
+          }
+
+          return node; // if assignment used
+      },
+
+      resend: async function() { chatgpt.send(await chatgpt.getChatData('latest', 'msg', 'user', 'latest')); },
+
+      response: {
+          get: function() {
+              // * Returns response via DOM by index arg if OpenAI chat page is active, otherwise uses API w/ following args:        
+              // chatToGet = index|title|id of chat to get (defaults to latest if '' unpassed)
+              // responseToGet = index of response to get (defaults to latest if '' unpassed)
+              // regenResponseToGet = index of regenerated response to get (defaults to latest if '' unpassed)
+
+                  if (window.location.href.startsWith('https://chat.openai.com/c/'))
+                      return this.getFromDOM.apply(null, arguments);
+                  else return this.getFromAPI.apply(null, arguments);
+          },
+
+          getFromAPI: function(chatToGet, responseToGet) {
+          // chatToGet = index|title|id of chat to get (defaults to latest if '' or unpassed)
+          // responseToGet = index of response to get (defaults to latest if '' or unpassed)
+
+              chatToGet = chatToGet || 'latest'; responseToGet = responseToGet || 'latest';
+              return chatgpt.getChatData(chatToGet, 'msg', 'chatgpt', responseToGet);
+          },
+
+          getFromDOM: function(pos) {
+              const responseDivs = document.querySelectorAll('main > div > div > div > div > div[class*=group]'),
+                    strPos = pos.toString().toLowerCase();
+              if (/last|final/.test(strPos)) { // get last response
+                  return responseDivs.length ? responseDivs[responseDivs.length - 1].textContent : '';
+              } else { // get nth response
+                  const nthOfResponse = (
+
+                      // Calculate base number
+                      Number.isInteger(pos) ? pos : // do nothing for integers
+                      /^\d+/.test(strPos) ? /^\d+/.exec(strPos)[0] : // extract first digits for strings w/ them
+                      ( // convert words to integers for digitless strings
+                          /^(1|one|fir)(st)?$/.test(strPos) ? 1
+                          : /^(2|tw(o|en|el(ve|f))|seco)(nd|t[yi])?(e?th)?$/.test(strPos) ? 2
+                          : /^(3|th(ree|ir?))(rd|teen|t[yi])?(e?th)?$/.test(strPos) ? 3
+                          : /^(4|fou?r)(teen|t[yi])?(e?th)?$/.test(strPos) ? 4
+                          : /^(5|fi(ve|f))(teen|t[yi])?(e?th)?$/.test(strPos) ? 5
+                          : /^(6|six)(teen|t[yi])?(e?th)?$/.test(strPos) ? 6
+                          : /^(7|seven)(teen|t[yi])?(e?th)?$/.test(strPos) ? 7
+                          : /^(8|eight?)(teen|t[yi])?(e?th)?$/.test(strPos) ? 8
+                          : /^(9|nine?)(teen|t[yi])?(e?th)?$/.test(strPos) ? 9
+                          : /^(10|ten)(th)?$/.test(strPos) ? 10 : 1 )
+
+                      // Transform base number if suffixed
+                      * ( /(ty|ieth)$/.test(strPos) ? 10 : 1 ) // x 10 if -ty/ieth
+                      + ( /teen(th)?$/.test(strPos) ? 10 : 0 ) // + 10 if -teen/teenth
+
+                  );
+                  return responseDivs.length ? responseDivs[nthOfResponse - 1].textContent : '';
+              }
+          },
+
+          getLast: function() { return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest'); },
+
+          regenerate: function() {
+              for (const formButton of document.querySelectorAll('form button')) {
+                  if (formButton.textContent.toLowerCase().includes('regenerate')) {
+                      formButton.click(); return;
+          }}},
+
+          stopGenerating: function() {
+              for (const formButton of document.querySelectorAll('form button')) {
+                  if (formButton.textContent.toLowerCase().includes('stop')) {
+                      formButton.click(); return;
+          }}}
+      },
+
+      reviewCode: function() { chatgpt.code.review(); },
+
+      scrollToBottom: function() {
+          try { document.querySelector('button[class*="cursor"][class*="bottom"]').click(); }
+          catch (err) { console.error('', err); }
+      },
+
+      send: function(msg, method='') {
+          for (let i = 0; i < arguments.length; i++) if (typeof arguments[i] !== 'string')
+              return console.error(`Argument ${ i + 1 } must be a string!`);
+          const textArea = document.querySelector('form textarea'),
+                sendButton = document.querySelector('form button[class*="bottom"]');
+          textArea.value = msg;
+          textArea.dispatchEvent(new Event('input', { bubbles: true })); // enable send button
+          const delaySend = setInterval(() => {
+              if (!sendButton.hasAttribute('disabled')) { // send msg
+                  method.toLowerCase() == 'click' ? sendButton.click()
+                      : textArea.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13, bubbles: true }));
+                  clearInterval(delaySend);
+              }
+          }, 25);
+      },
+
+      sendInNewChat: function(msg) {
+          if (typeof msg !== 'string') return console.error('Message must be a string!');
+          for (const navLink of document.querySelectorAll('nav[aria-label="Chat history"] a')) {
+              if (/(new|clear) chat/i.test(navLink.text)) {
+                  navLink.click(); break;
+          }} setTimeout(() => { chatgpt.send(msg); }, 500);
+      },
+
+      settings: {
+          scheme: {
+              isDark: function() { return document.documentElement.classList.contains('dark'); },
+              isLight: function() { return document.documentElement.classList.contains('light'); },
+              set: function(value) {
+
+                  // Validate value
+                  const validValues = ['dark', 'light', 'system'];
+                  if (!value) return console.error('Please specify a scheme value!');
+                  if (!validValues.includes(value)) return console.error(`Invalid scheme value. Valid values are [${ validValues }]`);
+
+                  // Determine scheme to set
+                  let schemeToSet = value;
+                  if (value === 'system') schemeToSet = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  localStorage.setItem('theme', value);
+                  console.info(`Scheme set to ${ value.toUpperCase() }.`);
+
+                  // Toggle scheme if necessary
+                  if (!document.documentElement.classList.contains(schemeToSet)) this.toggle();
+              },
+              toggle: function() {
+                  const [schemeToRemove, schemeToAdd] = this.isDark() ? ['dark', 'light'] : ['light', 'dark'];
+                  document.documentElement.classList.replace(schemeToRemove, schemeToAdd);
+                  document.documentElement.style.colorScheme = schemeToAdd;
+                  localStorage.setItem('theme', schemeToAdd);
+              }
+          }
+      },
+
+      sentiment: async function(text, entity) {
+          for (let i = 0; i < arguments.length; i++) if (typeof arguments[i] !== 'string')
+              return console.error(`Argument ${ i + 1 } must be a string.`);
+          chatgpt.send('What is the sentiment of the following text'
+              + ( entity ? ` towards the entity ${ entity },` : '')
+              + ' from strongly negative to strongly positive?\n\n' + text );
+          console.info('Analyzing sentiment...');
+          await chatgpt.isIdle();
+          return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+      },
+
+      setScheme: function(value) { chatgpt.settings.scheme.set(value); },
+
+      shareChat: function(chatToGet, method = 'clipboard') {
+      // chatToGet = index|title|id of chat to get (defaults to latest if '' or unpassed)
+      // method = [ 'alert'|'clipboard' ] (defaults to 'clipboard' if '' or unpassed)
+
+          const validMethods = ['alert', 'notify', 'notification', 'clipboard', 'copy'];
+          if (!validMethods.includes(method)) return console.error(
+              'Invalid method \'' + method + '\' passed. Valid methods are [' + validMethods + '].');
+
+          return new Promise((resolve) => {
+              chatgpt.getAccessToken().then(token => { // get access token
+                  getChatNode(token).then(node => { // get chat node
+                      makeChatToShare(token, node).then(data => {
+                          confirmShareChat(token, data).then(() => {
+                              if (['copy', 'clipboard'].includes(method)) navigator.clipboard.writeText(data.share_url);
+                              else chatgpt.alert('🚀 Share link created!',
+                                  '"' + data.title + '" is available at: <a target="blank" rel="noopener" href="'
+                                      + data.share_url + '" >' + data.share_url + '</a>',
+                                  [ function openLink() { window.open(data.share_url, '_blank', 'noopener'); },
+                                      function copyLink() { navigator.clipboard.writeText(data.share_url); }]);
+                              resolve(data.share_url);
+          });});});});});
+
+          function getChatNode(token) {
+              return new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  chatgpt.getChatData(chatToGet).then(chat => {
+                      xhr.open('GET', `${ endpoints.chat }/${ chat.id }`, true);
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                      xhr.onload = () => {
+                          if (xhr.status !== 200)
+                              return reject('🤖 chatgpt.js >> Request failed. Cannot retrieve chat node.');
+                          return resolve(JSON.parse(xhr.responseText).current_node); // chat messages until now
+                      };
+                      xhr.send();
+          });});}
+
+          function makeChatToShare(token, node) {
+              return new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  chatgpt.getChatData(chatToGet).then(chat => {
+                      xhr.open('POST', endpoints.share_create, true);
+                      xhr.setRequestHeader('Content-Type', 'application/json');
+                      xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                      xhr.onload = () => {
+                          if (xhr.status !== 200)
+                              return reject('🤖 chatgpt.js >> Request failed. Cannot initialize share chat.');
+                          return resolve(JSON.parse(xhr.responseText)); // return untouched data
+                      };
+                      xhr.send(JSON.stringify({ // request body
+                          current_node_id: node, // by getChatNode
+                          conversation_id: chat.id, // current chat id
+                          is_anonymous: true // show user name in the conversation or not
+                      }));
+          });});}
+
+          function confirmShareChat(token, data) {
+              return new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  xhr.open('PATCH', `${ endpoints.share }/${ data.share_id }`, true);
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                  xhr.onload = () => {
+                      if (xhr.status !== 200)
+                          return reject('🤖 chatgpt.js >> Request failed. Cannot share chat.');
+                      console.info(`Chat shared at '${ data.share_url }'`);
+                      return resolve(); // the response has nothing useful
+                  };
+                  xhr.send(JSON.stringify({ // request body
+                      share_id: data.share_id,
+                      highlighted_message_id: data.highlighted_message_id,
+                      title: data.title,
+                      is_public: true, // must be true or it'll cause a 404 error
+                      is_visible: data.is_visible,
+                      is_anonymous: data.is_anonymous
+                  }));
+          });}
+      },
+
+      sidebar: {
+          elements: [],
+          observer: {},
+
+          activateObserver: function() {
+              const chatHistoryNav = document.querySelector('nav[aria-label="Chat history"]'),
+                  firstButton = chatHistoryNav.querySelector('a');
+              if (chatgpt.history.isOff()) // Hide enable history spam div
+                  try { firstButton.parentNode.nextElementSibling.style.display = 'none'; } catch (error) {}
+
+              // Stop the previous observer to preserve resources
+              if (this.observer instanceof MutationObserver)
+                  try { this.observer.disconnect(); } catch (e) {}
+
+              if (!this.elements.length) return console.error('🤖 chatgpt.js >> No elements to append!');
+
+              let cssClasses;
+              // Grab CSS from original website elements
+              for (let navLink of document.querySelectorAll('nav[aria-label="Chat history"] a')) {
+                  if (/.*chat/.exec(navLink.text)[0]) {
+                      cssClasses = navLink.classList;
+                      navLink.parentNode.style.margin = '2px 0'; // add v-margins to ensure consistency across all inserted buttons
+                      break;
+                  }
+              }
+      
+              // Apply CSS to make the added elements look like they belong to the website
+              this.elements.forEach(element => {
+                  element.setAttribute('class', cssClasses);
+                  element.style.maxHeight = element.style.minHeight = '44px'; // Fix the height of the element
+                  element.style.margin = '2px 0';
+              });
+      
+              const navBar = document.querySelector('nav[aria-label="Chat history"]');
+              // Create MutationObserver instance
+              this.observer = new MutationObserver(mutations => {
+                  mutations.forEach(mutation => {
+                      if ((mutation.type === 'childList' && mutation.addedNodes.length) ||
+                          (mutation.type === 'attributes' && mutation.attributeName === 'data-chatgptjs')) // check for trigger
+                          // Try to insert each element...
+                          this.elements.forEach(element => {
+                              // ...if it's not already present...
+                              if (!navBar.contains(element))
+                                  try {
+                                      // ...at the top of the sidebar
+                                      navBar.insertBefore(element, navBar.querySelector('a').parentNode);
+                                  } catch (error) {
+                                      console.error(error);
+                              }});
+                  });
+              });
+
+              this.observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true });
+          },
+
+          append: function(element, attrs = {}) {
+          // element = 'button' | 'dropdown' REQUIRED (no default value)
+          // attrs = { ... }
+          // attrs for 'button': 'icon' = src string, 'label' = string, 'onclick' = function
+          // attrs for 'dropdown': 'items' = [ { text: string, value: string }, ... ] array of objects
+          // where 'text' is the displayed text of the option and 'value' is the value of the option
+              const validElements = ['button', 'dropdown'];
+              if (!element || typeof element !== 'string') // Element not passed or invalid type
+                  return console.error('🤖 chatgpt.js >> Please supply a valid string element name!');
+              element = element.toLowerCase();
+              if (!validElements.includes(element)) // Element not in list
+                  return console.error(`🤖 chatgpt.js >> Invalid element! Valid elements are [${validElements}]`);
+
+              const newElement = document.createElement(element === 'dropdown' ? 'select' : element);
+              newElement.id = Math.floor(chatgpt.randomFloat() * 1000000) + Date.now(); // Add random id to the element
+
+              if (element === 'button') {
+                  newElement.textContent = attrs?.label && typeof attrs.label === 'string'
+                      ? attrs.label
+                      : 'chatgpt.js button';
+
+                  const icon = document.createElement('img');
+                  icon.src = attrs?.icon && typeof attrs.icon === 'string' // Can also be base64 encoded image string
+                      ? attrs.icon // Add icon to button element if given, else default one
+                      : 'https://raw.githubusercontent.com/KudoAI/chatgpt.js/main/starters/chrome/extension/icons/icon128.png';
+                  icon.width = 18;
+                  newElement.insertBefore(icon, newElement.firstChild);
+
+                  newElement.onclick = attrs?.onclick && typeof attrs.onclick === 'function'
+                      ? attrs.onclick
+                      : function() {};
+              }
+
+              else if (element === 'dropdown') {
+                  if (!attrs?.items || // There no are options to add 
+                      !Array.isArray(attrs.items) || // It's not an array
+                      !attrs.items.length) // The array is empty
+                          attrs.items = [{ text: '🤖 chatgpt.js option', value: 'chatgpt.js option value' }]; // Set default dropdown entry
+
+                  if (!attrs.items.every(el => typeof el === 'object')) // The entries of the array are not objects
+                      return console.error('\'items\' must be an array of objects!');
+
+                  attrs.items.forEach(item => {
+                      const optionElement = document.createElement('option');
+                      optionElement.textContent = item?.text;
+                      optionElement.value = item?.value;
+                      newElement.add(optionElement);
+                  });
+              }
+                          
+
+              // Fix for blank background on dropdown elements
+              if (element === 'dropdown') newElement.style.backgroundColor = 'var(--gray-900, rgb(32, 33, 35))';
+
+              this.elements.push(newElement);
+              this.activateObserver();
+              document.body.setAttribute('data-chatgptjs', 'observer-trigger'); // add attribute to trigger the observer
+
+              return newElement.id; // Return the element id
+          },
+
+          isOn: function() { return !document.querySelector('button[aria-label*="Open sidebar"]'); },
+          isOff: function() { return !!document.querySelector('button[aria-label*="Open sidebar"]'); },
+          hide: function() { this.isOn() ? this.toggle() : console.info('Sidebar already hidden!'); },
+          show: function() { this.isOff() ? this.toggle() : console.info('Sidebar already shown!'); },
+          toggle: function() {
+              for (const navLink of document.querySelectorAll('nav[aria-label="Chat history"] a')) {
+                  if (/close sidebar/i.test(navLink.text)) {
+                      navLink.click(); return;                
+          }}}
+      },
+
+      startNewChat: function() {
+          for (const navLink of document.querySelectorAll('nav[aria-label="Chat history"] a')) {
+              if (/(new|clear) chat/i.test(navLink.text)) {
+                  navLink.click(); return;
+      }}},
+
+      stop: function() {
+          for (const formButton of document.querySelectorAll('form button')) {
+              if (formButton.textContent.toLowerCase().includes('stop')) {
+                  formButton.click(); return;
+      }}},
+
+      suggest: async function(ideaType, details) {
+          if (!ideaType) return console.error('ideaType (1st argument) not supplied'
+              + '(e.g. \'gifts\', \'names\', \'recipes\', etc.)');
+          for (let i = 0; i < arguments.length; i++) if (typeof arguments[i] !== 'string')
+              return console.error(`Argument ${ i + 1 } must be a string.`);
+          chatgpt.send('Suggest some names. ' + ( details || '' ));
+          console.info(`Creating ${ ideaType }...`);
+          await chatgpt.isIdle();
+          return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+      },
+
+      speak: function(msg, options = {}) {
+      // Usage example: chatgpt.speak(await chatgpt.getLastResponse(), { voice: 1, pitch: 2, speed: 3 })
+      // options.voice = index of voices available on user device
+      // options.pitch = float for pitch of speech from 0 to 2
+      // options.speed = float for rate of speech from 0.1 to 10
+
+          const { voice = 2, pitch = 2, speed = 1.1 } = options;
+
+          // Validate args
+          if (typeof msg !== 'string') return console.error('Message must be a string!');
+          for (let key in options) {
+              const value = options[key];
+              if (typeof value !== 'number' && !/^\d+$/.test(value))
+                  return console.error(`Invalid ${ key } index '${ value }'. Must be a number!`);
+          }
+
+          try { // to speak msg using {options}
+              const voices = speechSynthesis.getVoices(),
+                    utterance = new SpeechSynthesisUtterance();
+              utterance.text = msg;
+              utterance.voice = voices[voice];
+              utterance.pitch = pitch;
+              utterance.rate = speed;
+              speechSynthesis.speak(utterance);
+          } catch (err) { console.error('', err); }
+      },
+
+      summarize: async function(text) {
+          if (!text) return console.error('Text (1st) argument not supplied. Pass some text!');
+          if (typeof text !== 'string') return console.error('Text argument must be a string!');
+          chatgpt.send('Summarize the following text:\n\n' + text);
+          console.info('Summarizing text...');
+          await chatgpt.isIdle();
+          return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+      },
+
+      toggleScheme: function() { chatgpt.settings.scheme.toggle(); },
+
+      translate: async function(text, outputLang) {
+          if (!text) return console.error('Text (1st) argument not supplied. Pass some text!');
+          if (!outputLang) return console.error('outputLang (2nd) argument not supplied. Pass a language!');
+          for (let i = 0; i < arguments.length; i++) if (typeof arguments[i] !== 'string')
+              return console.error(`Argument ${ i + 1 } must be a string!`);
+          chatgpt.send('Translate the following text to ' + outputLang 
+              + '. Only reply with the translation.\n\n' + text);
+          console.info('Translating text...');
+          await chatgpt.isIdle();
+          return chatgpt.getChatData('active', 'msg', 'chatgpt', 'latest');
+      },
+
+      unminify: function() { chatgpt.code.unminify(); },
+
+      uuidv4: function() {
+          let d = new Date().getTime(); // get current timestamp in ms (to ensure UUID uniqueness)
+          const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+              const r = ( // generate random nibble
+                  ( d + (window.crypto.getRandomValues(new Uint32Array(1))[0] / (Math.pow(2, 32) - 1))*16)%16 | 0 );
+              d = Math.floor(d/16); // correspond each UUID digit to unique 4-bit chunks of timestamp
+              return ( c == 'x' ? r : (r&0x3|0x8) ).toString(16); // generate random hexadecimal digit
+          });
+          return uuid;
+      },
+
+      writeCode: function() { chatgpt.code.write(); }
+  };
+
+  chatgpt.scheme = { ...chatgpt.settings.scheme }; // copy `chatgpt.settings.scheme` methods into `chatgpt.scheme`
+
+  // Create chatgpt.[actions]Button(identifier) functions
+  const buttonActions = ['click', 'get'], targetTypes = [ 'button', 'link', 'div', 'response' ];
+  for (const buttonAction of buttonActions) {
+      chatgpt[buttonAction + 'Button'] = function handleButton(buttonIdentifier) {
+          const button = /^[.#]/.test(buttonIdentifier) ? document.querySelector(buttonIdentifier)
+              : /send/i.test(buttonIdentifier) ? document.querySelector('form button[class*="bottom"]')
+              : /scroll/i.test(buttonIdentifier) ? document.querySelector('button[class*="cursor"]')
+              : (function() { // get via text content
+                  for (const button of document.querySelectorAll('button')) { // try buttons
+                      if (button.textContent.toLowerCase().includes(buttonIdentifier.toLowerCase())) {
+                          return button; }}
+                  for (const navLink of document.querySelectorAll('nav a')) { // try nav links if no button
+                      if (navLink.textContent.toLowerCase().includes(buttonIdentifier.toLowerCase())) {
+                          return navLink; }}})();
+          if (buttonAction === 'click') { button.click(); } else { return button; }
+      };
+  }
+
+  // Create alias functions
+  const functionAliases = [
+      ['actAs', 'actas', 'act', 'become', 'persona', 'premadePrompt', 'preMadePrompt', 'prePrompt', 'preprompt', 'roleplay', 'rolePlay', 'rp'],
+      ['activateAutoRefresh', 'activateAutoRefresher', 'activateRefresher', 'activateSessionRefresher',
+          'autoRefresh', 'autoRefresher', 'autoRefreshSession', 'refresher', 'sessionRefresher'],
+      ['deactivateAutoRefresh', 'deactivateAutoRefresher', 'deactivateRefresher', 'deactivateSessionRefresher'],
+      ['detectLanguage', 'getLanguage'],
+      ['executeCode', 'codeExecute'],
+      ['exportChat', 'chatExport', 'export'],
+      ['getLastPrompt', 'getLastQuery', 'getMyLastMsg', 'getMyLastQuery'],
+      ['getTextarea', 'getTextArea', 'getChatbox', 'getChatBox'],
+      ['isFullScreen', 'isFullscreen'],
+      ['logOut', 'logout', 'logOff', 'logoff', 'signOut', 'signout', 'signOff', 'signoff'],
+      ['minify', 'codeMinify', 'minifyCode'],
+      ['new', 'newChat', 'startNewChat'],
+      ['obfuscate', 'codeObfuscate', 'obfuscateCode'],
+      ['printAllFunctions', 'showAllFunctions'],
+      ['refactor', 'codeRefactor', 'refactorCode'],
+      ['refreshSession', 'sessionRefresh'],
+      ['refreshReply', 'regenerate', 'regenerateReply'],
+      ['renderHTML', 'renderHtml', 'renderLinks', 'renderTags'],
+      ['reviewCode', 'codeReview'],
+      ['send', 'sendChat', 'sendMsg'],
+      ['sendInNewChat', 'sendNewChat'],
+      ['sentiment', 'analyzeSentiment', 'sentimentAnalysis'],
+      ['stop', 'stopGenerating'],
+      ['suggest', 'suggestion', 'recommend'],
+      ['toggleScheme', 'toggleMode'],
+      ['toggleAutoRefresh', 'toggleAutoRefresher', 'toggleRefresher', 'toggleSessionRefresher'],
+      ['translate', 'translation', 'translator'],
+      ['unminify', 'unminifyCode', 'codeUnminify'],
+      ['writeCode', 'codeWrite']
+  ];
+  const synonyms = [
+      ['activate', 'turnOn'],
+      ['account', 'acct'],
+      ['analyze', 'check', 'evaluate', 'review'],
+      ['ask', 'send', 'submit'],
+      ['chat', 'conversation', 'convo'],
+      ['data', 'details'],
+      ['deactivate', 'deActivate', 'turnOff'],
+      ['execute', 'run'],
+      ['generating', 'generation'],
+      ['minify', 'uglify'],
+      ['refactor', 'rewrite'],
+      ['render', 'parse'],
+      ['reply', 'response'],
+      ['sentiment', 'attitude', 'emotion', 'feeling', 'opinion', 'perception'],
+      ['speak', 'say', 'speech', 'talk', 'tts'],
+      ['unminify', 'beautify', 'prettify', 'prettyPrint']
+  ];
+  const camelCaser = (words) => {
+      return words.map((word, index) => index === 0 || word === 's' ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(''); };
+  for (const prop in chatgpt) {
+
+      // Create new function for each alias
+      for (const subAliases of functionAliases) {
+          if (subAliases.includes(prop)) {
+              if (subAliases.some(element => element.includes('.'))) {
+                  const nestedFunction = subAliases.find(element => element.includes('.')).split('.')[1];
+                  for (const nestAlias of subAliases) {
+                      if (/^(\w+)/.exec(nestAlias)[1] !== prop) { // don't alias og function
+                          chatgpt[nestAlias] = chatgpt[prop][nestedFunction]; // make new function, reference og one
+              }}} else { // alias direct functions
+                  for (const dirAlias of subAliases) {
+                      if (dirAlias !== prop) { // don't alias og function
+                          chatgpt[dirAlias] = chatgpt[prop]; // make new function, reference og one
+              }}}
+      }}
+
+      do { // create new function per synonym per word per function
+          var newFunctionsCreated = false;
+          for (const funcName in chatgpt) {
+              if (typeof chatgpt[funcName] === 'function') {
+                  const funcWords = funcName.split(/(?=[A-Zs])/); // split function name into constituent words
+                  for (const funcWord of funcWords) {
+                      const synonymValues = [].concat(...synonyms // flatten into single array w/ word's synonyms
+                          .filter(arr => arr.includes(funcWord.toLowerCase())) // filter in relevant synonym sub-arrays
+                          .map(arr => arr.filter(synonym => synonym !== funcWord.toLowerCase()))); // filter out matching word
+                      for (const synonym of synonymValues) { // create function per synonym
+                          const newFuncName = camelCaser(funcWords.map(word => (word === funcWord ? synonym : word)));
+                          if (!chatgpt[newFuncName]) { // don't alias existing functions
+                              chatgpt[newFuncName] = chatgpt[funcName]; // make new function, reference og one
+                              newFunctionsCreated = true;
+      }}}}}} while (newFunctionsCreated); // loop over new functions to encompass all variations
+  }
+  // console.error = (...args) => {
+  //     if (!args[0].startsWith(consolePrefix)) ogError(consolePrefix + args[0], ...args.slice(1)); 
+  //     else ogError(...args);
+  // };
+  // console.info = (msg) => {
+  //     if (!msg.startsWith(consolePrefix)) ogInfo(consolePrefix + msg);
+  //     else ogInfo(msg);
+  // };
+
+  // Export chatgpt object
+  try { window.chatgpt = chatgpt; } catch (err) {} // for Greasemonkey
+  try { module.exports = chatgpt; } catch (err) {} // for CommonJS
 
   /**
    * @typedef {Object} Prompt
@@ -6293,17 +8230,17 @@
 
   window.IN_BOUND = {
     // Save a reference to the original fetch function
-    fetch: (window._fetch = window._fetch || window.fetch),
+    fetch: (window._fetch = window._fetch || window.fetch.bind(window) || window.fetch),
 
     CacheBuster: btoa(new Date().toISOString().slice(0, 16).toString()),
 
     Client: IN_BOUNDClient,
 
-    feedSelect: ["All","Favourites"],
+    feedSelect: ["All", "Favourites"],
 
     feedSelected: window.localStorage.feedSelected || "All",
 
-    ExtLang:"english",
+    ExtLang: "english",
 
     demoInterface: false,
 
@@ -6312,7 +8249,7 @@
     },
 
     feedView: window.localStorage.feedView || "grid",
-    feedViewList: ["grid","list"],
+    feedViewList: ["grid", "list"],
 
     // Set default TargetLanguage based on last used language or default to English
     TargetLanguage:
@@ -6348,53 +8285,57 @@
     /** @type {Prompt[]} */
     PromptTemplates: [],
 
-   
+
     FavouritePromptTemplates: [],
     PinPromptTemplates: [],
-    forkPromptTemplates:[],
+    forkPromptTemplates: [],
     activePromptID: "",
-    themeMode:"",
+    themeMode: "",
     ToneCategories: [],
     DefaultTones: [],
     userTones: [],
-    tonesOrderLocal:[],
-    promptsOrderLocal:[],
+    tonesOrderLocal: [],
+    promptsOrderLocal: [],
     ToneCategorySelected: "",
     InputToneCategorySelected: "",
     promptVariables: [],
     settingsActiveTab: "settings",
     editActivatedTonesInSetting: "",
-    activatedToneSelected: {title: "", tone: ""},
+    activatedToneSelected: { title: "", tone: "" },
     searchPredictionList: [],
     webResults: [],
     current_active_prompts: [],
     Company: "",
-    companyMeta:{},
-    longInputText:'',
+    companyMeta: {},
+    longInputText: '',
     features: company_features,
-    team:{},
+    team: {},
     allTeams: [],
     selectedTeam: localStorage.getItem('team_id'),
     usedPrompts: [],
     allCompanies: [],
-    selectedCompany: localStorage.getItem('company_id'),
+    selectedCompany: sessionStorage.getItem('company_id') || '',
     savedSearchList: JSON.parse(localStorage.getItem('savedSearchList')) || [],
     chunkProcessingState: false,
     SelectedPromptTemplateID: "",
-    hiddenVariations: JSON.parse(localStorage.getItem('hiddenVariations')) || [] ,
-    
+    hiddenVariations: JSON.parse(localStorage.getItem('hiddenVariations')) || [],
+
+    runCsvChainOfPromptsState: false,
+
     APIEndpoint,
 
     companyTones: [],
 
-    isLoading:false,
+    isLoading: false,
 
-    import: false ,
-    companyTonesState: false ,
+    workflowLoader: true,
+
+    import: false,
+    companyTonesState: false,
     companyToneText: "",
 
-  /** @type {Prompt[]} */
-    DefaultPromptTemplates:[],
+    /** @type {Prompt[]} */
+    DefaultPromptTemplates: [],
 
     /** @type {Prompt[]} */
     OwnPrompts: [],
@@ -6430,13 +8371,19 @@
     // This object contains properties for the prompt templates section
     PromptTemplateSection: {
       currentPage: 0, // The current page number
-      pageSize:  pageSizeDefault, // The number of prompts per page
+      pageSize: pageSizeDefault, // The number of prompts per page
     },
 
     /** @type {Prompt} */
     SelectedPromptTemplate: null,
 
     async init() {
+
+      this.WritingStyle = localStorage.getItem('selectedWritingStyle');
+      this.TargetLanguage = localStorage.getItem(lastTargetLanguageKey);
+      this.Tone = localStorage.getItem('selectedTone');
+      this.SelectedPromptTemplateID = localStorage.getItem('SelectedPromptTemplateID');
+
       // this.injectStyleSheet()
       this.setupSidebar();
       this.folderManager.initializeFolders();
@@ -6444,9 +8391,9 @@
       this.isLoading = true;
       this.showLoadingInterface("");
       // console.log('IN_BOUND init');
-      
 
-      this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'))?.index || {index: []};
+
+      this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'))?.index || { index: [] };
 
       // Bind event handler for arrow keys
       this.boundHandleArrowKey = this.handleArrowKey.bind(this);
@@ -6458,37 +8405,42 @@
       this.createObserver();
 
       // this.fetchMessages();
-      
+
 
       // Wait for languages, tones, writing styles and continue actions
       await Promise.all([
-        // this.fetchUser()
-        this.fetchUserData()
+        this.fetchUserDataEvent()
       ]);
 
       // this.insertLanguageToneWritingStyleContinueActions();
       // await this.fetchForks();
-      
-
-      this.fetchPromptFromDeepLink();
 
 
-      this.sendBtnObserver();
+      // this.fetchPromptFromDeepLink();
+
+
+      // this.sendBtnObserver();
 
       this.createThemeObserver();
 
       this.getTheme();
 
-      this.isLoading = false;
-      this.hideLoadingInterface();
-      this.insertPromptTemplatesSection();
-      this.observeForTextareaElemChanges();
-      this.sendBtnObserverForChunks();
+
+      // this.isLoading = false
+      // this.hideLoadingInterface()
+      // this.insertPromptTemplatesSection()
+      // this.observeForTextareaElemChanges()
+      // this.sendBtnObserverForChunks()
+
       this.insertConversationMenu();
 
       // listen for IN_BOUND.tokens event from  APP
       document.addEventListener('IN_BOUND.getRequest', async (event) => {
         this.handleGetRequestEvent(event);
+      });
+
+      document.addEventListener('IN_BOUND.postRequest', async (event) => {
+        this.handlePostRequestEvent(event);
       });
 
       // on state change (e.g. back button) fetch the prompt from the deep link
@@ -6498,17 +8450,17 @@
 
       let sizes = localStorage.getItem('split-sizes');
       if (sizes) {
-          sizes = JSON.parse(sizes);
+        sizes = JSON.parse(sizes);
       } else {
-          sizes = [65, 35]; // default sizes
+        sizes = [65, 35]; // default sizes
       }
 
       Split(['#__next', '#nav'], {
-        sizes ,
+        sizes,
         gutterSize: 2,
         onDragEnd: function (sizes) {
           localStorage.setItem('split-sizes', JSON.stringify(sizes));
-      },
+        },
       });
 
       const sideBarnMainDiv = document.querySelector('#__next').getElementsByClassName('overflow-hidden w-full h-full relative flex z-0')[0].children;
@@ -6524,34 +8476,46 @@
       // });
 
       this.hidePromptCardOptionsOnClickOutside();
+
     },
 
-     hidePromptCardOptionsOnClickOutside() {
-      document.addEventListener('click', function(event) {
+    hidePromptCardOptions() {
+      const promptCardOptions = document.getElementsByClassName('PromptCardOptions');
+      Array.from(promptCardOptions)?.forEach(function (element) {
+        setTimeout(() => {
+          // element.classList.replace('flex','hidden') 
+          // console.log('hide', element)
+          element.className.indexOf('hidden') > -1 ? "" : element.className = element.className.replace('flex ', 'hidden ');
+        }, 10);
+      });
+    },
+
+    hidePromptCardOptionsOnClickOutside() {
+      document.addEventListener('click', function (event) {
         const promptCardOptions = document.getElementsByClassName('PromptCardOptions');
         const promptCardOptionsBtn = document.querySelectorAll('#PromptCardOptionsBtn');
-    
+
         // Check if the clicked element is the PromptCardOptionsBtn or its child elements
-        const isClickOnPromptCardOptionsBtn = Array.from(promptCardOptionsBtn)?.some(function(element) {
+        const isClickOnPromptCardOptionsBtn = Array.from(promptCardOptionsBtn)?.some(function (element) {
           return element.contains(event.target);
         });
         // console.log('isClickOnPromptCardOptionsBtn ', isClickOnPromptCardOptionsBtn)
-    
+
         // Check if the clicked element is inside any of the PromptCardOptions divs
-        const isClickInsidePromptCardOptions = Array.from(promptCardOptions)?.some(function(element) {
+        const isClickInsidePromptCardOptions = Array.from(promptCardOptions)?.some(function (element) {
           return element.contains(event.target);
         });
-    
-    // console.log("isClickInsidePromptCardOptions",isClickInsidePromptCardOptions)
+
+        // console.log("isClickInsidePromptCardOptions",isClickInsidePromptCardOptions)
         if (!isClickInsidePromptCardOptions && !isClickOnPromptCardOptionsBtn) {
-          Array.from(promptCardOptions)?.forEach(function(element) {
+          Array.from(promptCardOptions)?.forEach(function (element) {
             setTimeout(() => {
               // element.classList.replace('flex','hidden') 
               // console.log('hide', element)
-              element.className.indexOf('hidden') > -1 ? "" : element.className = element.className.replace('flex ','hidden ');
-            },10);
+              element.className.indexOf('hidden') > -1 ? "" : element.className = element.className.replace('flex ', 'hidden ');
+            }, 10);
           });
-        } 
+        }
 
         // if(!document.querySelector('#variationButton').contains(event.target) && !document.querySelector('#variationButtonContent').contains(event.target)){
         //   document.querySelector('#variationButtonContent').className.indexOf('hidden ') > -1 ? "" : document.querySelector('#variationButtonContent').className += ' hidden'
@@ -6559,9 +8523,9 @@
       });
     }
     ,
-    
 
-    injectStyleSheet(){
+
+    injectStyleSheet() {
       // Create a link element
       var link = document.createElement("link");
       link.rel = "stylesheet";
@@ -6572,25 +8536,23 @@
 
     },
 
-    changeLoadingText(txt){
+    changeLoadingText(txt) {
       document.querySelector('.loading-text') ? document.querySelector('.loading-text').innerHTML = txt : "";
     },
 
 
-    async reloadAllData(){
-      this.showLoadingInterface();
-      await this.fetchUserData();
-      this.hideLoadingInterface();
+    async reloadAllData() {
+      this.showLoadingInterface("loading...");
+      this.fetchUserDataEvent();
+      // this.hideLoadingInterface()
       this.insertPromptTemplatesSection();
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
+    // --------------------------------- Events for network requests ----------------------
 
-
-
-    // ----------------------------------Network Requests ----------------------------
-
-    async fetchUserData() {
+    fetchUserDataEvent() {
+      this.showLoadingInterface("loading...");
       this.changeLoadingText("Loading...");
 
       setTimeout(() => {
@@ -6601,6 +8563,62 @@
         this.changeLoadingText("Fetching Company Data...");
       }, 3000);
 
+      const storedCompany = this.selectedCompany;
+
+      if (storedCompany) {
+        const url = `${APIEndpoint}/user-data-multi?user=${this.Client.User.Email}&company=${storedCompany}`;
+        document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "fetchUserData" }, bubbles: true }));
+      } else {
+        const url = `${APIEndpoint}/user-data?user=${this.Client.User.Email}`;
+        document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "fetchUserData" }, bubbles: true }));
+      }
+    },
+
+    fetchPublicPromptsEvent(company, teamID) {
+      this.changeLoadingText("Fetching Public Prompts...");
+      const user = this.Client.User.Email;
+      const url = `${APIEndpoint}/prompts?user=${user}&company=${company}&type=2&teamID=${teamID}`;
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "fetchPublicPrompts" }, bubbles: true }));
+    },
+
+    fetchPrivatePromptsEvent(company, teamID) {
+      this.changeLoadingText("Fetching Private Prompts...");
+      const user = this.Client.User.Email;
+      const url = `${APIEndpoint}/prompts?user=${user}&company=${company}&type=1&teamID=${teamID}`;
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "fetchPrivatePrompts" }, bubbles: true }));
+    },
+
+    fetchUserVariationsEvent(company, teamID) {
+      this.changeLoadingText("Fetching User Variations...");
+      const user = this.Client.User.Email;
+      const url = `${APIEndpoint}/variations?user=${user}&company=${company}&type=user&teamID=${teamID}`;
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "fetchUserVariations" }, bubbles: true }));
+    },
+
+    fetchCompanyVariationsEvent(company, teamID) {
+      this.changeLoadingText("Fetching Company Variations...");
+      const user = this.Client.User.Email;
+      const url = `${APIEndpoint}/variations?user=${user}&company=${company}&type=org&teamID=${teamID}`;
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "fetchCompanyVariations" }, bubbles: true }));
+    },
+
+    async fetchUserPrompt(promptID, company) {
+      const user = this.Client.User.Email;
+      const url = `${APIEndpoint}/prompt?user=${user}&company=${company}&promptID=${promptID}`;
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, type: "IN_BOUND.getRequest", returnType: "processDeeplinkPrompt" }, bubbles: true }));
+    },
+
+
+    // ----------------------------------Network Requests ----------------------------
+
+    async fetchUserData(response) {
+
+      // console.log('fetchUserData: ', response)
+
+      const data = JSON.parse(response);
+
+      console.log("fetchUserData Json: ", data);
+
       setTimeout(() => {
         this.changeLoadingText("Fetching Prompts...");
       }, 4500);
@@ -6609,86 +8627,89 @@
         this.changeLoadingText("Fetching Variations...");
       }, 6000);
 
-      const storedCompany = this.selectedCompany;
 
-      let data = {};
-      try{
-        if(storedCompany){
-          data =  await fetch(`${APIEndpoint}/user-data-multi?user=${this.Client.User.Email}&company=${storedCompany}`).then(r => {
-            if(r.status === 500){
-              window.localStorage.removeItem('company_id');
-              window.location.reload();
-            }
-            return r.json()
-          });
-       }else {
-          data =  await fetch(`${APIEndpoint}/user-data?user=${this.Client.User.Email}`).then(r => {
-            if(r.status === 500){
-              window.localStorage.removeItem('company_id');
-              window.location.reload();
-            }
-            return r.json()
-          });
-       }
-      //  console.log("data: ", data)
-       
-      }catch(e){
-        // console.log(e)
-        this.changeLoadingText("Reloading...");
-        IN_BOUND.fetchUserData();
 
-        return 
-      }
-      
-      
-      
-      const {user, company, ownPrompts, publicPrompts, userVariations, companyVariations, userMulti, teams} = data;
+      // let data = {}
+      // try {
+      //   if (storedCompany) {
+      //     data = await fetch(`${APIEndpoint}/user-data-multi?user=${this.Client.User.Email}&company=${storedCompany}`).then(r => {
+      //       if (r.status === 500) {
+      //         window.localStorage.removeItem('company_id')
+      //         window.location.reload()
+      //       }
+      //       return r.json()
+      //     })
+      //   } else {
+      //     data = await fetch(`${APIEndpoint}/user-data?user=${this.Client.User.Email}`).then(r => {
+      //       if (r.status === 500) {
+      //         window.localStorage.removeItem('company_id')
+      //         window.location.reload()
+      //       }
+      //       return r.json()
+      //     })
+      //   }
+      //   //  console.log("data: ", data)
 
-      if(user === null){
-        localStorage.setItem("company_id","");
+      // } catch (e) {
+      //   // console.log(e)
+      //   this.changeLoadingText("Reloading...")
+      //   IN_BOUND.fetchUserData()
+
+      //   return
+      // }
+
+
+
+      const { user, company, ownPrompts, publicPrompts, userVariations, companyVariations, userMulti, teams } = data;
+
+      if (user === null) {
+        sessionStorage.setItem("company_id", "");
         this.selectedCompany = null;
-        this.fetchUserData();
+        this.fetchUserDataEvent();
         return
       }
 
+      console.log("setup home");
+
       this.Company = user.company_email;
+      this.selectedCompany = user.company_email;
       this.allCompanies = userMulti;
-      this.allTeams = [ {tag:"No Team", id:"", company_id: user.company_email  }, ...teams];
-      ({ ...user, company:user.company_email });
+      this.allTeams = [{ tag: "No Team", id: "", company_id: user.company_email }, ...teams];
+      ({ ...user, company: user.company_email });
 
       this.companyToneText = company.company_tone;
-      let { dark_logo, description, email, id , light_logo, name, website, features } = company;
-      this.companyMeta = { dark_logo, description, email, id , light_logo, name, website };
-      this.WritingStyles = company.writing_styles?.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
-        let { id, label, prompt} = data;
-        return ({ID: id, Label:label, Prompt:prompt})
+      let { dark_logo, description, email, id, light_logo, name, website, features } = company;
+      this.companyMeta = { dark_logo, description, email, id, light_logo, name, website };
+      this.WritingStyles = company.writing_styles?.sort((a, b) => a.label.localeCompare(b.label)).map((data, index) => {
+        let { id, label, prompt } = data;
+        return ({ ID: id, Label: label, Prompt: prompt })
       }) || [];
-      this.ContinueActions = company.continue_actions?.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
-        let { id, label, prompt} = data;
-        return ({ID: id, Label:label, Prompt:prompt})
+      this.ContinueActions = company.continue_actions?.sort((a, b) => a.label.localeCompare(b.label)).map((data, index) => {
+        let { id, label, prompt } = data;
+        return ({ ID: id, Label: label, Prompt: prompt })
       }) || [];
-      this.Languages = company.languages?.sort( (a,b) => a.language.localeCompare(b.language) ).map( (data, index) => {
+      this.Languages = company.languages?.sort((a, b) => a.language.localeCompare(b.language)).map((data, index) => {
         let { langcode, language, id } = data;
-        return ({langcode, languageEnglish:language, languageLabel:language, id})
-      } ) || [];
+        return ({ langcode, languageEnglish: language, languageLabel: language, id })
+      }) || [];
       this.features = features ? features : this.features;
 
 
-      this.PromptTemplates = publicPrompts?.map( (data, index) => ({...data, OwnPrompt:false, favourite:false, pin:false }) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) ) || [];
+      this.PromptTemplates = publicPrompts?.map((data, index) => ({ ...data, OwnPrompt: false, favourite: false, pin: false })).sort((a, b) => new Date(b.RevisionTime) - new Date(a.RevisionTime)) || [];
       this.DefaultPromptTemplates = this.PromptTemplates;
 
-      this.OwnPrompts = ownPrompts?.map( (data, index) => ({...data, OwnPrompt:true}) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) ) || [];
+      this.OwnPrompts = ownPrompts?.map((data, index) => ({ ...data, OwnPrompt: true })).sort((a, b) => new Date(b.RevisionTime) - new Date(a.RevisionTime)) || [];
 
-      this.userTones = userVariations?.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"user"}) ) || [];
+      this.userTones = userVariations?.map((data, index) => ({ ID: data.id, Label: data.label, Description: data.prompt, type: "user" })) || [];
 
-      this.companyTones = companyVariations?.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"org"}) ) || [];
+      this.companyTones = companyVariations?.map((data, index) => ({ ID: data.id, Label: data.label, Description: data.prompt, type: "org" })) || [];
 
-      if(data.user.email === demoUser){
-        window.IN_BOUND.demoInterface = true; 
+      if (data.user.email === demoUser) {
+        window.IN_BOUND.demoInterface = true;
         this.OwnPrompts = [];
         this.userTones = [];
         this.companyTones = [];
-        window.localStorage.setItem('PromptTemplatesType',"public");
+        window.localStorage.setItem('PromptTemplatesType', "public");
         this.features.copy.allow = false;
         this.features.add_prompt.allow = false;
         this.features.favourites.allow = false;
@@ -6696,157 +8717,126 @@
         this.features.private_prompts.allow = false;
         this.features.setting.allow = false;
         this.features.import_export.allow = false;
-       }
+      }
+
+      const selectedTone = window.localStorage.getItem('selectedTone');
+      if (selectedTone) {
+        this.Tone = selectedTone;
+      }
+
+
+
+      this.workflowLoader = false;
+      this.isLoading = false;
+
+      // this.showPrivactTermsBanner()
+
+      this.fetchPromptFromDeepLink();
+      this.insertPromptTemplatesSection();
+      this.insertLanguageToneWritingStyleContinueActions();
+    },
+
+    async fetchPublicPrompts(response) {
+
+      // console.log('fetchPublicPrompts: ', response)
+      const res = JSON.parse(response);
+      // console.log('fetchPublicPrompts: ', res)
+
+      // const user = this.Client.User.Email
+      // const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=2&teamID=${teamID}`)
+      // const res = await res_0.json()
+
+      this.PromptTemplates = res.documents.map((data, index) => ({ ...data, OwnPrompt: false, favourite: false, pin: false })).sort((a, b) => new Date(b.RevisionTime) - new Date(a.RevisionTime));
+      this.DefaultPromptTemplates = this.PromptTemplates;
 
       this.insertPromptTemplatesSection();
 
-    },
-
-
-    async fetchUser(){
-      this.changeLoadingText("Fetching User...");
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/user?user=${user}`);
-      const res = await res_0.json();
-      // console.log("User Response: ", res)
-      this.Company = res.company_email;
-      ({ ...res, company:res.company_email });
-      
-      // await this.fetchTeam(userObj)
-      
-    },
-
-    // async fetchTeam(resp){
-    //   if( resp.teamID === []) {
-    //     this.team = {
-    //       tag: "Default",
-    //       id: "",
-    //       company_id: resp.company
-    //     }
-    //   }else{
-    //     this.changeLoadingText("Fetching Team...")
-    //     const res_0 = await fetch(`${APIEndpoint}/team?id=${resp.teamID}`)
-    //     const res = await res_0.json()
-    //     this.team = res
-        // console.log("Team Response: ", res)
-    //   }
-
-
-    //   await this.fetchCompany(resp.company, resp.teamID)
-    //   await this.fetchPublicPrompts(resp.company, resp.teamID)
-    //   await this.fetchPrivatePrompts(resp.company, resp.teamID)
-    //   await this.fetchUserVariations(resp.company, resp.teamID)
-    //   await this.fetchCompanyVariations(resp.company, resp.teamID)
-    // },
-
-    async fetchCompany(company,teamID){
-      this.changeLoadingText("Fetching Organization...");
-
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/company?user=${user}&company=${company}&teamID=${teamID}`);
-      const res = await res_0.json();
-      // console.log("Response: ",res)
-
-      this.companyToneText = res.company_tone;
-      let { dark_logo, description, email, id , light_logo, name, website, features } = res;
-      this.companyMeta = { dark_logo, description, email, id , light_logo, name, website };
-      this.WritingStyles = res.writing_styles.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
-        let { id, label, prompt} = data;
-        return ({ID: id, Label:label, Prompt:prompt})
-      });
-      this.ContinueActions = res.continue_actions.sort( (a,b) => a.label.localeCompare(b.label) ).map( (data, index) => {
-        let { id, label, prompt} = data;
-        return ({ID: id, Label:label, Prompt:prompt})
-      });
-      this.Languages = res.languages.sort( (a,b) => a.language.localeCompare(b.language) ).map( (data, index) => {
-        let { langcode, language, id } = data;
-        return ({langcode, languageEnglish:language, languageLabel:language, id})
-      } );
-      this.features = features;
-    },
-
-    async fetchPublicPrompts(company,teamID){
-      this.changeLoadingText("Fetching Public Prompts...");
-
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=2&teamID=${teamID}`);
-      const res = await res_0.json();
-
-      this.PromptTemplates = res.documents.map( (data, index) => ({...data, OwnPrompt:false, favourite:false, pin:false }) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) );
-      this.DefaultPromptTemplates = this.PromptTemplates;
-
       // console.log(res)
     },
 
-    async fetchPrivatePrompts(company,teamID){
-      this.changeLoadingText("Fetching User Prompts...");
+    async fetchPrivatePrompts(response) {
+      // this.changeLoadingText("Fetching User Prompts...")
 
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=1&teamID=${teamID}`);
-      const res = await res_0.json();
-      this.OwnPrompts = res.documents.map( (data, index) => ({...data, OwnPrompt:true}) ).sort( (a,b) =>  new Date(b.RevisionTime) - new Date(a.RevisionTime) );
+      // console.log("fetchPrivatePrompts: ", response)
+      const res = JSON.parse(response);
+      // console.log("fetchPrivatePrompts: ", res)
+
+      // const user = this.Client.User.Email
+      // const res_0 = await fetch(`${APIEndpoint}/prompts?user=${user}&company=${company}&type=1&teamID=${teamID}`)
+      // const res = await res_0.json()
+      this.OwnPrompts = res.documents.map((data, index) => ({ ...data, OwnPrompt: true })).sort((a, b) => new Date(b.RevisionTime) - new Date(a.RevisionTime));
       // console.log(res)
+      this.insertPromptTemplatesSection();
     },
 
-    async fetchUserVariations(company,teamID){
-      this.changeLoadingText("Fetching User Variations...");
+    async fetchUserVariations(response) {
+      // this.changeLoadingText("Fetching User Variations...")
+      // console.log("fetchUserVariations: ", response)
+      const res = JSON.parse(response);
+      // console.log("fetchUserVariations: ", res)
 
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=user&teamID=${teamID}`);
-      const res = await res_0.json();
-      this.userTones = res.documents.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"user"}) );
+      // const user = this.Client.User.Email
+      // const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=user&teamID=${teamID}`)
+      // const res = await res_0.json()
+      this.userTones = res.documents.map((data, index) => ({ ID: data.id, Label: data.label, Description: data.prompt, type: "user" }));
       // console.log(res)
+
+      // this.insertPromptTemplatesSection();
+      this.showSettingModal();
     },
 
-    async fetchCompanyVariations(company,teamID){
-      this.changeLoadingText("Fetching Org Variations...");
+    async fetchCompanyVariations(response) {
+      // this.changeLoadingText("Fetching Org Variations...")
 
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=org&teamID=${teamID}`);
-      const res = await res_0.json();
-      this.companyTones = res.documents.map( (data, index) => ({ ID: data.id, Label: data.label, Description:data.prompt, type:"org"}) );
+      // console.log("fetchCompanyVariations: ", response)
+      const res = JSON.parse(response);
+      // console.log("fetchCompanyVariations: ", res)
+
+      // const user = this.Client.User.Email
+      // const res_0 = await fetch(`${APIEndpoint}/variations?user=${user}&company=${company}&type=org&teamID=${teamID}`)
+      // const res = await res_0.json()
+      this.companyTones = res.documents.map((data, index) => ({ ID: data.id, Label: data.label, Description: data.prompt, type: "org" }));
       // console.log(res)
+
+      this.insertPromptTemplatesSection();
     },
 
-    async fetchUserPrompt(promptID){
-      const user = this.Client.User.Email;
-      const res_0 = await fetch(`${APIEndpoint}/prompt?user=${user}&company=${this.Company}&promptID=${promptID}`);
-      const res = await res_0.json();
-      const prompt = res !== null ? res : {};
-      // console.log(res)
-      return {...prompt, OwnPrompt:true}
-    },
+
 
     pinActionForPrompt(PromptID, Vote) {
-      return (
-          fetch(`${this.APIEndpoint}/prompts?user=${this.Client.User.Email}&company=${this.Company}&id=${PromptID}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              pin: Vote === 1
-            }),
-          })
-          // check if response is OK
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error('Network response was not OK');
-            }
+      const url = `${this.APIEndpoint}/prompts?user=${this.Client.User.Email}&company=${this.Company}&id=${PromptID}`;
+      const options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pin: Vote === 1 }) };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "pinActionForPrompt" }, bubbles: true }));
 
-            return res;
-          })
-      );
+      // return (
+      //   fetch(`${this.APIEndpoint}/prompts?user=${this.Client.User.Email}&company=${this.Company}&id=${PromptID}`, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       pin: Vote === 1
+      //     }),
+      //   })
+      //     // check if response is OK
+      //     .then((res) => {
+      //       if (!res.ok) {
+      //         throw new Error('Network response was not OK');
+      //       }
+
+      //       return res;
+      //     })
+      // );
     },
 
     // ----------------------------------Network Requests ----------------------------
 
 
-    getTheme(){
-        this.Theme = document.documentElement.style.colorScheme;
+    getTheme() {
+      this.Theme = document.documentElement.style.colorScheme;
     },
 
-    handleGetRequestEvent(ev){
+    handleGetRequestEvent(ev) {
       // console.log("Got in Main App: ",ev.detail)
       let searchDiv = document.createElement('div');
       searchDiv.innerHTML = ev.detail.data;
@@ -6857,16 +8847,46 @@
       // Extract Search Results
       // let searchEnguine = searchDiv?.querySelector('#b_results')?.children ? "bing" : searchDiv.querySelector('#search')? "googlenews" : "ddg"
 
-      if(ev.detail.returnType === "getBingResults"){
+      this.hideLoadingInterface();
+
+      if (ev.detail.returnType === "getBingResults") {
         this.processBingResults(rawData);
-      }else if(ev.detail.returnType === "getDdgResults"){
+      } else if (ev.detail.returnType === "getDdgResults") {
         this.processDDGResults(rawData);
-      }else if(ev.detail.returnType === "getGoogleNewsResults"){
+      } else if (ev.detail.returnType === "getGoogleNewsResults") {
         this.processGoogleNewsResults(rawData);
-      }else if(ev.detail.returnType === "getWebContentResults"){
+      } else if (ev.detail.returnType === "getWebContentResults") {
         this.processWebContentResults(rawData);
+      } else if (ev.detail.returnType === "fetchUserData") {
+        this.fetchUserData(rawData);
+      } else if (ev.detail.returnType === "fetchPublicPrompts") {
+        this.fetchPublicPrompts(rawData);
+      } else if (ev.detail.returnType === "fetchPrivatePrompts") {
+        this.fetchPrivatePrompts(rawData);
+      } else if (ev.detail.returnType === "fetchUserVariations") {
+        this.fetchUserVariations(rawData);
+      } else if (ev.detail.returnType === "fetchCompanyVariations") {
+        this.fetchCompanyVariations(rawData);
+      } else if (ev.detail.returnType === "processDeeplinkPrompt") {
+        this.processDeeplinkPrompt(rawData);
+      } else if (ev.detail.returnType === "getCsvSheetResults") {
+        Papa.parse(rawData, {
+          header: true,
+          complete: function (result) {
+            console.log(result.data);
+            const chainOfPrompts = result.data.map((d, i) => ({ ...d, index: i, completed: false, chatgptResponse: "" }));
+            localStorage.setItem('chainOfPrompts', JSON.stringify(chainOfPrompts));
+            IN_BOUND.runCsvChainOfPromptsState = true;
+            IN_BOUND.runCsvChainOfPrompts(0);
+            IN_BOUND.hideModal('variablesModal');
+          },
+          error: function (error) {
+            console.error(error);
+            chatgpt.notify('Restricted access given!', 'top right', 8, 'on');
+          }
+        });
       }
-      
+
       // console.log(this.webResults)
 
 
@@ -6877,23 +8897,58 @@
       // );
     },
 
-    processBingResults(data){
+
+    handlePostRequestEvent(ev) {
+
+      ev.detail;
+
+      this.showNotification(
+        NotificationSeverity.SUCCESS,
+        'Changes saved!'
+      );
+
+      this.hideLoadingInterface();
+
+      if (ev.detail.returnType === "pinActionForPrompt") {
+        this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
+      } else if (ev.detail.returnType === "voteForPrompt") {
+        this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
+      }
+      else if (ev.detail.returnType === "savePrompt") {
+        this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
+      } else if (ev.detail.returnType === "saveNewTone") {
+        this.fetchUserVariationsEvent(this.Company, this.selectedTeam);
+        this.showSettingModal();
+      } else if (ev.detail.returnType === "saveEditTone") {
+        this.fetchUserVariationsEvent(this.Company, this.selectedTeam);
+        this.showSettingModal();
+      } else if (ev.detail.returnType === "deleteTone") {
+        this.fetchUserVariationsEvent(this.Company, this.selectedTeam);
+        this.showSettingModal();
+      } else if (ev.detail.returnType === "deletePrompt") {
+        this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
+      }
+
+
+    },
+
+    processBingResults(data) {
       let searchDiv = document.createElement('div');
       searchDiv.innerHTML = data;
 
       let allElems = Array.from(searchDiv?.querySelector('#b_results')?.children);
-      allElems?.forEach( elem => {
-        let text = elem?.querySelector('p')?.innerText.slice(3,-3);
+      allElems?.forEach(elem => {
+        let text = elem?.querySelector('p')?.innerText.slice(3, -3);
         let url = elem?.querySelector('a')?.href;
-        text ? this.webResults.push({text, url}) : "";
+        text ? this.webResults.push({ text, url }) : "";
       });
 
       let prompt = this.SelectedPromptTemplate.Prompt;
 
-      let searchResultsExtract = this.webResults.map((s,i) => `[${i+1}] ${s.text} (URL: ${s.url})`).slice(0,4).join('\n');
+      let searchResultsExtract = this.webResults.map((s, i) => `[${i + 1}] ${s.text} (URL: ${s.url})`).slice(0, 4).join('\n');
       const promptRefine = prompt.split('{{BingSearch');
-      prompt =  promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
-      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+      prompt = promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
+      this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
       // this.selectPromptTemplate(this.SelectedPromptTemplate)
 
       this.showNotification(
@@ -6903,7 +8958,7 @@
 
     },
 
-    processDDGResults(data){
+    processDDGResults(data) {
       let searchDiv = document.createElement('div');
       searchDiv.innerHTML = data;
       // console.log(searchDiv)
@@ -6911,20 +8966,20 @@
 
       let elems = searchDiv?.querySelector('.results')?.children || searchDiv?.querySelector('.serp__results')?.querySelectorAll('result');
       let allElems = Array.from(elems);
-      allElems?.forEach( elem => {
+      allElems?.forEach(elem => {
         let text = elem?.querySelector('.result__snippet')?.innerText;
         let url = elem?.querySelector('.result__snippet')?.href;
-        text ? text.length > 20 ? this.webResults.push({text, url}) : "" : "";
+        text ? text.length > 20 ? this.webResults.push({ text, url }) : "" : "";
       });
 
       // console.log(this.webResults)
 
       let prompt = this.SelectedPromptTemplate.Prompt;
 
-      let searchResultsExtract = this.webResults.map((s,i) => `[${i+1}] ${s.text} (Link:${s.url})`).slice(0,5 + Math.floor(Math.random()*5) ).join('\n');
+      let searchResultsExtract = this.webResults.map((s, i) => `[${i + 1}] ${s.text} (Link:${s.url})`).slice(0, 5 + Math.floor(Math.random() * 5)).join('\n');
       const promptRefine = prompt.split('{{WebSearch');
-      prompt =  promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
-      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+      prompt = promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
+      this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
       // this.selectPromptTemplate(this.SelectedPromptTemplate)
 
       this.showNotification(
@@ -6935,7 +8990,7 @@
       return prompt
     },
 
-    processGoogleNewsResults(data){
+    processGoogleNewsResults(data) {
       let searchDiv = document.createElement('div');
       searchDiv.innerHTML = data;
       // console.log(searchDiv)
@@ -6944,19 +8999,19 @@
       // IN_BOUND.searchDiv = searchDiv
       // console.log(elems)
       let allElems = Array.from(elems);
-      allElems?.forEach( elem => {
+      allElems?.forEach(elem => {
         let text = elem?.innerText;
         let url = elem?.href;
-        text ? text.length > 20 ? this.webResults.push({text, url}) : "" : "";
+        text ? text.length > 20 ? this.webResults.push({ text, url }) : "" : "";
       });
 
       let prompt = this.SelectedPromptTemplate.Prompt;
 
-      let searchResultsExtract = this.webResults.map((s,i) => `[${i+1}] ${s.text} (Link:${s.url})`).slice(0,5 + Math.floor(Math.random()*5) ).join('\n');
+      let searchResultsExtract = this.webResults.map((s, i) => `[${i + 1}] ${s.text} (Link:${s.url})`).slice(0, 5 + Math.floor(Math.random() * 5)).join('\n');
       // console.log(this.webResults)
       const promptRefine = prompt.split('{{WebNews');
-      prompt =  promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
-      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+      prompt = promptRefine[0] + searchResultsExtract + promptRefine[1].split('}}')[1];
+      this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
       // this.selectPromptTemplate(this.SelectedPromptTemplate)
 
       this.showNotification(
@@ -6967,7 +9022,7 @@
       return prompt
     },
 
-    processWebContentResults(data){
+    processWebContentResults(data) {
       let contentDiv = document.createElement('div');
       contentDiv.innerHTML = data;
       IN_BOUND.contentDiv = contentDiv;
@@ -6980,12 +9035,12 @@
       this.longInputText = this.sanitizeTextContent(textContent_0);
 
 
-      let textContentExtract =  this.longInputText;
-      
+      let textContentExtract = this.longInputText;
+
       // console.log(textContentExtract)
       const promptRefine = prompt.split('{{WebContent');
-      prompt =  promptRefine[0] + textContentExtract + promptRefine[1].split('}}')[1];
-      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+      prompt = promptRefine[0] + textContentExtract + promptRefine[1].split('}}')[1];
+      this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
 
       this.showNotification(
         NotificationSeverity.SUCCESS,
@@ -6994,23 +9049,25 @@
 
     },
 
-    processWebContentResultsFromAPI(data){
+    processWebContentResultsFromAPI(data) {
 
       let prompt = this.SelectedPromptTemplate.Prompt;
 
-      const textContent_0 = {...data, "rules": [
-        "Use the language that the user previously used or the language requested by the user.",
-        "Respond to the user's request, which may include asking questions or requesting specific actions (such as translation, rewriting, etc.), based on the provided content.",
-        "If the user does not make a request, perform the following tasks: 1. Display the title in the user's language; 2. Summarize the article content into a brief and easily understandable paragraph; 3. Depending on the content, present three thought-provoking questions or insights with appropriate subheadings. For articles, follow this approach; for code, formulas, or content not suited for questioning, this step may be skipped."
-      ] };
+      const textContent_0 = {
+        ...data, "rules": [
+          "Use the language that the user previously used or the language requested by the user.",
+          "Respond to the user's request, which may include asking questions or requesting specific actions (such as translation, rewriting, etc.), based on the provided content.",
+          "If the user does not make a request, perform the following tasks: 1. Display the title in the user's language; 2. Summarize the article content into a brief and easily understandable paragraph; 3. Depending on the content, present three thought-provoking questions or insights with appropriate subheadings. For articles, follow this approach; for code, formulas, or content not suited for questioning, this step may be skipped."
+        ]
+      };
       // this.longInputText = JSON.stringify(textContent_0)
-      let textContentExtract =  JSON.stringify(textContent_0);
+      let textContentExtract = JSON.stringify(textContent_0);
 
       // console.log(textContentExtract)
       const promptRefine = prompt.split('{{WebContent');
-      prompt =  promptRefine[0] + textContentExtract + promptRefine[1].split('}}')[1];
+      prompt = promptRefine[0] + textContentExtract + promptRefine[1].split('}}')[1];
       // console.log(prompt)
-      this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+      this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
 
       this.showNotification(
         NotificationSeverity.SUCCESS,
@@ -7019,59 +9076,59 @@
 
     },
 
-     getTextFromHTML (html) {
+    getTextFromHTML(html) {
       // Create a temporary element
       var tempEl = document.createElement('div');
       tempEl.innerHTML = html;
-    
+
       // Remove script and style tags and their contents
       var scripts = tempEl.getElementsByTagName('script');
       var styles = tempEl.getElementsByTagName('style');
-    
+
       for (var i = 0; i < scripts.length; i++) {
         scripts[i].parentNode.removeChild(scripts[i]);
       }
-    
+
       for (var j = 0; j < styles.length; j++) {
         styles[j].parentNode.removeChild(styles[j]);
       }
-    
+
       // Extract the text from the remaining HTML
       var text = tempEl.textContent || tempEl.innerText;
-    
+
       // Remove leading and trailing whitespace and extra newlines
       text = text.trim().replace(/\n\s*\n/g, '\n');
-    
+
       return text;
     },
 
 
-    async refreshData(){
+    async refreshData() {
       // console.log("Refresh")
       // setTimeout(function() {
-        await this.fetchPrivatePrompts(this.Company, this.selectedTeam);
-        await this.fetchPublicPrompts(this.Company, this.selectedTeam);
-        await this.fetchUserVariations(this.Company, this.selectedTeam);
+      this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
+      this.fetchPublicPromptsEvent(this.Company, this.selectedTeam);
+      this.fetchUserVariationsEvent(this.Company, this.selectedTeam);
       // }.bind(this), 2000);
 
       // setTimeout(function() {
-        this.insertPromptTemplatesSection();
+      // this.insertPromptTemplatesSection();
       // }.bind(this), 3000);
-     
+
     },
 
-    async refreshActions(){
+    async refreshActions() {
       // console.log("Refresh")
       // setTimeout(function() {
-      await  this.fetchUserVariations(this.Company, this.selectedTeam);
+      this.fetchUserVariationsEvent(this.Company, this.selectedTeam);
       // }.bind(this), 200);
 
       // setTimeout(function() {
-        this.insertLanguageToneWritingStyleContinueActions();
-        this.showSettingModal();
+      // this.insertLanguageToneWritingStyleContinueActions();
+      // this.showSettingModal();
       // }.bind(this), 1000);
       return true
-     
+
     },
 
     // get the prompt ID from the URL and select the prompt templateinsert
@@ -7079,7 +9136,7 @@
       // Get the prompt ID from the URL (IN_BOUND_PromptID)
       const promptID = new URLSearchParams(window.location.search).get(
         queryParamPromptID
-      );
+      ) || this.SelectedPromptTemplateID;
 
       if (!promptID) {
         // If there is no prompt ID in the URL - deselect the prompt template
@@ -7088,22 +9145,13 @@
         return;
       }
 
-      // If the prompt is already selected, do nothing
-      // if (
-      //   this.SelectedPromptTemplate &&
-      //   this.SelectedPromptTemplate.ID === promptID
-      // ) {
-      //   return;
-      // }
-
-      let prompt;
-
       try {
         // Fetch the prompt using the IN_BOUND API client
-        prompt = await this.fetchUserPrompt(promptID);
-        if(prompt.ID){
-          this.selectPromptTemplate(prompt);
-        }
+        const org_id = new URLSearchParams(window.location.search).get("inbound_o_id") || IN_BOUND.Company || IN_BOUND.selectedCompany;
+        await this.fetchUserPrompt(promptID, org_id);
+        // if (prompt.ID) {
+        //   this.selectPromptTemplate(prompt);
+        // }
         // console.log("Prompt: ",prompt)
       } catch (error) {
         // console.log(error)
@@ -7114,13 +9162,24 @@
         return;
       }
 
-      if (!prompt) {
+      {
         return;
       }
 
       // console.log(prompt)
       // Select the prompt template
-      
+
+    },
+
+
+    processDeeplinkPrompt(response) {
+
+      // console.log("Deeplink prompt: ", response)
+      const prompt_0 = JSON.parse(response);
+      const prompt = { ...prompt_0, OwnPrompt: true };
+      if (prompt.ID) {
+        this.selectPromptTemplate(prompt);
+      }
     },
 
     // Fetch the list of messages from the server
@@ -7200,7 +9259,7 @@
 
       // ----------------------------------------------
 
-      if(!document.getElementById("nav")){
+      if (!document.getElementById("nav")) {
         document.body.classList.toggle("show-nav");
         document.body.classList.toggle('split');
 
@@ -7209,14 +9268,14 @@
         sideBarWrapper.id = 'nav';
         // sideBarWrapper.className = 'text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:flex md:flex-col px-6 dark:text-gray-100'
         // sideBarWrapper.innerHTML = `
-        
+
         // <nav class="nav">
         // </nav>`
         document.body.appendChild(sideBarWrapper);
       }
 
-        
-      
+
+
     },
 
     createObserver() {
@@ -7242,41 +9301,42 @@
       observer.observe(document.body, { subtree: true, childList: true });
     },
 
-    createThemeObserver(){
+    createThemeObserver() {
       let targetNode = document.documentElement;
 
       const config = { attributes: true, childList: true, subtree: true };
-      
+
       const callback = (mutationList, observer) => {
         for (const mutation of mutationList) {
           if (mutation.type === "childList") ; else if (mutation.type === "attributes") {
             let currentTheme = document.documentElement.style.colorScheme;
-            if(IN_BOUND.Theme !== currentTheme){
+            if (IN_BOUND.Theme !== currentTheme) {
               IN_BOUND.Theme = currentTheme;
               IN_BOUND.insertPromptTemplatesSection();
             }
-            
+
           }
         }
       };
-      
+
       // Create an observer instance linked to the callback function
       const observer = new MutationObserver(callback);
-      
+
       // Start observing the target node for configured mutations
       observer.observe(targetNode, config);
 
     },
 
 
-    sendBtnObserver(){
+    sendBtnObserver() {
       // console.log("observer init")
-      const targetNode = document.querySelector('textarea').nextElementSibling;
+      const targetNode = document.querySelector('textarea')?.nextElementSibling;
 
+      if (!targetNode) return
 
       // Options for the observer (which mutations to observe)
       const config = { attributes: true, childList: true, subtree: true };
-      
+
       // Callback function to execute when mutations are observed
       const callback = (mutationList, observer) => {
         // console.log("Change!")
@@ -7288,24 +9348,45 @@
           }
         }
       };
-      
+
       // Create an observer instance linked to the callback function
       const observer = new MutationObserver(callback);
-      
+
       // Start observing the target node for configured mutations
+
       observer.observe(targetNode, config);
 
     },
 
-    insertConversationMenu(){
+    makeWideScreen() {
+      const continueButton = chatgpt.getContinueGeneratingButton();
+      // console.log(continueButton)
+      if (continueButton) {
+        continueButton.click();
+      }
+
+      const parentDivs = document.querySelectorAll('[class="p-4 justify-center text-base md:gap-6 md:py-6 m-auto"');
+      Array.from(parentDivs)?.forEach(el => {
+        try {
+          const child = el.children[0];
+          child.className = child.className.replace('max-w', ' pr-12 lkij');
+        } catch (error) {
+          // console.log(error)
+        }
+
+      });
+    },
+
+    insertConversationMenu() {
+      this.makeWideScreen();
       const allDivs = document.getElementsByClassName('text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-2 md:gap-3 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible');
       // console.log("All Chat Boxes",allDivs.length)
-      
-      Array.from(allDivs)?.forEach((div,index) => {
-        if(index%2 === 0){
+
+      Array.from(allDivs)?.forEach((div, index) => {
+        if (index % 2 === 0) {
           return
         }
-        if(!div.querySelector('#chat-menu')){
+        if (!div.querySelector('#chat-menu')) {
           const elem = document.createElement('button');
           elem.className = 'p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400';
           elem.innerHTML = svg(`menu-vertical`);
@@ -7328,35 +9409,35 @@
                 ${svg('Link')}
                 Share Link</a>`;
 
-            //   <a title="Save to Google Doc" id="share_g_doc" class=" relative flex flex-row text-sm gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >
-            //     ${svg('document')}
-            //     Save to Google Doc</a>
-            // `
+          //   <a title="Save to Google Doc" id="share_g_doc" class=" relative flex flex-row text-sm gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >
+          //     ${svg('document')}
+          //     Save to Google Doc</a>
+          // `
           options.id = 'chat-menu-options';
           elem.appendChild(options);
-          
 
-          elem.addEventListener('click', ()=>{
-            options.className.split(' ').includes('hidden')? options.className = options.className.replace('hidden ',"flex ") : options.className = options.className.replace('flex ',"hidden ");
+
+          elem.addEventListener('click', () => {
+            options.className.split(' ').includes('hidden') ? options.className = options.className.replace('hidden ', "flex ") : options.className = options.className.replace('flex ', "hidden ");
           });
 
-          options.querySelector('#copy_markdown')?.addEventListener('click', ()=>{
+          options.querySelector('#copy_markdown')?.addEventListener('click', () => {
             let markdown = '';
             const chat = document.getElementsByClassName('group w-full text-token-text-primary border-b border-black/10');
-            Array.from(chat)?.forEach((div)=>{
+            Array.from(chat)?.forEach((div) => {
               markdown += div.querySelector('.markdown') ? div.querySelector('.markdown').innerHTML : `<h2>${div.innerHTML}</h2>`;
             });
             markdown = IN_BOUND.htmlToMarkdown(markdown);
-            console.log(markdown);
+            // console.log(markdown)
             navigator.clipboard.writeText(markdown)
-              .then(()=>{
+              .then(() => {
                 // console.log('Copied')
-                options.className = options.className.replace('flex ','hidden ');
+                options.className = options.className.replace('flex ', 'hidden ');
                 IN_BOUND.showNotification(
                   NotificationSeverity.SUCCESS,
                   'Markdown copied to clipboard!'
                 );
-              }).catch(()=>{
+              }).catch(() => {
                 // console.log('Failed')
                 IN_BOUND.showNotification(
                   NotificationSeverity.ERROR,
@@ -7365,21 +9446,21 @@
               });
           });
 
-          options.querySelector('#copy_html')?.addEventListener('click', ()=>{
+          options.querySelector('#copy_html')?.addEventListener('click', () => {
             let htmlData = '';
             const chat = document.getElementsByClassName('group w-full text-token-text-primary border-b border-black/10');
-            Array.from(chat)?.forEach((div)=>{
+            Array.from(chat)?.forEach((div) => {
               htmlData += div.querySelector('.markdown') ? div.querySelector('.markdown').innerHTML : `<h2>${div.innerHTML}</h2>`;
             });
             navigator.clipboard.writeText(htmlData)
-              .then(()=>{
+              .then(() => {
                 // console.log('Copied')
-                options.className = options.className.replace('flex ','hidden ');
+                options.className = options.className.replace('flex ', 'hidden ');
                 IN_BOUND.showNotification(
                   NotificationSeverity.SUCCESS,
                   'HTML copied to clipboard!'
                 );
-              }).catch(()=>{
+              }).catch(() => {
                 // console.log('Failed')
                 IN_BOUND.showNotification(
                   NotificationSeverity.ERROR,
@@ -7388,7 +9469,7 @@
               });
           });
 
-          options.querySelector('#share_link')?.addEventListener('click', ()=>{
+          options.querySelector('#share_link')?.addEventListener('click', () => {
             let htmlData_0 = document.getElementsByClassName('flex flex-col text-sm dark:bg-gray-800')[0];
 
             const tempDiv = document.createElement('div');
@@ -7399,12 +9480,12 @@
             tempDiv.querySelector('#chat-menu')?.remove();
             tempDiv.querySelector('#chat-menu-options')?.remove();
             const iconsElements = tempDiv.getElementsByClassName('text-gray-400 flex self-end lg:self-center justify-center mt-2 gap-2 md:gap-3 lg:gap-1 lg:absolute lg:top-0 lg:translate-x-full lg:right-0 lg:mt-0 lg:pl-2 visible');
-            Array.from(iconsElements)?.forEach((icon)=>{
-              icon.className.replace(' visible',' hidden');
+            Array.from(iconsElements)?.forEach((icon) => {
+              icon.className.replace(' visible', ' hidden');
               icon.remove();
             });
             let bgFix = tempDiv.getElementsByClassName('group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800');
-            Array.from(bgFix)?.forEach((bg)=>{
+            Array.from(bgFix)?.forEach((bg) => {
               bg.className = bg.className + ' bg-white dark:bg-gray-800';
             });
 
@@ -7415,100 +9496,95 @@
               'Generating link..'
             );
             // call to api to store html data
-            const randomID = crypto.randomUUID();
-            const url = `${APIEndpoint}/chatgpt-conversations?id=${randomID}&user=${this.Client.User.Email}&company=${this.Company}&promptID=${this.SelectedPromptTemplateID}`;
-            fetch(url,{
-              method:'POST',
-              headers:{
-                'Content-Type':'text/plain'
+            IN_BOUND.shareLinkRandomID = crypto.randomUUID();
+            const url = `${APIEndpoint}/chatgpt-conversations?id=${IN_BOUND.shareLinkRandomID}&user=${this.Client.User.Email}&company=${this.Company}&promptID=${this.SelectedPromptTemplateID}`;
+            const options_1 = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'text/plain'
               },
               body: htmlData
-            })
-                .then(res=>{
-                  if(res.ok){
-                    const copyUrl = "https://api.workengine.ai/chatgpt-conversations?chatid=" + randomID;
-                    navigator.clipboard.writeText(copyUrl)
-                      .then(()=>{
-                        // console.log('Copied')
-                        options.className = options.className.replace('flex ','hidden ');
-                        IN_BOUND.showNotification(
-                          NotificationSeverity.SUCCESS,
-                          'Url copied to clipboard!'
-                        );
-                        window.open(copyUrl, '_blank');
-                      }).catch(()=>{
-                        // console.log('Failed')
-                        IN_BOUND.showNotification(
-                          NotificationSeverity.ERROR,
-                          'Failed to copy Url to clipboard!'
-                        );
-                      });
-                  }else {
-                    // console.log('Failed')
-                    IN_BOUND.showNotification(
-                      NotificationSeverity.ERROR,
-                      'Failed to share chat!'
-                    );
-                  }
+            };
+
+
+            document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options: options_1, type: "IN_BOUND.postRequest", returnType: "shareChatLink" }, bubbles: true }));
+
+
+            setTimeout(function () {
+              const copyUrl = ("https://api.workengine.ai/chatgpt-conversations?chatid=" + IN_BOUND.shareLinkRandomID);
+              navigator.clipboard.writeText(copyUrl)
+                .then(() => {
+                  // console.log('Copied')
+                  options.className = options.className.replace('flex ', 'hidden ');
+                  IN_BOUND.showNotification(
+                    NotificationSeverity.SUCCESS,
+                    'Url copied to clipboard!'
+                  );
+                  window.open(copyUrl, '_blank');
+                }).catch((e) => {
+                  console.info(e);
+                  IN_BOUND.showNotification(
+                    NotificationSeverity.ERROR,
+                    'Failed to copy Url to clipboard!'
+                  );
                 });
+            }, 3000);
+
+
+
+            // fetch(url, {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'text/plain'
+            //   },
+            //   body: htmlData
+            // })
+            //   .then(res => {
+            //     if (res.ok) {
+            //       const copyUrl = "https://api.workengine.ai/chatgpt-conversations?chatid=" + randomID
+            //       navigator.clipboard.writeText(copyUrl)
+            //         .then(() => {
+            //           // console.log('Copied')
+            //           options.className = options.className.replace('flex ', 'hidden ')
+            //           IN_BOUND.showNotification(
+            //             NotificationSeverity.SUCCESS,
+            //             'Url copied to clipboard!'
+            //           );
+            //           window.open(copyUrl, '_blank')
+            //         }).catch(() => {
+            //           // console.log('Failed')
+            //           IN_BOUND.showNotification(
+            //             NotificationSeverity.ERROR,
+            //             'Failed to copy Url to clipboard!'
+            //           );
+            //         })
+            //     } else {
+            //       // console.log('Failed')
+            //       IN_BOUND.showNotification(
+            //         NotificationSeverity.ERROR,
+            //         'Failed to share chat!'
+            //       );
+            //     }
+            //   })
+
+
           });
-
-
-          // options.querySelector('#share_g_doc')?.addEventListener('click', ()=>{
-          //   let html = ''
-          //   const chat = document.getElementsByClassName('min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap break-words')
-          //   Array.from(chat)?.forEach((div)=>{
-          //     html += div.querySelector('.markdown') ? div.querySelector('.markdown').innerHTML : `<h2>${div.innerHTML}</h2>`
-          //   })
-            // console.log(html)
-          //   const markdown = IN_BOUND.htmlToMarkdown(html)
-            // console.log(markdown)
-            
-
-          //   fetch('https://script.google.com/macros/s/AKfycbwGlqpQgbj2AMEoQvhDm18YkWQysPI64bmw6Vs5sRsZX4zS7MTRP9mW2bKvptyIeSjW2w/exec', {
-          //     method: 'POST',
-          //     headers: {
-          //       'Content-Type': 'text/plain'
-          //     },
-          //     body: markdown
-          //   })
-          //   .then(function(response) {
-          //     if (response.ok) {
-          //       return response.text();
-          //     } else {
-          //       throw new Error('Error: ' + response.status);
-          //     }
-          //   })
-          //   .then(function(data) {
-              // console.log(data);
-          //   })
-          //   .catch(function(error) {
-              // console.log(error);
-          //   });
-
-
-          // })
-          
-
         }
       });
-      
+
 
       setTimeout(() => {
         IN_BOUND.insertConversationMenu();
         IN_BOUND.getParsedJSONFromCodeBlock();
-      }, 5000);
+        IN_BOUND.checkPromptWrapper();
+      }, 1000);
 
-
-      
-
-      
     },
 
     htmlToMarkdown(html) {
       // Remove newline characters
       // html = html.replace(/\n/g, '');
-    
+
       // Replace HTML tags with Markdown equivalents
       html = html.replace(/<h1(?:[\s\S]*?)>([\s\S]*?)<\/h1>/gi, '# $1\n\n');
       html = html.replace(/<h2(?:[\s\S]*?)>([\s\S]*?)<\/h2>/gi, '## $1\n\n');
@@ -7526,133 +9602,140 @@
       html = html.replace(/<blockquote(?:[\s\S]*?)>([\s\S]*?)<\/blockquote>/gi, '> $1\n');
       html = html.replace(/<code(?:[\s\S]*?)>([\s\S]*?)<\/code>/gi, '`$1`');
       html = html.replace(/<pre(?:[\s\S]*?)>([\s\S]*?)<\/pre>/gi, '```\n$1\n```');
-    
+
       // Convert code blocks
       html = html.replace(/<code(?:[\s\S]*?)>/gi, '```');
       html = html.replace(/<\/code>/gi, '```');
-    
+
       // Convert table
       html = html.replace(/<table(?:[\s\S]*?)>([\s\S]*?)<\/table>/gi, '\n$1\n');
-    
+
       // Convert table headers
       html = html.replace(/<th(?:[\s\S]*?)>([\s\S]*?)<\/th>/gi, '| $1 ');
       html = html.replace(/<\/th>/gi, '|');
       html = html.replace(/<tr(?:[\s\S]*?)>/gi, '|');
       html = html.replace(/<\/tr>/gi, '|\n');
-    
+
       // Convert table cells
       html = html.replace(/<td(?:[\s\S]*?)>([\s\S]*?)<\/td>/gi, '| $1 ');
       html = html.replace(/<\/td>/gi, '|');
-    
+
       // Remove any remaining HTML tags
       html = html.replace(/<\/?[a-z]+(?:[\s\S]*?)>/gi, '');
-    
-      return html;
-    }
-    ,
 
-     getParsedJSONFromCodeBlock() {
+      return html;
+    },
+
+    checkPromptWrapper(){
+      const promptWrapper = document.querySelector('#prompt-wrapper');
+      if(!promptWrapper){
+        this.selectPromptTemplateByIndex(null);
+      }
+    },
+
+    getParsedJSONFromCodeBlock() {
       // Get all elements with the specified classes
       const elements = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert');
       // console.log("elements",elements)
       // Iterate through each element
       Array.from(elements).forEach((element) => {
         // console.log(element)
-        if(element.querySelectorAll('#save-json').length === element.querySelectorAll('.language-json').length);else {
-          const codeBlocks = element.querySelectorAll('.language-json'); 
+        if (element.querySelectorAll('#save-json').length === element.querySelectorAll('.language-json').length) ; else {
+          const codeBlocks = element.querySelectorAll('.language-json');
           codeBlocks.forEach(codeBlock => {
             // console.log("codeBlock",codeBlock)
-          // Check if the element contains a code block
-          if (codeBlock?.className.includes('language-json') ) {
-            // Get the code block's content
-            const code = codeBlock.textContent.trim();
-      
-            try {
-              // Parse the code block content as JSON
-              const json = JSON.parse(code);
-              // console.log(json)
-              if (json.Prompt && json.Title) {
-                // console.log('inserting...')
-                this.insertButtonCodeBlock(codeBlock, json);
-                // JSON parsing successful, return the parsed JSON object
-              // return json;
-              } else {
-                // Return an error
+            // Check if the element contains a code block
+            if (codeBlock?.className.includes('language-json')) {
+              // Get the code block's content
+              const code = codeBlock.textContent.trim();
+
+              try {
+                // Parse the code block content as JSON
+                const json = JSON.parse(code);
+                // console.log(json)
+                if (json.Prompt && json.Title) {
+                  // console.log('inserting...')
+                  this.insertButtonCodeBlock(codeBlock, json);
+                  // JSON parsing successful, return the parsed JSON object
+                  // return json;
+                } else {
+                  // Return an error
+                  console.error("Error: JSON object must contain Prompt and Title keys.");
+                }
+
+
+              } catch (error) {
+                // JSON parsing failed, continue to the next code block
                 console.error("Error: JSON object must contain Prompt and Title keys.");
+                // continue;
               }
-              
-              
-            } catch (error) {
-              // JSON parsing failed, continue to the next code block
-              console.error("Error: JSON object must contain Prompt and Title keys.");
-              // continue;
             }
-          }
           });
-          
+
         }
-        
+
       });
-    
+
       // No JSON code block found, return null or handle accordingly
       return null;
     },
 
-    insertButtonCodeBlock(elem, json){
+    insertButtonCodeBlock(elem, json) {
       // console.log(elem)
       // const header = elem.getElementsByClassName('flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md')[0]
       const header = elem.parentElement.previousElementSibling;
-      if(header){
-        if(header.querySelector('#save-json')){
+      if (header) {
+        if (header.querySelector('#save-json')) {
           return
-        }else {
+        } else {
           const button = document.createElement('button');
           button.classList.add('flex', 'ml-auto', 'gap-2');
           button.innerHTML = svg('save') + "Save as Template";
           // button.textContent = 'Save as Template';
           button.id = "save-json";
-    
+
           // Add onClick event to log JSON of code block
-          button.addEventListener('click', function() {
+          button.addEventListener('click', function () {
             if (json) {
               // console.log("Save json as Prompt Template: ", json);
               IN_BOUND.saveImportedPrompt(json);
               // header.querySelector('#save-json').style.display = 'none';
             }
           });
-    
+
           header.appendChild(button);
         }
-        
+
       }
     },
-    
 
-    sendBtnObserverForChunks(){
-      const targetNode = document.querySelector('textarea').nextElementSibling;
+
+    sendBtnObserverForChunks() {
+      const targetNode = document.querySelector('textarea')?.nextElementSibling;
+      if (!targetNode) return
       const config = { attributes: true, childList: true, subtree: true };
       let chunkProcessingState = false;
-      
+
       const callback = async (mutationList, observer) => {
         for (const mutation of mutationList) {
           if (mutation.type === "childList") {
             const textarea = document.querySelector('textarea');
             const button = textarea.nextElementSibling;
-            if(button.children[0].className === '' && IN_BOUND.longInputText.length > 0){
+            if (button.children[0].className === '' && IN_BOUND.longInputText.length > 0) {
               // console.log('Observer')
-              if(chunkProcessingState === false){
+              if (chunkProcessingState === false) {
                 // console.log('Add Element')
                 chunkProcessingState = true;
-                if(IN_BOUND.longInputText.length>0){
+                if (IN_BOUND.longInputText.length > 0) {
                   // console.log('Next')
                   const textarea = document.querySelector("textarea[tabindex='0']");
-                  if(IN_BOUND.longInputText.slice(0,9000).length < 9000 ){
-                    textarea.value = IN_BOUND.longInputText.slice(0,9000);
-                    
+                  if (IN_BOUND.longInputText.slice(0, 9000).length < 9000) {
+                    textarea.value = IN_BOUND.longInputText.slice(0, 9000);
+
                     // IN_BOUND.sendBtnObserverObject.disconnect()
-                  }else {
-                    textarea.value = IN_BOUND.longInputText.slice(0,9000); 
-                    
+                  } else {
+                    textarea.value = IN_BOUND.longInputText.slice(0, 9000);
+
                   }
 
                   // IN_BOUND.longInputText = IN_BOUND.longInputText.slice(9000)
@@ -7666,38 +9749,77 @@
                   button.click();
                 }
               }
-            }else {
+            } else {
               chunkProcessingState = false;
             }
           }
         }
       };
-      
+
       const observer = new MutationObserver(callback);
       observer.observe(targetNode, config);
       IN_BOUND.sendBtnObserverObject = observer;
     },
 
-    copyResponse(e){
+    copyResponse(e) {
       const copyText = e.srcElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.innerText;
       // console.log(copyText)
       navigator.clipboard
-      .writeText(copyText)
-      .then(
-        // Success - copied & public
-        this.showNotification(
-          NotificationSeverity.SUCCESS,
-          'The response was copied to your clipboard.'
-        )
-        
-      );
+        .writeText(copyText)
+        .then(
+          // Success - copied & public
+          this.showNotification(
+            NotificationSeverity.SUCCESS,
+            'The response was copied to your clipboard.'
+          )
+
+        );
     },
 
     replaceFetch() {
       window.fetch = (...t) => {
+
         // console.log("Tem: ",this.SelectedPromptTemplate)
         // If the request is not for the chat backend API, just use the original fetch function
-        if (t[0] !== EndpointConversation) return this.fetch(...t);
+        if (!t[0] || !t[0].match(EndpointConversation)) return this.fetch(...t);
+
+        console.log("Request intercepted!");
+
+        if (!this.SelectedPromptTemplate && (!!this.Tone || !!this.WritingStyle || !!this.TargetLanguage)) {
+          const options = t[1];
+          // Parse the request body from JSON
+          const body = JSON.parse(options.body);
+
+          try {
+
+            const lastIndex = body.messages[0].content.parts.length - 1;
+
+            const tone = this.userTones.filter((tone) => this.Tone === tone.ID)[0];
+
+            if (tone?.Description) {
+              body.messages[0].content.parts[lastIndex] += `\n\nPlease write in ${tone.Description}.`;
+            }
+
+            if (this.TargetLanguage) {
+              body.messages[0].content.parts[lastIndex] += `\nPlease write in ${this.TargetLanguage} language.\n`;
+            }
+
+            if (this.WritingStyle) {
+              body.messages[0].content.parts[lastIndex] += `\nPlease write in ${this.WritingStyles.find(w => w.ID === this.WritingStyle)?.Prompt} writing style.`;
+            }
+
+            // Stringify the modified request body and update the options object
+            options.body = JSON.stringify(body);
+            // Use the modified fetch function to make the request
+            console.log("last index: ", lastIndex);
+            console.log("Submit Prompt:  ", body.messages[0].content.parts[lastIndex]);
+            this.selectPromptTemplateByIndex(null);
+            return this.fetch(t[0], options);
+          } catch (error) {
+            console.log(error);
+            return this.fetch(...t);
+          }
+        }
 
         // If no prompt template, tone, writing style or target language has been selected, use the original fetch function
         if (
@@ -7706,30 +9828,33 @@
           !this.WritingStyle &&
           !this.TargetLanguage
         ) {
+          console.log("No prompt template, tone, writing style or target language selected");
           return this.fetch(...t);
         }
 
+        console.log("processed with selected prompt");
         // Get the selected prompt template
         let template = this.SelectedPromptTemplate;
+        // this.usedPrompts.push(this.SelectedPromptTemplate)
 
-        // Allow the user to use continue actions after sending a prompt
-        // this.showContinueActionsButton();
 
         try {
           // Get the options object for the request, which includes the request body
           const options = t[1];
           // Parse the request body from JSON
           const body = JSON.parse(options.body);
+          const lastIndex = body.messages[0].content.parts.length - 1;
 
           if (template) {
             // Get the prompt from the request body
-            const prompt = body.messages[0].content.parts[0];
+            const prompt = body.messages[0].content.parts[lastIndex];
             // console.log(prompt)
             this.SelectedPromptTemplateID = template.ID;
+            localStorage.setItem('SelectedPromptTemplateID', template.ID);
 
-            if(!prompt){
-              return
-            }
+            // if (!prompt) {
+            //   return this.fetch(...t);
+            // }
 
             // Use the default target language if no target language has been selected
             const targetLanguage = (
@@ -7739,11 +9864,11 @@
             // Replace the prompt in the request body with the selected prompt template,
             // inserting the original prompt into the template and replacing the target language placeholder
             // const tone = this.userTones.filter((tone) => this.Tone?.indexOf(tone.ID) > -1 )
-            if(template.Prompt.indexOf(PromptPlaceholder) === -1){
+            if (template.Prompt.indexOf(PromptPlaceholder) === -1) {
               template.Prompt = template.Prompt + `\n${prompt}`;
             }
 
-            body.messages[0].content.parts[0] = template.Prompt.replaceAll(
+            body.messages[0].content.parts[lastIndex] = template.Prompt.replaceAll(
               PromptPlaceholder,
               prompt
             ).replaceAll(TargetLanguagePlaceholder, targetLanguage);
@@ -7762,7 +9887,7 @@
           //   ? this.userTones.find((tone) => tone.ID === this.Tone)
           //   : null;
 
-          const tone = this.userTones.filter((tone) => this.Tone === tone.ID )[0];
+          const tone = this.userTones.filter((tone) => this.Tone === tone.ID)[0];
 
 
           // console.log("tone",tone)
@@ -7780,39 +9905,42 @@
 
           // If the user has selected a tone, writing style or target language, add a prompt to the request body
           if (tone?.Description) {
-            body.messages[0].content.parts[0] += `\n\nPlease write in ${tone.Description}.`;
+            body.messages[0].content.parts[lastIndex] += `\n\nPlease write in ${tone.Description}.`;
           }
 
-          if(this.TargetLanguage){
-            body.messages[0].content.parts[0] += `\nPlease write in ${this.TargetLanguage} language.\n`;
+          if (this.TargetLanguage) {
+            body.messages[0].content.parts[lastIndex] += `\nPlease write in ${this.TargetLanguage} language.\n`;
           }
 
-          if(this.WritingStyle){
-            body.messages[0].content.parts[0] += `\nPlease write in ${this.WritingStyles.find(w => w.ID === this.WritingStyle)?.prompt} writing style.`;
+          if (this.WritingStyle) {
+            body.messages[0].content.parts[lastIndex] += `\nPlease write in ${this.WritingStyles.find(w => w.ID === this.WritingStyle)?.Prompt} writing style.`;
           }
 
-          const fullPrompt = body.messages[0].content.parts[0];
-          const prompt = fullPrompt.slice(0,9000);
+          const fullPrompt = body.messages[0].content.parts[lastIndex];
+          const prompt = fullPrompt;
 
-          if( fullPrompt.slice(9000)?.length > 0 ){
-            IN_BOUND.longInputText = fullPrompt.slice(9000);
-            IN_BOUND.SelectedPromptTemplate = {...IN_BOUND.SelectedPromptTemplate, Prompt: IN_BOUND.longInputText };
-            IN_BOUND.sendBtnObserverForChunks();
-            // console.log('Big Prompt!')
-          }else {
-            IN_BOUND.longInputText = fullPrompt.slice(9000);
-            IN_BOUND.SelectedPromptTemplate = {...IN_BOUND.SelectedPromptTemplate, Prompt: IN_BOUND.longInputText };
-            IN_BOUND.selectPromptTemplateByIndex(null);
-          }
-          body.messages[0].content.parts[0] = prompt;
+          // if( fullPrompt.slice(9000)?.length > 0 ){
+          //   IN_BOUND.longInputText = fullPrompt.slice(9000)
+          //   IN_BOUND.SelectedPromptTemplate = {...IN_BOUND.SelectedPromptTemplate, Prompt: IN_BOUND.longInputText }
+          //   IN_BOUND.sendBtnObserverForChunks()
+          //   // console.log('Big Prompt!')
+          // }else{
+          //   IN_BOUND.longInputText = fullPrompt.slice(9000)
+
+          console.log(prompt);
+          console.log("last index: ", lastIndex);
+          IN_BOUND.SelectedPromptTemplate = { ...IN_BOUND.SelectedPromptTemplate, Prompt: prompt };
+          // IN_BOUND.selectPromptTemplateByIndex(null);
+          // }
+          body.messages[0].content.parts[lastIndex] = prompt;
           // Stringify the modified request body and update the options object
           options.body = JSON.stringify(body);
           // Use the modified fetch function to make the request
           // console.log("Submit Prompt:  ", prompt)
           // Clear the selected prompt template
-          // this.selectPromptTemplateByIndex(null);
+          this.selectPromptTemplateByIndex(null);
           return this.fetch(t[0], options);
-        } catch(er) {
+        } catch (er) {
           // console.log('error:::', er)
           // If there was an error parsing the request body or modifying the request,
           // just use the original fetch function
@@ -8074,10 +10202,10 @@
       try {
         const savedPrompt = await this.Client.savePrompt(prompt);
 
-        this.refreshData();
+        // this.refreshData();
 
         // Update revision time to current time
-        prompt.RevisionTime = new Date().toISOString();
+        // prompt.RevisionTime = new Date().toISOString();
 
         // Update existing prompt template
         if (prompt.ID) {
@@ -8089,14 +10217,14 @@
           prompt.Community === this.PromptTopic
         ) {
           // New prompt template was created, set the ID
-          prompt.ID = savedPrompt.ID;
+          // prompt.ID = savedPrompt.ID;
 
-          this.OwnPrompts.push(prompt);
+          // this.OwnPrompts.push(prompt);
 
           // Add prompt to public prompt templates if it is public
-          if (prompt.Public) {
-            this.PromptTemplates.push(prompt);
-          }
+          // if (prompt.Public) {
+          //   this.PromptTemplates.push(prompt);
+          // }
         }
       } catch (error) {
         // console.log(error)
@@ -8212,7 +10340,7 @@
       //   </div>
       // `;
 
-      notificationElement.innerHTML = `<div style="z-index:999999999999;" class="fixed top-0 right-0 p-6 space-y-4 max-w-md">` +  (severity === NotificationSeverity.SUCCESS ? `
+      notificationElement.innerHTML = `<div style="z-index:999999999999;" class="fixed top-0 right-0 p-6 space-y-4 max-w-md">` + (severity === NotificationSeverity.SUCCESS ? `
     <div class="flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2">
         <div class="text-green-500 rounded-full bg-white mr-3">
             <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-check-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -8223,8 +10351,8 @@
         ${message}
         </div>
     </div>`
-    :
-    severity === NotificationSeverity.WARNING ? `
+        :
+        severity === NotificationSeverity.WARNING ? `
   <div class="flex items-center bg-yellow-500 border-l-4 border-yellow-700 py-2 px-3 shadow-md mb-2">
       <div class="text-yellow-500 rounded-full bg-white mr-3">
           <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-exclamation-triangle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -8235,8 +10363,8 @@
       ${message}
       </div>
   </div>`
-  :
-    `<div class="flex items-center bg-red-500 border-l-4 border-red-700 py-2 px-3 shadow-md mb-2">
+          :
+          `<div class="flex items-center bg-red-500 border-l-4 border-red-700 py-2 px-3 shadow-md mb-2">
   <div class="text-red-500 rounded-full bg-white mr-3">
       <svg width="1.8em" height="1.8em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
@@ -8280,15 +10408,27 @@
       );
     },
 
+    addInputToTextarea(text) {
+      const el = document.getElementById('prompt_template_area');
+      el.value = el.value.slice(0, el.selectionStart) + text + el.value.slice(el.selectionEnd);
+    },
+
+
+    auto_grow(element) {
+      element.style.height = "5px";
+      element.style.height = (element.scrollHeight) + "px";
+      // console.log(element.scrollHeight)
+    },
+
     /**
      * Show modal to save prompt as template
      *
      * @param {Event|null} e
      */
-    async showSavePromptModal(e,promptID, promptFull) {
+    async showSavePromptModal(e, promptID, promptFull) {
       let promptTemplate = '';
 
-      
+
       const isEditPromptEvent = e && e.type === editPromptTemplateEvent;
 
       // cannot add new prompt template, but still can edit existing one
@@ -8305,9 +10445,9 @@
         // get the element that triggered this onclick event
         e.target.closest('button');
         // console.log(this.activePromptID, this.DefaultPromptTemplates.filter(prompt => prompt.ID === this.activePromptID)[0] || this.OwnPrompts.filter(prompt => prompt.ID === this.activePromptID)[0])
-        
+
         // get the parent element of the button (the prompt container)
-         prompt = this.DefaultPromptTemplates.filter(prompt => prompt.ID === this.activePromptID)[0] || this.OwnPrompts.filter(prompt => prompt.ID === this.activePromptID)[0];
+        prompt = this.DefaultPromptTemplates.filter(prompt => prompt.ID === this.activePromptID)[0] || this.OwnPrompts.filter(prompt => prompt.ID === this.activePromptID)[0];
         //  console.log(prompt)
         if (prompt) {
           promptTemplate = prompt.Prompt;
@@ -8318,18 +10458,20 @@
 
       let savePromptModal = document.getElementById('savePromptModal');
 
+
+
       // if modal does not exist, create it, add event listener on submit and append it to body
       if (!savePromptModal) {
         savePromptModal = document.createElement('div');
         savePromptModal.id = 'savePromptModal';
 
         savePromptModal.addEventListener(
-          'submit',(e)=> {
+          'submit', (e) => {
             e.preventDefault();
             // console.log(e.submitter.name)
-            e.submitter.name === "savePromptAsTemplate" ? this.savePromptAsTemplate(e): this.saveAsNewPromptTemplate(e);
+            e.submitter.name === "savePromptAsTemplate" ? this.savePromptAsTemplate(e) : this.saveAsNewPromptTemplate(e);
           }
-          
+
         );
 
         document.body.appendChild(savePromptModal);
@@ -8345,15 +10487,15 @@
         <div class="fixed inset-0 overflow-y-auto">
           <div class="flex items-center justify-center min-h-full">
             <form id="savePromptForm">
-              <input type="hidden" name="ID" ${promptID?`value="${promptID}"` : ""}  />
+              <input type="hidden" name="ID" ${promptID ? `value="${promptID}"` : ""}  />
               
               <div
-              class="align-center bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl sm:align-middle  sm:my-8  text-left transform transition-all"
-              role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
+              class="align-center bg-white dark:bg-gray-800 dark:text-gray-200 inline-block overflow-hidden sm:rounded-lg shadow-xl text-left transform transition-all"
+              role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left; height: 90vh; width:90vw;">
           
-                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4 overflow-y-auto">
+                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4 overflow-y-auto" style="height: 100%;" >
                 <label>${extensionText.inputform.title.label}</label>
-                  <input name="Title" type="text" ${promptExist?`value="${sanitizeInput(prompt.Title)}"` : ""}
+                  <input name="Title" type="text" ${promptExist ? `value="${sanitizeInput(prompt.Title)}"` : ""}
                     title="${extensionText.inputform.title.placeholder}" required placeholder="${extensionText.inputform.title.placeholder}" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded mb-3 mt-2 p-2 w-full" />
             
 
@@ -8361,19 +10503,30 @@
                   <textarea name="Teaser" required
                     title="${extensionText.inputform.teaser.placeholder}'"
                     class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" style="height: 71px;"
-                    placeholder="${extensionText.inputform.teaser.placeholder}"> ${promptExist?`value="${sanitizeInput(prompt.Teaser)}"` : ""}</textarea>
+                    placeholder="${extensionText.inputform.teaser.placeholder}"> ${promptExist ? `value="${sanitizeInput(prompt.Teaser)}"` : ""}</textarea>
                     
                   <label>${extensionText.inputform.promptHint.label}</label>
-                  <input name="PromptHint" required type="text"  ${promptExist?`value="${sanitizeInput(prompt.PromptHint)}"` : ""}
+                  <input name="PromptHint" required type="text"  ${promptExist ? `value="${sanitizeInput(prompt.PromptHint)}"` : ""}
                     title="${extensionText.inputform.promptHint.placeholder}"
                     class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" placeholder="${extensionText.inputform.promptHint.placeholder}" />
 
-                  <label>${extensionText.inputform.promptTemplate.label}</label>
-                  <textarea name="Prompt" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" style="height: 120px;" required
+                  <div class=" flex gap-2 items-center justify-start  " >
+                  <label >${extensionText.inputform.promptTemplate.label}</label>
+                  <a title="Add [PROMPT]" style="border: 1px solid gray; cursor: hand; border-radius:4px;  border: 1px solid #b6b6b6;  color: #1b1b1b;  padding: 5px 10px; background: linear-gradient(to bottom, #fafafa, #e2e4e8); font-size: 14px; " class=" hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                    onclick="IN_BOUND.addInputToTextarea( ' [PROMPT] ' )"> [PROMPT] </a>
+
+                    <a title="Add [TARGETLANGUAGE]" style="border: 1px solid gray; cursor: hand; border-radius:4px;  border: 1px solid #b6b6b6;  color: #1b1b1b;  padding: 5px 10px; background: linear-gradient(to bottom, #fafafa, #e2e4e8); font-size: 14px; " class=" hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                    onclick="IN_BOUND.addInputToTextarea( ' [TARGETLANGUAGE] ')"> [TARGETLANGUAGE] </a>
+
+                    <a title="Add {{VARIABLE}}" style="border: 1px solid gray; cursor: hand; border-radius:4px;  border: 1px solid #b6b6b6;  color: #1b1b1b;  padding: 5px 10px; background: linear-gradient(to bottom, #fafafa, #e2e4e8); font-size: 14px; " class=" hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                    onclick="IN_BOUND.addInputToTextarea( ' {{VARIABLE}} ')"> {{VARIABLE}} </a>
+                  </div>
+                  <textarea oninput="IN_BOUND.auto_grow(this)" name="Prompt" id="prompt_template_area" 
+                      class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3 "  style="height: 25% ; max-height:320px; "  required
                             placeholder="${extensionText.inputform.promptTemplate.placeholer}"
                             title="${extensionText.inputform.promptTemplate.placeholer}">${sanitizeInput(
-                              promptTemplate
-                            )}</textarea>
+      promptTemplate
+    )}</textarea>
             
                   
                   
@@ -8385,24 +10538,24 @@
                       <datalist id="tagsList" >
                         ${this.searchPredictionList.map(p => `
                               <option value="${p}">`
-                          )
-                          .join('')}
+    )
+        .join('')}
                       </datalist>
                     </div>
 
                   ${this.userTones[0] ? `<div class="w-full ml-2 items-start justify-center flex flex-col">
-                      <label>Pompt Variation</label>
+                      <label> Variation (Optional) </label>
                         <select name="Tone" class="mt-2 mb-3 dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-900 rounded w-full">
                         <option  value="" selected  > No Variation </option>
 
                           ${this.userTones
-                            .map(
-                              (tone) => /*html*/ `
+          .map(
+            (tone) => /*html*/ `
                                 <option  value="${sanitizeInput(
-                                  tone.ID
-                                )}">${sanitizeInput(tone.Label)}</option>`
-                            )
-                            .join('')}
+              tone.ID
+            )}">${sanitizeInput(tone.Label)}</option>`
+          )
+          .join('')}
                         </select>` : `<div class="w-full ml-2 items-start justify-center flex flex-col">
                         <label>Pompt Variation</label>
                           <select name="Tone" disabled class="mt-2 mb-3 dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-900 rounded w-full">
@@ -8416,13 +10569,9 @@
 
                         <a style="padding-top: 4%;padding-left: 10px;" title="Goto setting and click on My Variations to Manage Variations.">${svg('info')}</a>
 
-                        
-                      
-
-
                 </div>
 
-                ${ isEditPromptEvent ? "" : `<div class="block mx-6 mt-4 gap-4">
+                ${isEditPromptEvent ? "" : `<div class="block mx-6 mt-4 gap-4">
                     <label class="text-sm">
                       <input name="Public" value="true" type="checkbox" class="mx-4 dark:bg-gray-700"> 
                       ${extensionText.inputform.share}
@@ -8439,7 +10588,7 @@
                 <div class=" px-4 py-3 text-right">
                 ${isEditPromptEvent === true ? `<button type="submit" name="saveAsNewPromptTemplate" class="bg-gray-600 hover:bg-gray-400 mr-2 px-4 py-2 mt-2 rounded text-white"
                           > ${extensionText.inputform.saveAsNew}
-                  </button>`:"" }
+                  </button>`: ""}
                   <button type="button" class="bg-gray-600 hover:bg-gray-400 mr-2 px-4 py-2 mt-2 rounded text-white"
                           onclick="IN_BOUND.hideSavePromptModal()"> ${extensionText.inputform.cancel}
                   </button>
@@ -8489,59 +10638,69 @@
 
     },
 
-    addNewEmptyTone(){
-      const newTone = [{ID:(new Date()).getTime() + Math.random().toString(16).slice(2), Label:"My New Variation", Description:"My Variation Detail"}];
+    addNewEmptyTone() {
+      const newTone = [{ ID: (new Date()).getTime() + Math.random().toString(16).slice(2), Label: "My New Variation", Description: "My Variation Detail" }];
       this.userTones = [...newTone, ...this.userTones];
+      IN_BOUND.editActivatedTonesInSetting = newTone[0].ID;
       this.showSettingModal();
     },
 
-    async deleteToneFromSetting(ID){
+    async deleteToneFromSetting(ID) {
       // console.log('Delete Tone: ',ID)
       await this.Client.deleteTone(ID);
-      this.refreshActions();
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Tone was deleted!'
-      );
+      // this.refreshActions()
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Tone was deleted!'
+      // );
     },
 
     async showSettingModal() {
 
       this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal')) || [];
 
-      if(this.tonesOrderLocal?.index){
+      if (this.tonesOrderLocal?.index) {
         this.tonesOrderLocal = [this.tonesOrderLocal];
       }
 
-      const arrayIndxes = this.tonesOrderLocal?.filter( i => i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder )[0]?.index || [];
+      let arrayIndxes = this.tonesOrderLocal?.filter(i => i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder)[0]?.index || [];
 
-      if(arrayIndxes.length < this.userTones.length){
-        const newTones = this.userTones.filter( tone => !arrayIndxes.map( i => i[0] ).includes( tone.ID) );
-        newTones.map( t => {
-          arrayIndxes.push([t.ID, arrayIndxes.length]);
-        } );
-      }
-      
       // Create a new array to store the rearranged items
-        const rearrangedArray = [];
+      const rearrangedTonesArray = [];
 
-        // Iterate over the arrayIndxes array
-        for (const [id, index] of arrayIndxes) {
-          // console.log("ss-  ",id, index)
-          // Find the item in userTones array with matching ID
-          const item = this.userTones.find((tone) => tone.ID === id);
+      if (arrayIndxes !== this.userTones) {
+        const newTones = this.userTones.filter(tone => !arrayIndxes.map(i => i[0]).includes(tone.ID)).map(d => [d.ID]);
+        const combineTones = [...newTones, ...arrayIndxes];
+        combineTones.map(t => {
+          rearrangedTonesArray.push([t[0], rearrangedTonesArray.length]);
+        });
 
-          // If the item is found, add it to the rearranged array at the specified index
-          if (item) {
-            rearrangedArray[index] = item;
-          }
+        arrayIndxes = rearrangedTonesArray;
+
+      }
+
+
+      const rearrangedArray = [];
+
+      // Iterate over the arrayIndxes array
+      for (const [id, index] of arrayIndxes) {
+        // console.log("ss-  ",id, index)
+        // Find the item in userTones array with matching ID
+        const item = this.userTones.find((tone) => tone.ID === id);
+
+        // If the item is found, add it to the rearranged array at the specified index
+        if (item) {
+          rearrangedArray[index] = item;
         }
+      }
 
-        // Remove any undefined elements from the rearranged array
-        const sortedUserTones = rearrangedArray.filter((item) => item !== undefined);
 
-        // Print the rearranged array
-        // console.log(sortedUserTones);
+
+      // Remove any undefined elements from the rearranged array
+      const sortedUserTones = rearrangedArray.filter((item) => item !== undefined);
+
+      // Print the rearranged array
+      // console.log("sortedUserTones: ",sortedUserTones);
 
 
       let settingModal = document.getElementById('settingModal');
@@ -8555,7 +10714,7 @@
       }
 
 
-      settingModal.innerHTML =    `
+      settingModal.innerHTML = `
       <div style="z-index:100;" class="fixed inset-0 text-center transition-opacity z-50 ">
           <div onclick="IN_BOUND.hideModal('settingModal')" class="absolute bg-gray-900 inset-0 opacity-90">
           </div>
@@ -8574,13 +10733,13 @@
 
                 <div class="flex flex-wrap text-sm font-medium text-center text-gray-900 dark:text-gray-400 w-full border-b mb-4 pb-2">
                     
-                  <button class="inline-block px-2 py-1  rounded-sm mr-2 ${this.settingsActiveTab === "settings"? 'bg-orange-500 text-white' : ""} " 
+                  <button class="inline-block px-2 py-1  rounded-sm mr-2 ${this.settingsActiveTab === "settings" ? 'bg-orange-500 text-white' : ""} " 
                   onclick="IN_BOUND.settingsActiveTab = 'settings'; IN_BOUND.showSettingModal() " > Setting </button>
 
-                  <button class="inline-block px-2 py-1  rounded-sm mr-2 ${this.settingsActiveTab === "tones"? 'bg-orange-500 text-white' : ""} " 
+                  <button class="inline-block px-2 py-1  rounded-sm mr-2 ${this.settingsActiveTab === "tones" ? 'bg-orange-500 text-white' : ""} " 
                   onclick="IN_BOUND.settingsActiveTab = 'tones' ; IN_BOUND.showSettingModal()" > My Variations </button>
                   
-                  <button class="inline-block px-2 py-1  rounded-sm mr-2 ${this.settingsActiveTab === "companyTones"? 'bg-orange-500 text-white' : ""} " 
+                  <button class="inline-block px-2 py-1  rounded-sm mr-2 ${this.settingsActiveTab === "companyTones" ? 'bg-orange-500 text-white' : ""} " 
                   onclick="IN_BOUND.settingsActiveTab = 'companyTones'; IN_BOUND.showSettingModal() " > Company Variations </button>
                    
                    
@@ -8588,17 +10747,16 @@
 
 
                 ${this.settingsActiveTab === "settings" ? `<div class="mr-4 w-1/5 text-left text-gray-900 dark:text-gray-400">
-                  <p class="text-right text-gray-500 dark:text-gray-400" >Version: 13.15.4</p>
+                  <p class="text-right text-gray-500 dark:text-gray-400" >Version: 13.15.11</p>
                   <label>Extension Language</label>
                   <select id="languageExtSelect" name="Community" class="mt-2 mb-3 text-gray-500 dark:text-gray-400 dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-900 rounded w-full" required>
                   ${Object.keys(extensionLanguages)
-                    .map(
-                      (lang) =>
-                        /*html*/ `<option   value="${lang}" ${
-                          this.ExtLang === lang ? 'selected' : ''
-                        }>${lang.charAt(0).toUpperCase() + lang.slice(1)}</option>`
-                    )
-                    .join('')}
+          .map(
+            (lang) =>
+                        /*html*/ `<option   value="${lang}" ${this.ExtLang === lang ? 'selected' : ''
+              }>${lang.charAt(0).toUpperCase() + lang.slice(1)}</option>`
+          )
+          .join('')}
                   </select>
 
                 </div>` : ""}
@@ -8611,15 +10769,15 @@
                         <div class="flex text-center row">
                         
                         <a  class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                              onclick="IN_BOUND.importToneinSetting()"> ${svg('import-h5') } <input id="dropzone-file589325" type="file" accept=".json" class="hidden" /> </a>
+                              onclick="IN_BOUND.importToneinSetting()"> ${svg('import-h5')} <input id="dropzone-file589325" type="file" accept=".json" class="hidden" /> </a>
 
                         <a  class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                             onclick="IN_BOUND.addNewEmptyTone()"> ${svg('add-5') }  </a>
+                             onclick="IN_BOUND.addNewEmptyTone()"> ${svg('add-5')}  </a>
 
                               </div>
                     </div>
                     <div id="variationBox" class="list-group">
-                       ${ sortedUserTones.map( (tone) => ( `<div class=" list-group-item " data-id="${tone.ID}" >
+                       ${sortedUserTones.map((tone) => (`<div class=" list-group-item " data-id="${tone.ID}" >
                        
                        <div  class="flex items-center   justify-between m-2 bg-gray-50 dark:bg-gray-700  p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 border shadow border-gray-300 dark:border-gray-700 hover:shadow-lg transition duration-300 ease-in-out tw-border-2 tw-border-blue-500 tw-rounded-xl">
                         <div class="flex gap-1 justify-center items-center">
@@ -8629,8 +10787,8 @@
                           <div class="flex gap-1 justify-end items-start"> 
 
                               <a title="Copy variation" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                              onclick =" ${this.hiddenVariations.indexOf(tone.ID) === -1 ? `IN_BOUND.hideVariation('${tone.ID}')"> ${svg('eye')}` : 
-                              `IN_BOUND.unHideVariation('${tone.ID}')"> ${svg('eye_off')}` }   </a>
+                              onclick =" ${this.hiddenVariations.indexOf(tone.ID) === -1 ? `IN_BOUND.hideVariation('${tone.ID}')"> ${svg('eye')}` :
+              `IN_BOUND.unHideVariation('${tone.ID}')"> ${svg('eye_off')}`}   </a>
 
                               <a title="Copy variation" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
                               onclick="IN_BOUND.copyToneFromSetting('${tone.ID}')"> ${svg('copy')}  </a>
@@ -8643,7 +10801,7 @@
                               onclick="${IN_BOUND.editActivatedTonesInSetting !== tone.ID ? `IN_BOUND.editActivatedTonesInSetting = '${tone.ID}'; IN_BOUND.showSettingModal();` : `IN_BOUND.editActivatedTonesInSetting = ''; IN_BOUND.showSettingModal()`}"> ${IN_BOUND.editActivatedTonesInSetting === tone.ID ? svg('EditOrange') : svg('Edit')}  </a>
                             
                               <a title="Delete variation" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                              onclick="IN_BOUND.deleteToneFromSetting('${tone.ID}')"> ${svg('Cross') }  </a>
+                              onclick="IN_BOUND.deleteToneFromSetting('${tone.ID}')"> ${svg('Cross')}  </a>
                           
                               </div> 
                         </div>
@@ -8688,7 +10846,7 @@
                 <div class="flex justify-between items-center text-center ">
                     <h3>Company Variations</h3>
                 </div>
-                   ${ this.companyTones.map( (tone) => ( `<div class="  ">
+                   ${this.companyTones.map((tone) => (`<div class="  ">
                    <div class="flex items-center  justify-between m-2 bg-gray-50 dark:bg-white/5 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 border shadow border-gray-300 dark:border-gray-700 hover:shadow-lg transition duration-300 ease-in-out tw-border-2 tw-border-blue-500 tw-rounded-xl">
                       <div> <p>${tone.Label}</p> </div>
                       <div class="flex gap-1 justify-end items-start"> 
@@ -8710,7 +10868,7 @@
         </div>
   `;
 
-      
+
 
       settingModal.style = 'display: block;';
 
@@ -8720,11 +10878,11 @@
 
 
       const variationBox = settingModal?.querySelector('#variationBox');
-      if(variationBox){
+      if (variationBox) {
         Sortable.create(variationBox, {
           forceFallback: true,
           fallbackClass: "dragged-item",
-          animation: 100,  
+          animation: 100,
           easing: "cubic-bezier(1, 0, 0, 1)",
           handle: ".drag-icon",
           onEnd: function (/**Event*/evt) {
@@ -8738,29 +10896,29 @@
             evt.clone; // the clone element
             evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
             let indexes = [];
-            Array.from(evt.target.children).forEach( (elem, index) => {
+            Array.from(evt.target.children).forEach((elem, index) => {
               let data_id = elem.attributes['data-id'].value;
               // console.log(data_id,index)
-              indexes.push([data_id,index]);
-            } );
-            const oldOrders = IN_BOUND.tonesOrderLocal?.filter( i => !(i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder ) ) || [];
+              indexes.push([data_id, index]);
+            });
+            const oldOrders = IN_BOUND.tonesOrderLocal?.filter(i => !(i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder)) || [];
             // console.log("Old order: ",oldOrders)
-            localStorage.setItem('tonesOrderLocal',JSON.stringify([ ...oldOrders,  {index: indexes, company: IN_BOUND.selectedCompany, team: IN_BOUND.selectedTeam, folder: IN_BOUND.folderManager.selectedFolder} ]));
+            localStorage.setItem('tonesOrderLocal', JSON.stringify([...oldOrders, { index: indexes, company: IN_BOUND.selectedCompany, team: IN_BOUND.selectedTeam, folder: IN_BOUND.folderManager.selectedFolder }]));
             IN_BOUND.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'));
             IN_BOUND.insertLanguageToneWritingStyleContinueActions();
           },
         });
       }
-      
+
 
       const allSaveForms = settingModal.querySelectorAll('#saveToneForm');
 
-      for(let i=0; i< allSaveForms.length; i++){
+      for (let i = 0; i < allSaveForms.length; i++) {
         allSaveForms[i]?.addEventListener(
-          'submit', async function(e){
+          'submit', async function (e) {
             e.preventDefault();
             // console.log(e)
-            
+
             const tone = {
               ID: e.target[0].value,
               Label: e.target[1].value,
@@ -8776,17 +10934,17 @@
 
             IN_BOUND.editActivatedTonesInSetting = "";
 
-            const toneNew = {id: tone.ID, label:tone.Label, prompt:tone.Description, user:IN_BOUND.Client.User.Email, company:IN_BOUND.Company};
-            
+            const toneNew = { id: tone.ID, label: tone.Label, prompt: tone.Description, user: IN_BOUND.Client.User.Email, company: IN_BOUND.Company };
+
             await IN_BOUND.Client.saveEditTone(toneNew);
-        
-            IN_BOUND.refreshActions();
-        
-            IN_BOUND.showNotification(
-              NotificationSeverity.SUCCESS,
-              'Tone changes was saved!'
-            );
-            
+
+            // IN_BOUND.refreshActions();
+
+            // IN_BOUND.showNotification(
+            //   NotificationSeverity.SUCCESS,
+            //   'Tone changes was saved!'
+            // );
+
             IN_BOUND.showSettingModal();
 
           });
@@ -8805,42 +10963,42 @@
       });
     },
 
-    hideVariation(id){
+    hideVariation(id) {
       this.hiddenVariations.push(id);
-      localStorage.setItem('hiddenVariations',JSON.stringify(this.hiddenVariations));
+      localStorage.setItem('hiddenVariations', JSON.stringify(this.hiddenVariations));
       this.showSettingModal();
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
-    unHideVariation(id){
+    unHideVariation(id) {
       this.hiddenVariations = this.hiddenVariations.filter(d => d !== id);
-      localStorage.setItem('hiddenVariations',JSON.stringify(this.hiddenVariations));
+      localStorage.setItem('hiddenVariations', JSON.stringify(this.hiddenVariations));
       this.showSettingModal();
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
-    async forkActivatedTonesInSetting(id){
+    async forkActivatedTonesInSetting(id) {
       const tone = IN_BOUND.companyTones.filter(d => d.ID === id)[0];
       const randonUUID = Math.random().toString(36).substring(2) + '-' + (new Date().getTime()).toString(36);
       tone.ID = window.crypto?.randomUUID() || randonUUID;
-      if(tone){
-        const toneNew = {id: tone.ID, label: "Copy of: "+tone.Label, prompt:tone.Description, user:IN_BOUND.Client.User.Email, company:IN_BOUND.Company};
+      if (tone) {
+        const toneNew = { id: tone.ID, label: "Copy of: " + tone.Label, prompt: tone.Description, user: IN_BOUND.Client.User.Email, company: IN_BOUND.Company };
         await IN_BOUND.Client.saveEditTone(toneNew);
-        await IN_BOUND.refreshActions();
+        // await IN_BOUND.refreshActions();
         IN_BOUND.showSettingModal();
-        IN_BOUND.showNotification(
-          NotificationSeverity.SUCCESS,
-          'Variation added!'
-        );
+        // IN_BOUND.showNotification(
+        //   NotificationSeverity.SUCCESS,
+        //   'Variation added!'
+        // );
       }
     },
 
-    exportToneFromSetting(id){
+    exportToneFromSetting(id) {
       const tone = this.userTones.filter(d => d.ID === id)[0];
       const randonUUID = Math.random().toString(36).substring(2) + '-' + (new Date().getTime()).toString(36);
       tone.ID = window.crypto?.randomUUID() || randonUUID;
-      if(tone){
-        const toneNew = {id: tone.ID, label: tone.Label, prompt:tone.Description, user:IN_BOUND.Client.User.Email, company:IN_BOUND.Company};
+      if (tone) {
+        const toneNew = { id: tone.ID, label: tone.Label, prompt: tone.Description, user: IN_BOUND.Client.User.Email, company: IN_BOUND.Company };
         this.exportContent(toneNew, toneNew.label);
 
         IN_BOUND.showNotification(
@@ -8850,9 +11008,9 @@
       }
     },
 
-    copyToneFromSetting(id){
+    copyToneFromSetting(id) {
       const tone = this.userTones.filter(d => d.ID === id)[0];
-      if(tone){
+      if (tone) {
 
         this.copyTextClipboard(tone.Description);
 
@@ -8863,7 +11021,7 @@
       }
     },
 
-    importToneinSetting(){
+    importToneinSetting() {
       const inputFileDiv = document.getElementById('dropzone-file589325');
       inputFileDiv.click();
 
@@ -8875,44 +11033,46 @@
         // console.log(fileList);
 
         var reader = new FileReader();
-        reader.onload = async function() {
+        reader.onload = async function () {
           var text = reader.result;
           let tone = JSON.parse(text);
           const randonUUID = Math.random().toString(36).substring(2) + '-' + (new Date().getTime()).toString(36);
           tone.id = window.crypto?.randomUUID() || randonUUID;
           // console.log(tone);
-          if(tone){
-            ({ ID: tone.id, Label: "Import of: "+tone.label, Description: tone.prompt, type:"user"});
-            if(tone.prompt){
+          if (tone) {
+            ({ ID: tone.id, Label: "Import of: " + tone.label, Description: tone.prompt, type: "user" });
+            if (tone.prompt) {
               await IN_BOUND.Client.saveEditTone(tone);
-              IN_BOUND.showNotification(
-                NotificationSeverity.SUCCESS,
-                'Variation added!'
-              );
-              await IN_BOUND.refreshActions();
+              // IN_BOUND.showNotification(
+              //   NotificationSeverity.SUCCESS,
+              //   'Variation added!'
+              // );
+              // await IN_BOUND.refreshActions();
               IN_BOUND.showSettingModal();
-            }else {
+            } else {
               IN_BOUND.showNotification(
                 NotificationSeverity.SUCCESS,
                 'Invalid Variation!'
               );
             }
           }
-          
+
         };
         reader.readAsText(fileList[0]);
       };
     },
 
+    XMLRead: "",
+
     async showVariablesModal(template) {
 
-      const fileVariables = ["PdfRead"];
-      
+      const fileVariables = ["PdfRead", "XMLRead"];
+
       // console.log(template)
 
       let prompt = template.Prompt;
-      let variables_0 = prompt.split('{{');
-      let variables = variables_0.map(d => d.indexOf('}}') > -1 ? d.split('}}')[0] : "").filter(d => d!== '');
+      let variables_0 = prompt.match(/[^{{]+(?=\}})/g);
+      let variables = [...new Set(variables_0)];
       // if(prompt.indexOf(PromptPlaceholder) > -1){
       //   variables.push(`${PromptPlaceholder}:${template.PromptHint}`)
       // }
@@ -8923,7 +11083,7 @@
         variablesModal = document.createElement('div');
         variablesModal.id = 'variablesModal';
 
-        variablesModal.addEventListener('submit', function(e){
+        variablesModal.addEventListener('submit', function (e) {
           e.preventDefault();
 
           IN_BOUND.addVariablesToPrompt(e);
@@ -8932,7 +11092,7 @@
         document.body.appendChild(variablesModal);
       }
 
-      // console.log("Variables: ",variables)
+      // console.log("Variables: ", variables)
 
       variablesModal.innerHTML = /*html*/ `
       <div style="z-index:1000;" class="fixed inset-0 text-center transition-opacity ">
@@ -8948,22 +11108,34 @@
               role="dialog" aria-modal="true" aria-labelledby="modal-headline" style="text-align: left;">
           
                 ${variables?.map(variable => {
-                  if( fileVariables?.indexOf(variable?.split(':')[0]) === -1 ){
-                    return `
-                    <label>${ variable?.split(':')[0] }</label>
-                    <textarea name="{{${variable?.split(':')[0] }" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" style="height: 120px;" required
-                              placeholder=" ${variable?.split(':')[1] || "" }"
-                              title=" ${variable?.split(':')[1] || "" }"></textarea>
+      if (variable === "XMLRead") {
+        return `
+                    <label for="${variable?.split(':')[0]}" >XML File:</label>
+                    <input type="file" id="${variable?.split(':')[0]}" accept="application/xml" name="${variable}" class=" rounded py-2 px-3 w-full">    
                     `
-                  }else {
-                    // console.log('File Variable!', variable)
-                    return `
+
+      } else if (variable === "SheetCSVPrompts") {
+        return `
+                    <label for="${variable}" >Google Sheet URL:</label>
+                    <input type="text" id="${variable}" required name="${variable}" class=" rounded py-2 px-3 w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700">    
+                    `
+
+      } else if (variable === "PdfRead") {
+        // console.log('File Variable!', variable)
+        return `
                     <label for="${variable?.split(':')[0]}" >PDF File:</label>
-                    <input type="file" id="${variable?.split(':')[0]}" accept="application/pdf" name="${variable?.split(':')[0]}" class=" rounded py-2 px-3 w-full">    
+                    <input type="file" id="${variable?.split(':')[0]}" accept="application/pdf" id="XMLRead" name="${variable}" class=" rounded py-2 px-3 w-full">    
                     `
-                  }
-                  
-                }).join('')}
+      } else if (fileVariables?.indexOf(variable?.split(':')[0]) === -1) {
+        return `
+                    <label>${variable?.split(':')[0]}</label>
+                    <textarea name="${variable}" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded p-2 mt-2 mb-3" style="height: 120px;" 
+                              placeholder=" ${variable?.split(':')[1] || ""}"
+                              title=" ${variable?.split(':')[1] || ""}"></textarea>
+                    `
+      }
+
+    }).join('')}
             
                 <div class=" px-4 py-3 text-right">
                   <button type="button" class="IN_BOUND_hideVariablesModal bg-gray-600 hover:bg-gray-400 mr-2 px-4 py-2 mt-2 rounded text-white"
@@ -8981,13 +11153,33 @@
       </div>
     `;
 
-      variables.length>0 ? variablesModal.style = 'display: block;' : variablesModal.style = 'display: none;';
+      variables.length > 0 ? variablesModal.style = 'display: block;' : variablesModal.style = 'display: none;';
 
       variablesModal?.querySelector('.IN_BOUND_hideVariablesModal')?.addEventListener('click', () => {
         IN_BOUND.hideModal('variablesModal');
         this.selectPromptTemplate(null);
       });
-      
+
+      variablesModal?.querySelector('#XMLRead')?.addEventListener('change', function (event) {
+        const file = event.target.files[0]; // Get the selected file
+        IN_BOUND.XMLFileName = file.name;
+
+        if (file) {
+          const reader = new FileReader();
+
+          // Define the callback function when the file is loaded
+          reader.onload = function (e) {
+            const fileContents = e.target.result; // This contains the contents of the file as a string
+            // console.log(fileContents);
+            IN_BOUND.XMLRead = fileContents;
+            // You can now work with the fileContents variable, which contains the text from the file.
+          };
+
+          // Read the file as text
+          reader.readAsText(file);
+        }
+      });
+
 
       // add event listener to close the modal on ESC
       document.addEventListener('keydown', (e) => {
@@ -8997,7 +11189,7 @@
       });
     },
 
-    async addVariablesToPrompt(e){
+    async addVariablesToPrompt(e) {
       const formData = new FormData(e.target);
       let prompt = this.SelectedPromptTemplate.Prompt;
 
@@ -9020,73 +11212,388 @@
         //   prompt = prompt.replace(key, value)
         //   this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt}
         // }else{
-          // console.log(typeof(value))
-          if(typeof(value) === 'object'){
-            const extractedText = this.sanitizeTextContent( await this.readPDFFile(value) );
-            // console.log('Extracted text:', extractedText);
-            prompt = prompt.split(key)[0] + extractedText + prompt.split(key)[1]?.split('}}')[1];
-          }else {
-            prompt = prompt.split(key)[0] + value + prompt.split(key)[1]?.slice(prompt.split(key)[1]?.indexOf('}}')+2);
-            // console.log('Variable: ', prompt)
-          }
+        // console.log(typeof(value))
+        if (key === "PdfRead") {
+          // const extractedText = this.sanitizeTextContent(await this.readPDFFile(value))
+          // // console.log('Extracted text:', extractedText);
+          // prompt = prompt.replaceAll(`{{${key}}}`, extractedText)
+          this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
 
-          if(prompt.length > 9000){
-            IN_BOUND.longInputText = prompt;
-            IN_BOUND.chunkProcessingState = false;
+        } else if (key === "SheetCSVPrompts") {
+          console.log("SheetCSVPrompts: ", value);
+          if (!value.includes('https://docs.google.com/spreadsheets')) {
+            chatgpt.notify('Invalid url!', 'top right', 8, 'on');
+            return
           }
-          this.SelectedPromptTemplate = {...this.SelectedPromptTemplate, Prompt: prompt};
+          const sheetCSVUrl = value.replace('edit#', "gviz/tq?tqx=out:csv&");
+          localStorage.setItem('sheetCSVUrl', sheetCSVUrl);
+          this.selectPromptTemplate(null);
+          document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url: sheetCSVUrl, type: "IN_BOUND.getRequest", returnType: "getCsvSheetResults" }, bubbles: true }));
+
+
+        } else if (key === "XMLRead") {
+          this.hideModal('variablesModal');
+          const data = IN_BOUND.XMLRead;
+          // console.log("data: ", data)
+          const removeTxt = data.match(/>(.*?)\w<\//g);
+          const originalArray = [data.match(/>\n(.*?)<\//g), data.match(/>(.*?)\n<\//g), data.match(/>(.*?)<\//g)].flatMap(d => d).filter(d => d && !removeTxt.includes(d) && d.match(/\w/g) !== null).map(t => t?.slice(1, -2));
+
+          IN_BOUND.SelectedPromptTemplate = null;
+          IN_BOUND.selectPromptTemplateByIndex(null);
+          IN_BOUND.resurssiveTranslation(originalArray, 0, prompt);
+
+          // console.log("xmlReadContent: ", xmlReadContent)
+        } else if (key === "ScrapeWebsite") {
+          await new Promise((resolve, reject) => {
+            // console.log("ScrapeWebsite: ", value)
+            document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url: value, type: "IN_BOUND.getScraperData", returnType: "getScraperData" }, bubbles: true }));
+            document.addEventListener('IN_BOUND.getScraperData', async (event) => {
+              // console.log("event: ", event.detail.data)
+
+              const strData = JSON.stringify(event.detail.data);
+
+
+              prompt = prompt.replaceAll(`{{${key}}}`, strData);
+              IN_BOUND.SelectedPromptTemplate = { ...IN_BOUND.SelectedPromptTemplate, Prompt: prompt };
+
+              resolve("");
+            });
+
+          });
+        } else {
+          prompt = prompt.replaceAll(`{{${key}}}`, value);
+          // console.log('Variable: ', prompt)
+          this.SelectedPromptTemplate = { ...this.SelectedPromptTemplate, Prompt: prompt };
+        }
+
+        // if(prompt.length > 9000){
+        //   IN_BOUND.longInputText = prompt
+        //   IN_BOUND.chunkProcessingState = false
         // }
-        
+        // console.log(prompt)
+        // }
+
       }
       // console.log(prompt)
 
-      
-
-      
-      
       // console.log(variables, this.SelectedPromptTemplate)
+      if (IN_BOUND.SelectedPromptTemplate) {
+        document.querySelector('#prompt-wrapper > span').title = IN_BOUND.SelectedPromptTemplate.Prompt;
+      }
+
       this.hideModal('variablesModal');
     },
 
-     readPDFFile(file) {
+
+    async runCsvChainOfPrompts(index) {
+      if (this.runCsvChainOfPromptsState == "no") {
+        // this.runCsvChainOfPromptsState = false
+        localStorage.removeItem('chainOfPrompts');
+        this.insertPromptTemplatesSection();
+        return
+      }
+      this.runCsvChainOfPromptsState = true;
+      console.log("Active Index: ", index);
+      const promptChain = JSON.parse(localStorage.getItem('chainOfPrompts')) || [];
+
+      if (index === (promptChain.length)) {
+        IN_BOUND.downloadAndUploadChainOfPrompts();
+      }
+      if (index >= promptChain.length) return
+      const promptObj = promptChain[index];
+      if (promptObj.completed === false) {
+        promptObj.index;
+        let prompt = promptObj.prompt;
+        if (!prompt) {
+          alert('prompt header not found!');
+          this.clearChainOfPromptsData();
+          return
+        }
+        const variables = prompt.match(/[^{{]+(?=\}})/g);
+        if (variables) {
+          for (const variable of variables) {
+            console.log("variable: ", variable);
+            if (variable === "websiteTranslation" || variable === "websiteLanguage") {
+              if (variable !== "websiteTranslation") {
+                return
+              }
+              const websiteStr = await this.openWebsiteNGetHtml(promptObj[variable]);
+              console.log("websiteStr: ", websiteStr);
+              if (promptObj.chat === "new") {
+                chatgpt.startNewChat();
+              }
+              const dummyElement = new DOMParser().parseFromString(websiteStr, "text/html");
+              const websiteTranslated = await this.translateHtmlContent(dummyElement, 0, promptObj["websiteLanguage"], parseInt(promptObj?.wait) || 2);
+              promptObj.chatgptResponse = websiteTranslated;
+              promptObj.completed = true;
+              promptChain[index] = promptObj;
+              localStorage.setItem('chainOfPrompts', JSON.stringify(promptChain));
+              if (promptObj.wait) {
+                IN_BOUND.insertPromptTemplatesSection();
+                setTimeout(() => {
+                  IN_BOUND.runCsvChainOfPrompts(index + 1);
+                }, (parseInt(promptObj?.wait) || 2) * 1000);
+              } else {
+                IN_BOUND.insertPromptTemplatesSection();
+                setTimeout(() => {
+                  IN_BOUND.runCsvChainOfPrompts(index + 1);
+                }, (1) * 1000);
+              }
+              return
+            } else if (variable === "ScrapeWebsite") {
+              const websiteStr = await IN_BOUND.openWebsiteNGetHtml(promptObj[variable]);
+              console.log("websiteStr: ", websiteStr);
+              const dummyElement = new DOMParser().parseFromString(websiteStr, "text/html");
+              const textResults = [];
+              await this.getHtmlContent(dummyElement, 0, textResults);
+              // console.log("websiteContentText: ", websiteContentText)
+              // console.log("textResults: ", textResults.join(' \n '))
+              // promptObj[variable] = textResults.join(' \n ')
+              prompt = prompt.replaceAll(`{{${variable}}}`, (textResults.join(' ') || ""));
+              } else {
+              prompt = prompt.replaceAll(`{{${variable}}}`, (promptObj[variable] || ""));
+            }
+
+          }
+        }
+
+        if (promptObj.chat === "new") {
+          chatgpt.startNewChat();
+        }
+        setTimeout(async () => {
+          const response = await chatgpt.askAndGetReply(prompt);
+          if (response) {
+            promptObj.chatgptResponse = response;
+            promptObj.completed = true;
+            promptChain[index] = promptObj;
+            localStorage.setItem('chainOfPrompts', JSON.stringify(promptChain));
+            if (promptObj.wait) {
+              setTimeout(() => {
+                IN_BOUND.runCsvChainOfPrompts(index + 1);
+              }, (parseInt(promptObj?.wait) || 1) * 1000);
+            } else {
+              setTimeout(() => {
+                IN_BOUND.runCsvChainOfPrompts(index + 1);
+              }, 1000);
+            }
+
+          } else {
+            setTimeout(() => {
+              IN_BOUND.runCsvChainOfPrompts(index);
+            }, 5000);
+          }
+
+          IN_BOUND.insertPromptTemplatesSection();
+        }, 1000);
+
+      } else if (promptObj.completed === true) {
+        this.runCsvChainOfPrompts(index + 1);
+      }
+    },
+
+    openWebsiteNGetHtml(url) {
+      return new Promise(resolve => {
+        document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url: url, type: "IN_BOUND.getScraperHtmlData", returnType: "getScraperHtmlData" }, bubbles: true }));
+        document.addEventListener('IN_BOUND.getScraperHtmlData', async (event) => {
+          console.log("event: ", event.detail.data);
+
+          const strData = JSON.stringify(event.detail.data);
+          resolve(strData);
+        });
+      });
+    },
+
+
+
+    downloadAndUploadChainOfPrompts() {
+      const promptChain_0 = JSON.parse(localStorage.getItem('chainOfPrompts')) || [];
+      const promptChain = promptChain_0.filter(d => d.completed === true);
+      const promptResponseChain = promptChain.map(({ completed, index, ...rest }) => rest);
+      const csvFormat = Papa.unparse(promptResponseChain);
+      this.downloadAsFile("bulk_prompt_responses_chatgpt.csv", csvFormat);
+
+      const sheetFormatedData_0 = Papa.parse(csvFormat, {
+        header: false
+      });
+      const sheetFormatedData = JSON.stringify(sheetFormatedData_0.data);
+      const sheetCSVUrl = localStorage.getItem('sheetCSVUrl');
+      const spreadSheetId = sheetCSVUrl.split('/')[5];
+      const sheetId = sheetCSVUrl.split('/')[sheetCSVUrl.split('/').length - 1].split('=')[2];
+      // send event to upload data to spreadsheet
+      const url = `https://script.google.com/macros/s/AKfycbwtNEH-e-yKYhO6NgFStZk4Q7QsWzvqIH4Bkiq6bk6aBZ9DSTHDoqpTH1qV82MzHPgVEQ/exec?spreadsheetId=${spreadSheetId}&sheetId=${sheetId}`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: sheetFormatedData,
+      };
+      document.dispatchEvent(new CustomEvent('IN_BOUND.SendBgMsg', { detail: { url, options, type: "IN_BOUND.postRequest", returnType: "saveCsvData" }, bubbles: true }));
+    },
+
+    clearChainOfPromptsData() {
+      localStorage.removeItem('chainOfPrompts');
+      if (this.runCsvChainOfPromptsState === true) {
+        this.runCsvChainOfPromptsState = "no";
+      } else {
+        this.runCsvChainOfPromptsState = false;
+      }
+
+      this.insertPromptTemplatesSection();
+    },
+
+    async resurssiveTranslation(originalArray, i, prompt) {
+      const prompt_2 = prompt.replaceAll(`{{XMLRead}}`, originalArray[i]);
+      // console.log("prompt_2: ", prompt_2)
+      const translation = await chatgpt.askAndGetReply(prompt_2);
+      // console.log(translation)
+      IN_BOUND.XMLRead = IN_BOUND.XMLRead.replace(originalArray[i], translation);
+      if (i < originalArray.length - 1) {
+        this.resurssiveTranslation(originalArray, i + 1, prompt);
+      } else {
+        IN_BOUND.downloadAsFile(IN_BOUND.XMLFileName.slice(0, -3) + "_translated.xml", IN_BOUND.XMLRead);
+        IN_BOUND.XMLRead = "";
+        IN_BOUND.XMLFileName = "";
+      }
+    },
+
+
+    async translateHtmlContent(doc, i, lang, time) {
+      const selectors = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "div"];
+      // const selectors = ["h5", "h6"]
+      const nodes = doc.querySelectorAll(selectors.join(', '));
+      console.log("Nodes: ", nodes.length);
+      console.log("Current Index: ", i);
+
+      if (i >= nodes.length) {
+        console.log('Done!');
+        console.log(doc.body.innerHTML);
+        window.customDoc = doc;
+        return doc.body.innerHTML
+      }
+
+      // setTimeout(async () => {
+        const node = nodes[i];
+
+        if (node.nodeName === "DIV" && node.childElementCount < 1) {
+          if (node.textContent) {
+            const translatedText = await IN_BOUND.translateTextChatGPT(node.textContent, lang, time);
+            node.textContent = translatedText;
+          }
+        } else if (selectors.filter(d => d !== 'div').includes(node.nodeName.toLowerCase())) {
+          if (node.textContent) {
+            const translatedText = await IN_BOUND.translateTextChatGPT(node.textContent, lang, time);
+            node.textContent = translatedText;
+          }
+
+        }
+
+        await IN_BOUND.translateHtmlContent(doc, i + 1, lang);
+      // }, time * 1000);
+
+
+    },
+
+    async getHtmlContent(doc, i, textResults) {
+      const selectors = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "div"];
+      // const selectors = ["h5", "h6"]
+      const nodes = doc.querySelectorAll(selectors.join(', '));
+      // console.log("Nodes: ", nodes.length);
+      // console.log("Current Index: ", i);
+
+      if (i >= nodes.length) {
+        console.log('Done!');
+        console.log(doc.body.textContent);
+        window.customDoc = doc;
+        return textResults.join(' \n ')
+      }
+
+      // setTimeout(async () => {
+        const node = nodes[i];
+
+        if (node.nodeName === "DIV" && node.childElementCount < 1) {
+          if (node.textContent) {
+            const translatedText = node.textContent;
+            node.textContent = translatedText;
+            textResults.push(translatedText);
+          }
+        } else if (selectors.filter(d => d !== 'div').includes(node.nodeName.toLowerCase())) {
+          if (node.textContent) {
+            const translatedText = node.textContent;
+            node.textContent = translatedText;
+            textResults.push(translatedText);
+          }
+
+        }
+        // console.log(textResults)
+
+        await IN_BOUND.getHtmlContent(doc, i + 1, textResults);
+    },
+
+    async translateTextChatGPT(text, lang) {
+      // simulate API delay
+      return new Promise(resolve => {
+        setTimeout(async () => {
+          try {
+            const translatedText = await chatgpt.translate(text, lang);
+            resolve(translatedText);
+          } catch (error) {
+            console.log(error);
+            await chatgpt.startNewChat();
+            setTimeout(async () => {
+              const translatedText = await chatgpt.translate(text, lang);
+              if (!translatedText) {
+                resolve(text);
+              }
+              resolve(translatedText);
+            }, 3000);
+
+          }
+
+        }, 1000);
+      });
+    },
+
+
+    readPDFFile(file) {
       return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.onload = function () {
           const typedArray = new Uint8Array(this.result);
-    
+
           // Load the PDF file using the PDFJS library
           pdfjsLib.getDocument(typedArray).promise
             .then((pdfDoc) => {
               const numPages = pdfDoc.numPages;
               const pagesPromises = [];
-    
+
               // Iterate through each page of the PDF
               for (let i = 1; i <= numPages; i++) {
                 pagesPromises.push(pdfDoc.getPage(i));
               }
-    
+
               // Extract the text content from each page
               Promise.all(pagesPromises)
                 .then((pages) => {
                   const contentPromises = [];
-    
+
                   // Iterate through each page and extract text
                   for (let page of pages) {
                     contentPromises.push(page.getTextContent());
                   }
-    
+
                   // Resolve the promise with the extracted text content
                   Promise.all(contentPromises)
                     .then((contents) => {
                       let extractedText = '';
-    
+
                       // Concatenate the text content from each page
                       for (let content of contents) {
                         for (let item of content.items) {
                           extractedText += item.str + ' ';
                         }
                       }
-    
+
                       resolve(extractedText);
                     })
                     .catch(reject);
@@ -9095,30 +11602,44 @@
             })
             .catch(reject);
         };
-    
+
         fileReader.readAsArrayBuffer(file);
       });
     },
 
-    sanitizeTextContent(text) {
-      // Remove extra spaces
-    text = text.replace(/\s+/g, ' ');
+    downloadAsFile(filename, text) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
 
-    // Remove unused dots
-    text = text.replace(/\./g, '');
+      element.style.display = 'none';
+      document.body.appendChild(element);
 
-    // Remove unreadable characters
-    text = text.replace(/[^\x00-\x7F]+/g, '');
+      element.click();
 
-    // Clean up leading/trailing spaces
-    text = text.trim();
-
-    return text;
+      document.body.removeChild(element);
     },
 
-    changeCompanyToneState(e){
+
+    sanitizeTextContent(text) {
+      // Remove extra spaces
+      text = text.replace(/\s+/g, ' ');
+
+      // Remove unused dots
+      text = text.replace(/\./g, '');
+
+      // Remove unreadable characters
+      text = text.replace(/[^\x00-\x7F]+/g, '');
+
+      // Clean up leading/trailing spaces
+      text = text.trim();
+
+      return text;
+    },
+
+    changeCompanyToneState(e) {
       this.companyTonesState = e.target.checked;
-      window.localStorage.setItem('companyTonesState',this.companyTonesState);
+      window.localStorage.setItem('companyTonesState', this.companyTonesState);
 
       this.refreshActions();
       // this.insertLanguageToneWritingStyleContinueActions();
@@ -9191,45 +11712,53 @@
       return [newChatButton, AddButton].filter((button) => button);
     },
 
+    changeFeedToMyPrompts() {
+      window.localStorage.setItem('feedSelected', "All");
+      this.feedSelected = "All";
+      this.insertPromptTemplatesSection();
+    },
 
     copyPromptClipboard(id) {
       // console.log(id)
-      setTimeout( function() {
-        const prompt = IN_BOUND.current_active_prompts.filter(p => p.promptID === id)[0].Prompt;
+      IN_BOUND.hidePromptCardOptions();
+      setTimeout(function () {
+        const templates = [...IN_BOUND.OwnPrompts, ...IN_BOUND.PromptTemplates];
+        // console.log(templates)
+        const prompt = templates.filter(p => p.ID === id)[0].Prompt;
         // console.log(prompt)
         navigator.clipboard
-        .writeText(prompt)
-        .then(
-          // successfully copied
-          () => {
-            
+          .writeText(prompt)
+          .then(
+            // successfully copied
+            () => {
 
-            // Success - copied & public
-            IN_BOUND.showNotification(
-              NotificationSeverity.SUCCESS,
-              'The prompt template was copied to your clipboard.'
-            );
-          },
-          // error - something went wrong (permissions?)
-          () => {
-            IN_BOUND.showNotification(
-              NotificationSeverity.ERROR,
-              'Something went wrong. Please try again.'
-            );
-          }
-        );
-      },100);
-      
+
+              // Success - copied & public
+              IN_BOUND.showNotification(
+                NotificationSeverity.SUCCESS,
+                'The prompt template was copied to your clipboard.'
+              );
+            },
+            // error - something went wrong (permissions?)
+            () => {
+              IN_BOUND.showNotification(
+                NotificationSeverity.ERROR,
+                'Something went wrong. Please try again.'
+              );
+            }
+          );
+      }, 100);
+
     },
 
 
-    copyTextClipboard(txt){
+    copyTextClipboard(txt) {
       navigator.clipboard
-      .writeText(txt)
-      .then(
+        .writeText(txt)
+        .then(
       );
     },
-    
+
 
     /**
      * Filter templates based on selected activity and search query
@@ -9247,7 +11776,7 @@
             template.Title.toLowerCase().includes(
               this.PromptSearch.toLowerCase()
             ) || template.Tags.toLowerCase().includes(
-              this.PromptSearch.replace('#','').toLowerCase()
+              this.PromptSearch.replace('#', '').toLowerCase()
             ))
         );
       });
@@ -9260,7 +11789,7 @@
       const html = `
     <div id="custom__ripple_Loader" class="box">
         <div class="ripple__rounds">
-        ${this.Theme === 'dark' ? svg('no-txt-logo-dark') :  svg('no-txt-logo-light')}
+        ${this.Theme === 'dark' ? svg('no-txt-logo-dark') : svg('no-txt-logo-light')}
         <p class="loading-text">${txt}</p>
         </div>
         
@@ -9270,9 +11799,9 @@
 
 
       let wrapper = document.createElement('div');
-     wrapper.id = 'templates-wrapper';
-     wrapper.className =
-       'mt-2 md:flex items-start text-center gap-2.5 md:max-w-2xl lg:max-w-3xl m-auto text-sm';
+      wrapper.id = 'templates-wrapper';
+      wrapper.className =
+        'mt-2 md:flex items-start text-center gap-2.5 md:max-w-2xl lg:max-w-3xl m-auto text-sm';
 
       let sideBarWrapper = document.querySelector('#nav');
       if (sideBarWrapper?.querySelector('#templates-wrapper')) {
@@ -9288,15 +11817,15 @@
       sideBarWrapper.classList.add("loading");
     },
 
-    hideLoadingInterface(){
+    hideLoadingInterface() {
       let sideBarWrapper = document?.querySelector('#nav');
       sideBarWrapper?.querySelector('.box')?.classList?.add("not-show");
     },
 
     checkLoader() {
-      if(this.isLoading){
+      if (this.isLoading) {
         this.showLoadingInterface();
-      }else {
+      } else {
         this.hideLoadingInterface();
         this.insertPromptTemplatesSection();
       }
@@ -9304,7 +11833,7 @@
 
 
     showSavedSearchModal() {
-      
+
       let savedSearchModal = document.getElementById('savedSearchModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -9334,8 +11863,8 @@
                 <h2> Saved Searches </h2>
               
     <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4 max-w-lg">
-      ${this.savedSearchList.length > 0 ?this.savedSearchList?.map(tag => 
-        `<div class="flex-none p-2">
+      ${this.savedSearchList.length > 0 ? this.savedSearchList?.map(tag =>
+      `<div class="flex-none p-2">
         <button onclick="IN_BOUND.searchIntoPrompts('${tag}')" 
         class="${css`saveSearchChips`} 
         border-0 border border-gray-500" >${tag}</button> </div>`)
@@ -9345,7 +11874,7 @@
     </div>
     </div></div></div></div>`;
 
-      
+
 
       savedSearchModal.style = 'display: block;';
 
@@ -9355,8 +11884,8 @@
 
     },
 
-    showMultipleCompanyModal(){
-      
+    showMultipleCompanyModal() {
+
       let multipleCompanyModal = document.getElementById('multipleCompanyModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -9386,11 +11915,11 @@
                 <h2> Select Company </h2>
               
     <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4 max-w-lg">
-      ${this.allCompanies.length > 1 ?this.allCompanies?.map(company => 
-        `<div class="flex-none p-2">
+      ${this.allCompanies.length > 1 ? this.allCompanies?.map(company =>
+      `<div class="flex-none p-2">
         <button onclick="IN_BOUND.selectCompany('${company.id}')" 
         class="${css`saveSearchChips`} 
-          ${ company.id === this.selectedCompany ? "border" : "border-0" } border-gray-500" >${company.name}</button> </div>`)
+          ${company.id === this.selectedCompany ? "border" : "border-0"} border-gray-500" >${company.name}</button> </div>`)
         .join('') : `
         <p class="text-gray-400" >You're not member of multiple companies!</p>
         `}
@@ -9401,8 +11930,8 @@
 
     },
 
-    showMultipleTeamsModal(){
-      
+    showMultipleTeamsModal() {
+
       let showMultipleTeamsModal = document.getElementById('showMultipleTeamsModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -9432,11 +11961,11 @@
                 <h2> Select Company </h2>
               
     <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4 max-w-lg">
-      ${this.allTeams.length > 1 ? this.allTeams?.map(team => 
-        `<div class="flex-none p-2">
+      ${this.allTeams.length > 1 ? this.allTeams?.map(team =>
+      `<div class="flex-none p-2">
         <button onclick="IN_BOUND.selectTeam('${team.id}')" 
         class="${css`saveSearchChips`} 
-          ${ team.id === this.selectedTeam ? "border" : "border-0" } border-gray-500" >${team.tag}</button> </div>`)
+          ${team.id === this.selectedTeam ? "border" : "border-0"} border-gray-500" >${team.tag}</button> </div>`)
         .join('') : `
         <p class="text-gray-400" >You're not member of multiple teams!</p>
         `}
@@ -9447,8 +11976,8 @@
 
     },
 
-    showFolderModal(){
-      
+    showFolderModal() {
+
       let showFolderModal = document.getElementById('showFolderModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -9499,11 +12028,11 @@
                 
               
     <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4">
-      ${this.folderManager.folders.length > 1 ? this.folderManager.folders?.map(folder => 
-        `<div class="flex-none p-2 rounded border border-gray-500 dark:border-gray-600">
+      ${this.folderManager.folders.length > 1 ? this.folderManager.folders?.map(folder =>
+      `<div class="flex-none p-2 rounded border border-gray-500 dark:border-gray-600">
         <button onclick="IN_BOUND.folderManager.selectFolder('${folder.name}')" 
         class="rounded font-small bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white px-2 py-1
-          ${ folder.name === this.folderManager.selectedFolder ? "border" : "border-0" } border-gray-500" >${folder.name} </button> 
+          ${folder.name === this.folderManager.selectedFolder ? "border" : "border-0"} border-gray-500" >${folder.name} </button> 
           <button onclick="IN_BOUND.folderManager.deleteFolder('${folder.name}'); IN_BOUND.showFolderModal();" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200" > 
               ${svg("Cross")} </button>
           </div>`)
@@ -9516,14 +12045,14 @@
       showFolderModal.style = 'display: block;';
 
       showFolderModal.querySelector('#addFolder').addEventListener('click', () => {
-        IN_BOUND.folderManager.createFolder( document.querySelector('#folderName')?.value ); 
+        IN_BOUND.folderManager.createFolder(document.querySelector('#folderName')?.value);
         IN_BOUND.showFolderModal();
       });
 
     },
 
-    showFolderSelectionModal(){
-      
+    showFolderSelectionModal() {
+
       let showFolderSelectionModal = document.getElementById('showFolderSelectionModal');
 
       // if modal does not exist, create it, add event listener on submit and append it to body
@@ -9555,8 +12084,8 @@
                 
               
     <div id="show_chips_modal" class="flex items-center justify-center gap-2 flex-wrap p-4">
-      ${this.folderManager.folders.length > 1 ? this.folderManager.folders?.map(folder => 
-        `<div class="flex-none p-2">
+      ${this.folderManager.folders.length > 1 ? this.folderManager.folders?.map(folder =>
+      `<div class="flex-none p-2">
         <button onclick="IN_BOUND.promptSelectionManager.addToFolder('${folder.name}')" 
         class="${css`saveSearchChips`} 
           border-0 border-gray-500" >${folder.name}</button> </div>`)
@@ -9570,17 +12099,18 @@
 
     },
 
-    selectTeam(id){
+    selectTeam(id) {
       this.selectedTeam = id;
-      localStorage.setItem('team_id',id);
+      sessionStorage.setItem('team_id', id);
       this.insertPromptTemplatesSection();
       this.hideModal('showMultipleTeamsModal');
     },
 
-    selectCompany(id){
+    selectCompany(id) {
       this.selectedCompany = id;
-      localStorage.setItem('company_id',id);
-      localStorage.setItem('team_id',"");
+      this.showLoadingInterface("Loading...");
+      sessionStorage.setItem('company_id', id);
+      sessionStorage.setItem('team_id', "");
       this.selectTeam("");
       this.reloadAllData();
       this.hideModal('multipleCompanyModal');
@@ -9590,7 +12120,7 @@
     folderManager: {
       folders: [],
       selectedFolder: "",
-      
+
       initializeFolders() {
         const storedFolders = localStorage.getItem('folders');
         this.selectedFolder = localStorage.getItem('selectedFolder') || "";
@@ -9598,38 +12128,38 @@
           this.folders = JSON.parse(storedFolders);
         }
       },
-      
+
       saveFolders() {
         localStorage.setItem('folders', JSON.stringify(this.folders));
         // console.log('Folders saved successfully.');
       },
 
-      selectFolder(name){
+      selectFolder(name) {
         this.selectedFolder = name;
         localStorage.setItem('selectedFolder', name);
         // console.log('Folders selected successfully.');
         IN_BOUND.hideModal('showFolderModal');
         IN_BOUND.insertPromptTemplatesSection();
       },
-      
+
       createFolder(folderName) {
         if (!folderName) {
           // console.log('Folder name cannot be empty.');
           return;
         }
-      
+
         const folder = {
           name: folderName,
           company: IN_BOUND.selectedCompany,
           team: IN_BOUND.selectedTeam,
           prompts: []
         };
-        
+
         this.folders.push(folder);
         this.saveFolders();
         // console.log(`Folder "${folderName}" created successfully.`);
       },
-      
+
       editFolder(folderName, newFolderName) {
         const folder = this.getFolder(folderName);
         if (folder) {
@@ -9638,7 +12168,7 @@
           // console.log(`Folder "${folderName}" renamed to "${newFolderName}" successfully.`);
         }
       },
-      
+
       deleteFolder(folderName) {
         const folderIndex = this.getFolderIndex(folderName);
         if (folderIndex !== -1) {
@@ -9647,8 +12177,8 @@
           // console.log(`Folder "${folderName}" deleted successfully.`);
         }
       },
-      
-      addPrompt(folderName, promptID ) {
+
+      addPrompt(folderName, promptID) {
         const folder = this.getFolder(folderName);
         if (folder) {
           const newPrompt = promptID;
@@ -9662,11 +12192,11 @@
           // console.log(`Prompt added to folder "${folderName}" successfully.`);
         }
       },
-      
+
       getFolder(folderName) {
         return this.folders.find(folder => folder.name === folderName);
       },
-      
+
       getFolderIndex(folderName) {
         return this.folders.findIndex(folder => folder.name === folderName);
       }
@@ -9674,8 +12204,8 @@
 
     promptSelectionManager: {
       selectedIds: [],
-    
-      manageId: function(id) {
+
+      manageId: function (id) {
         if (!this.selectedIds.includes(id)) {
           this.selectedIds.push(id);
           // console.log(`ID ${id} added successfully.`);
@@ -9690,8 +12220,8 @@
         IN_BOUND.insertPromptTemplatesSection();
       },
 
-      addToFolder: function(folder) {
-        this.selectedIds?.map( id => {
+      addToFolder: function (folder) {
+        this.selectedIds?.map(id => {
           IN_BOUND.folderManager.addPrompt(folder, id);
         });
 
@@ -9699,7 +12229,7 @@
         this.selectedIds = [];
         IN_BOUND.insertPromptTemplatesSection();
       }
-    
+
     },
 
 
@@ -9739,39 +12269,39 @@
 
       // console.log(templates)
 
-      let pinTemplates = templates.filter(template => template.pin === true );
-      let normalTemplates = templates.filter(template => template.pin === false );
+      let pinTemplates = templates.filter(template => template.pin === true);
+      let normalTemplates = templates.filter(template => template.pin === false);
       templates = [...pinTemplates, ...normalTemplates];
 
       // console.log("All Templates: ",templates)
 
       // if(this.PromptTemplatesType === PromptTemplatesType.OWN){
-        templates = this.feedSelected === "All" ? templates : templates.filter(prompt => prompt.favourite === true) || [];      
+      templates = this.feedSelected === "All" ? templates : templates.filter(prompt => prompt.favourite === true) || [];
       // }
       let currentTemplates = templates;
-      
 
-      if( this.PromptTemplatesType === PromptTemplatesType.OWN ){
-        
+
+      if (this.PromptTemplatesType === PromptTemplatesType.OWN) {
+
         this.promptsOrderLocal = JSON.parse(localStorage.getItem('promptsOrderLocal'));
-        if(this.promptsOrderLocal?.index){
+        if (this.promptsOrderLocal?.index) {
           this.promptsOrderLocal = [this.promptsOrderLocal];
         }
-        
 
-      const arrayIndxes = this.promptsOrderLocal?.filter( i => i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder )[0]?.index || [];
 
-      let newerPrompts = [];
-      
-      if(arrayIndxes.length < currentTemplates.length){
-        const newPrompt = currentTemplates.filter( prompt => !arrayIndxes.map( i => i[0] ).includes( prompt.promptID) );
-        newPrompt.map( t => {
-          // arrayIndxes.push([t.promptID, arrayIndxes.length])
-          newerPrompts.push(t);
-        } );
-      }
-      
-      // Create a new array to store the rearranged items
+        const arrayIndxes = this.promptsOrderLocal?.filter(i => i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder)[0]?.index || [];
+
+        let newerPrompts = [];
+
+        if (arrayIndxes.length < currentTemplates.length) {
+          const newPrompt = currentTemplates.filter(prompt => !arrayIndxes.map(i => i[0]).includes(prompt.promptID));
+          newPrompt.map(t => {
+            // arrayIndxes.push([t.promptID, arrayIndxes.length])
+            newerPrompts.push(t);
+          });
+        }
+
+        // Create a new array to store the rearranged items 
         const rearrangedArray = [];
 
         // Iterate over the arrayIndxes array
@@ -9797,9 +12327,9 @@
         // console.log('Sorted Prompts',sortedPrompts, currentTemplates);
         // console.log("New Prrompts", newerPrompts)
         // const newerPrompts = currentTemplates.filter( prompt => !sortedPrompts.map( i => i.promptID ).includes( prompt.promptID) )
-        sortedPrompts.length > 0? currentTemplates = [...newerPrompts, ...sortedPrompts] : currentTemplates;
+        sortedPrompts.length > 0 ? currentTemplates = [...newerPrompts, ...sortedPrompts] : currentTemplates;
         // console.log("Length: ",sortedPrompts.length > 0)
-        currentTemplates = currentTemplates.filter(template => template.pin === false );
+        currentTemplates = currentTemplates.filter(template => template.pin === false);
         // console.log(currentTemplates)
       }
 
@@ -9820,49 +12350,55 @@
       let predict = currentTemplates.map(t => t.Tags.toString().split(',')).flat(1);
       this.searchPredictionList = Array.from(new Set(predict));
 
+
+
+      const chainOfPrompts = JSON.parse(localStorage.getItem('chainOfPrompts') ? localStorage.getItem('chainOfPrompts') : '[]');
+      const remainingChainOfPrompt = chainOfPrompts.filter(d => d.completed == false);
+      const completedChainOfPrompts = chainOfPrompts.filter(d => d.completed == true);
+
       // const paginationContainerTop = /*html*/ `
-      
 
-    //   <div class="flex flex-1 gap-3.5 justify-between items-center sm:flex-col ">
-    //   <div></div>
-      
-    //     <div class="${css`paginationButtonGroup`}">
-    //       <button onclick="IN_BOUND.prevPromptTemplatesPage()" class="${css`paginationButton`}" style="border-radius: 6px 0 0 6px">${svg`previous`}</button>
-    //       <button onclick="IN_BOUND.nextPromptTemplatesPage()" class="${css`paginationButton`} border-0 border-l border-gray-500" style="border-radius: 0 6px 6px 0">${svg`next`}</button>
-    //     </div>
-    //   </div>
-    // `;
 
-    const tools = this.allCompanies.length > 1 ? `
+      //   <div class="flex flex-1 gap-3.5 justify-between items-center sm:flex-col ">
+      //   <div></div>
+
+      //     <div class="${css`paginationButtonGroup`}">
+      //       <button onclick="IN_BOUND.prevPromptTemplatesPage()" class="${css`paginationButton`}" style="border-radius: 6px 0 0 6px">${svg`previous`}</button>
+      //       <button onclick="IN_BOUND.nextPromptTemplatesPage()" class="${css`paginationButton`} border-0 border-l border-gray-500" style="border-radius: 0 6px 6px 0">${svg`next`}</button>
+      //     </div>
+      //   </div>
+      // `;
+
+      const tools = this.allCompanies.length > 1 ? `
         <div id="show_chips_modal" class="flex items-center overflow-hidden space-x-2 px-2 min-w-xs max-w-md">
-      ${ ""}
+      ${""}
 
-          ${ ""}
+          ${""}
 
 
-          ${ this.allCompanies.length > 1 ? `<div class="flex-none">
+          ${this.allCompanies.length > 1 ? `<div class="flex-none">
           <button onclick="IN_BOUND.showMultipleCompanyModal()" 
           class="${css`saveSearchChips`} 
           border-0 border border-gray-500" > ${this.allCompanies?.filter(c => c.id === IN_BOUND.selectedCompany)[0]?.name || "Companies"}  </button> </div>` : ""}
 
-          ${ this.allTeams.length === "djdghwyeiwudb" ? `<div class="flex-none">
+          ${this.allTeams.length === "djdghwyeiwudb" ? `<div class="flex-none">
           <button onclick="IN_BOUND.showMultipleTeamsModal()" 
           class="${css`saveSearchChips`} 
           border-0 border border-gray-500" >Teams</button> </div>` : ""}
 
+          
+
       </div>
   ` : "";
-    // const tools = ''
+      // const tools = ''
 
       const paginationContainerBottom = /*html*/ `
     
     <div class="flex flex-1 gap-3.5 justify-between items-center sm:flex-col ">
     <span class="${css`paginationText`}">
-        Showing <span class="${css`paginationNumber`}">${
-      start + 1
-    }</span> to <span class="${css`paginationNumber`}">${end}</span> of <span class="${css`paginationNumber`}">${
-      templates.length
-    } Prompts</span>
+        Showing <span class="${css`paginationNumber`}">${start + 1
+      }</span> to <span class="${css`paginationNumber`}">${end}</span> of <span class="${css`paginationNumber`}">${templates.length
+      } Prompts</span>
       </span>
 
       <div class="${css`paginationButtonGroup`}">
@@ -9876,94 +12412,83 @@
       const html = /*html*/ `
     <div class="${css`column`} relative">
 
-      ${
-        this.isAdmin()
-          ? /*html*/ `
+      ${this.isAdmin()
+        ? /*html*/ `
             <div class="absolute top-0 right-0">
               <label class="relative inline-flex items-center mb-5 cursor-pointer flex-col" title="Admin Mode">
-                <input type="checkbox" value="" class="sr-only peer" id="adminMode" onchange="IN_BOUND.toggleAdminMode()" ${
-                  this.AdminMode ? ' checked' : ''
-                }>
+                <input type="checkbox" value="" class="sr-only peer" id="adminMode" onchange="IN_BOUND.toggleAdminMode()" ${this.AdminMode ? ' checked' : ''
+        }>
                 <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-gray-600"></div>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"></span>
               </label>
             </div>
           `
-          : ''
+        : ''
       }
 
     
       <div class="flex flex-1 gap-3.5 justify-between items-center"  >
         <div>
-        ${this.Theme === 'dark' ? this.companyMeta.light_logo? `<img src='${this.companyMeta.light_logo}' class="logo-bg" />` : svg('Logo-light') : this.companyMeta.dark_logo? `<img src='${this.companyMeta.dark_logo}' class="logo-bg" />` : svg('Logo-dark')}
+        ${this.Theme === 'dark' ? this.companyMeta.light_logo ? `<img src='${this.companyMeta.light_logo}' class="logo-bg" />` : svg('Logo-light') : this.companyMeta.dark_logo ? `<img src='${this.companyMeta.dark_logo}' class="logo-bg" />` : svg('Logo-dark')}
         </div>
         <div  class="flex gap-1 justify-end items-start" >
         
-       ${this.features.search?.allow ? `<div class="flex flex-row items-center " >
-          <input list="prediction" id="promptSearchInput" type="text" class="bg-gray-100 border-0 text-sm rounded-l block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0 md:w-full" placeholder="${extensionText.search}" 
-          value="${sanitizeInput(
-            this.PromptSearch
-          )}" onfocus="this.value = this.value">
-            <datalist id="prediction">
-            ${this.searchPredictionList.map(p => (
-              `<option style="font-size:small; padding:0;" value="${p}"></option>`
-            )).join('')}
-            </datalist>
-            ${ "" }
-        </div>`: ''}
+        ${tools}
+
+        ${this.features.setting?.allow ? `<a title="${extensionText.titleOnTopIcons[0]}" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.showSettingModal()">${svg('setting')}</a>` : ''}
 
         </div>
       </div>
-      
-
+  
 
   
       <div class="flex flex-1 gap-3.5 justify-between items-center  ">
       <div class="flex flex-1 gap-3.5 justify-between  ">
 
-        <div class="flex flex-1 gap-3.5 justify-start items-start sm:flex-col ">
+        <div class="flex flex-1 gap-2 justify-start items-start sm:flex-col ">
       
        <div>
           <select id="promptTypeSelect" class="bg-gray-100 pr-7 border-0 text-xs rounded block w-full dark:bg-gray-600 dark:border-gray-600 dark:hover:bg-gray-700 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0">
             
-          ${this.features.public_prompts?.allow ? `<option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.PUBLIC}" ${
-            this.PromptTemplatesType === PromptTemplatesType.PUBLIC ? 'selected' : ''
-          }>${extensionText.tabsLabel[0]}</option>` : ""}
+          ${this.features.public_prompts?.allow ? `<option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.PUBLIC}" ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC ? 'selected' : ''
+        }>${extensionText.tabsLabel[0]}</option>` : ""}
 
-          ${this.features.private_prompts?.allow ? `<option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.OWN}" ${
-            this.PromptTemplatesType === PromptTemplatesType.OWN ? 'selected' : ''
-          }>${extensionText.tabsLabel[1]}</option>`: ""}
+          ${this.features.private_prompts?.allow ? `<option class="mx-1 dark:bg-gray-700 dark:text-white"  value="${PromptTemplatesType.OWN}" ${this.PromptTemplatesType === PromptTemplatesType.OWN ? 'selected' : ''
+        }>${extensionText.tabsLabel[1]}</option>` : ""}
             
           </select>
         </div>
 
+        <div class=" flex gap-1 justify-start items-center h-full ">
+
+        ${this.features.add_prompt?.allow ? `<a title="${extensionText.titleOnTopIcons[1]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.showSavePromptModal()">${svg('add')}</a>` : ""}
+
+        ${this.features.import_export?.allow ? `<a title="${extensionText.titleOnTopIcons[2]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.clickeFileInput()"> ${svg('import')} <input id="dropzone-file589" type="file" accept=".json" class="hidden" /></a>` : ""}
+
         
-        
+        </div>
 
       </div>
 
       <div class="flex gap-1 justify-end items-start">
 
-      ${this.features.reload?.allow ?   `<a title="Reload All Data" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.reloadAllData()">${svg('reload')}</a>`:""}
+      ${this.features.reload?.allow && 1 === 2 ? `<a title="Reload All Data" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+        onclick="IN_BOUND.reloadAllData()">${svg('reload')}</a>` : ""}
       
-       ${this.features.setting?.allow ?  `<a title="${extensionText.titleOnTopIcons[0]}" class="p-1 rounded-md hover:bg-gray-100 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.showSettingModal()">${svg('setting')}</a>`: ''}
+      
         
-        ${this.features.add_prompt?.allow ? `<a title="${extensionText.titleOnTopIcons[1]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.showSavePromptModal()">${svg('add')}</a>`:""}
 
-        ${this.features.import_export?.allow ? `<a title="${extensionText.titleOnTopIcons[2]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-        onclick="IN_BOUND.clickeFileInput()"> ${svg('import')} <input id="dropzone-file589" type="file" accept=".json" class="hidden" /></a>` : "" }
-
-        ${this.features.favourites?.allow ? `<a title="${extensionText.titleOnTopIcons[5]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedSelect('${this.feedSelected === "All" ? "Favourites":"All"}')">
-        ${this.feedSelected === "All"? svg`star-gray` : svg`star-yellow`} </a>`: ''}
+        ${this.features.favourites?.allow ? `<a title="${extensionText.titleOnTopIcons[5]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedSelect('${this.feedSelected === "All" ? "Favourites" : "All"}')">
+        ${this.feedSelected === "All" ? svg`star-gray` : svg`star-yellow`} </a>` : ''}
   
         ${this.features.expanded_view?.allow ? `<a title="${extensionText.titleOnTopIcons[3]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedView('list')">
-        ${this.feedView ==="list"? svg`list-yellow`: svg`list`} </a>` : ""}
+        ${this.feedView === "list" ? svg`list-yellow` : svg`list`} </a>` : ""}
   
         ${this.features.collapsed_view?.allow ? `<a title="${extensionText.titleOnTopIcons[4]}" class="p-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.changeFeedView('grid')">
-        ${this.feedView ==="grid"? svg`grid-yellow`: svg`grid`} </a>` : ''}
+        ${this.feedView === "grid" ? svg`grid-yellow` : svg`grid`} </a>` : ''}
 
       </div>
 
@@ -9972,14 +12497,40 @@
 
 
 
-       ${tools}
+       ${this.features.search?.allow ? `<div class="flex flex-row items-center " >
+          <input list="prediction" id="promptSearchInput" type="text" class="bg-gray-100 border-0 text-sm rounded-l block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-gray-200 focus:ring-0 md:w-full" placeholder="${extensionText.search}" 
+          value="${sanitizeInput(
+          this.PromptSearch
+        )}" onfocus="this.value = this.value">
+            <datalist id="prediction">
+            ${this.searchPredictionList.map(p => (
+          `<option style="font-size:small; padding:0;" value="${p}"></option>`
+        )).join('')}
+            </datalist>
+            ${""}
+        </div>`: ''}
+
+        ${remainingChainOfPrompt.length > 0 ? `<p class=" dark:text-gray-400 disabled:dark:hover:text-gray-400"> 
+        ${remainingChainOfPrompt.length} of ${chainOfPrompts.length} tasks remaining in chain of prompts! 
+              ${IN_BOUND.runCsvChainOfPromptsState === false ? `<a class="underline cursor-pointer px-2" onclick="IN_BOUND.runCsvChainOfPrompts(0)">  Continue </a>
+               or <a class="underline cursor-pointer px-2" onclick="IN_BOUND.downloadAndUploadChainOfPrompts()">  Sync </a> or ` : ""} 
+              
+              <a class="underline cursor-pointer pl-2" onclick="IN_BOUND.clearChainOfPromptsData()">  Clear Local Data </a>
+            </p>`
+        : completedChainOfPrompts.length > 0 ? `
+          <p class="dark:text-gray-400 disabled:dark:hover:text-gray-400">${completedChainOfPrompts.length}  of ${chainOfPrompts.length} tasks completed in chain of prompts! 
+            <a class="underline cursor-pointer px-2" onclick="IN_BOUND.downloadAndUploadChainOfPrompts()">  Download and Upload to Sheet again </a>
+             or 
+            <a class="underline cursor-pointer pl-2" onclick="IN_BOUND.clearChainOfPromptsData()">  Clear Local Data </a>
+            </p>
+          ` : ""}
 
 
-        ${this.feedSelected !== "All" ? currentTemplates.length === 0 ? "<p>No Favourite Prompts!</p>" : "" : currentTemplates.length === 0 ? "<p>No Prompts!</p>" : ""  } 
+        ${this.feedSelected !== "All" ? currentTemplates.length === 0 ? "<p>No Favourite Prompts!</p>" : "" : currentTemplates.length === 0 ? "<p>No Prompts!</p>" : ""} 
 
 
       ${pinTemplates.length > 0 ? `<div class="${css`ul`} grid grid-cols-1 "  >
-        ${this.feedView === "list"? pinTemplates
+        ${this.feedView === "list" ? pinTemplates
           ?.map(
             (template) => /*html*/ `
           <button  data-id="${template.promptID}" class="${css`card`} relative group  " >
@@ -9988,19 +12539,18 @@
             <div class="text-gray-500 text-xs flex  max-w-full">
 
             ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
-              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox` : svg`empty_checkbox`} </a>` : ""}
              
-              ${
-                template.AuthorURL && template.AuthorName
-                  ? /*html*/ `
+              ${template.AuthorURL && template.AuthorName
+                ? /*html*/ `
                     <a href="#" class="mx-1 overflow-hidden text-ellipsis flex-1"
                       style="white-space: nowrap;"
                       onclick="event.stopPropagation()"
                       rel="noopener noreferrer" 
                       title="${extensionText.authorTitle} ${sanitizeInput(template.AuthorName)} - ${sanitizeInput(template.AuthorURL)}">
-                      ${sanitizeInput(template.AuthorName).slice(0,15)}
+                      ${sanitizeInput(template.AuthorName).slice(0, 15)}
                     </a>`
-                  : ''
+                : ''
               }            
               · 
               <span title="${extensionText.timeTitle} ${formatDateTime(
@@ -10009,59 +12559,54 @@
 
             </div>
 
-            ${
-              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-              template.PromptTypeNo === 2
-                ?`
+            ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                template.PromptTypeNo === 2
+                ? `
               
             ${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${ ""}
+            ${""}
 
-            ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID) ? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2]}" class="p-1 ${this.forkPromptTemplates.includes(template.promptID) ? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID) ? "" : `IN_BOUND.forkPrompt('${template.promptID}')`}"> ${this.forkPromptTemplates.includes(template.promptID) ? svg('fork-yellow') : svg('fork')}</a>` : ""}
 
                <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
-            </div>` : ""}`  : 
-          
-            `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+            </div>` : ""}` :
 
-            ${this.features.favourites?.allow ? `<a title="${template.favourite? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite? 'voteThumbsDown' :'voteThumbsUp'}('${
-              template.promptID
-            }')">${svg(template.favourite? 'star-yellow' : 'star-gray')}</a>`: ''}
+                `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${this.features.pin?.allow ? ` <a title="${template.pin? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin? 'removePin' :'addToPin'}('${
-              template.promptID
-            }')">${svg(template.pin? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+            ${this.features.favourites?.allow ? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' : 'voteThumbsUp'}('${template.promptID
+                  }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ''}
+
+            ${this.features.pin?.allow ? ` <a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' : 'addToPin'}('${template.promptID
+                  }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
 
                <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
             </div>`}
 
 
 
-            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-2 justify-center  mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1"} gap-2 justify-center  mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-                  template.PromptTypeNo === 2
-                    ? /*html*/ `
+                ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                template.PromptTypeNo === 2
+                ? /*html*/ `
                     
-                    ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+                    ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID) ? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2]}" class="p-1 ${this.forkPromptTemplates.includes(template.promptID) ? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID) ? "" : `IN_BOUND.forkPrompt('${template.promptID}')`}"> ${this.forkPromptTemplates.includes(template.promptID) ? svg('fork-yellow') : svg('fork')}</a>` : ""}
 
                     `
-                    : `
+                : `
                       
                       
 
                     `
-                }
+              }
                 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.OWN ||
-                  template.PromptTypeNo === 1 ||
-                  this.isAdminMode()
-                    ? /*html*/ `
+                ${this.PromptTemplatesType === PromptTemplatesType.OWN ||
+                template.PromptTypeNo === 1 ||
+                this.isAdminMode()
+                ? /*html*/ `
 
                     ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
 
@@ -10069,35 +12614,31 @@
                       ${svg('folder')} Add to Folder</a>
 
                     `  : `
-                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
-                      template.ID
-                    })">${svg('Edit')} Edit</a>`: ""}
+                    ${this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${template.ID
+                  })">${svg('Edit')} Edit</a>` : ""}
 
-                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
-                      template.promptID
-                    }')">${svg('export')} Download</a>` : ""}
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${template.promptID
+                  }')">${svg('export')} Download</a>` : ""}
 
-                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+                    ${this.features.copy?.allow ? `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>` : ""}
 
-                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
-                      template.ID
-                    })">${svg('trash')} Delete</a>`: ""}
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${template.ID
+                  })">${svg('trash')} Delete</a>` : ""}
                     
                     ` }`
-                    : ''
-                }
+                : ''
+              }
 
 
               </div>
             </div>      
 
-            <div onclick="IN_BOUND.selectPromptTemplateByIndex(${
-              template.ID
-            })" class="w-full">
+            <div onclick="IN_BOUND.selectPromptTemplateByIndex(${template.ID
+              })" class="w-full">
             <h4 class="${css`h3`}" style="overflow-wrap: anywhere;">${sanitizeInput(
-              template.Title
-            )}</h4>
+                template.Title
+              )}</h4>
             
             <p class="${css`p`} text-gray-600 dark:text-gray-200 overflow-hidden text-ellipsis" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;"
               title="${sanitizeInput(template.Teaser)}">
@@ -10110,59 +12651,54 @@
       `
           )
           .join('')
-        :
-        pinTemplates
-          ?.map(
-            (template) => /*html*/ `
+          :
+          pinTemplates
+            ?.map(
+              (template) => /*html*/ `
           <button  class="${css`card`} relative group  "  data-id="${template.promptID}"  >
             <div   class="flex gap-2 items-center w-full justify-between">
             
             ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
-              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox` : svg`empty_checkbox`} </a>` : ""}
 
-              <h4 onclick="IN_BOUND.selectPromptTemplateByIndex(${
-                template.ID
-              })" class="${css`h3`}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:100%; ">${sanitizeInput(
-                template.Title
-            )}</h4>
+              <h4 onclick="IN_BOUND.selectPromptTemplateByIndex(${template.ID
+                })" class="${css`h3`}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:100%; ">${sanitizeInput(
+                  template.Title
+                )}</h4>
 
-            ${
-              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-              template.PromptTypeNo === 2
-                ?
-                    
-            `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+            ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                  template.PromptTypeNo === 2
+                  ?
 
-            ${ ""}
+                  `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a> ` : ""}
+            ${""}
+
+            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID) ? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2]}" class="p-1 ${this.forkPromptTemplates.includes(template.promptID) ? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID) ? "" : `IN_BOUND.forkPrompt('${template.promptID}')`}"> ${this.forkPromptTemplates.includes(template.promptID) ? svg('fork-yellow') : svg('fork')}</a> ` : ""}
 
 
             <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
             </div>` : ""}`
-             : 
-             `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+                  :
+                  `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${ this.features.favourites?.allow? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' :'voteThumbsUp'}('${
-              template.promptID
-            }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ""}
+            ${this.features.favourites?.allow ? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' : 'voteThumbsUp'}('${template.promptID
+                      }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ""}
 
-            ${this.features.pin?.allow ? `<a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' :'addToPin'}('${
-              template.promptID
-            }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+            ${this.features.pin?.allow ? `<a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' : 'addToPin'}('${template.promptID
+                      }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
 
             <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
             </div>` : ""}`}
             
 
-            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 flex flex-col px-1 py-1 gap-2 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 flex flex-col px-1 py-1 gap-2 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1"} gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.OWN ||
+                ${this.PromptTemplatesType === PromptTemplatesType.OWN ||
                   template.PromptTypeNo === 1 ||
                   this.isAdminMode()
-                    ? /*html*/ `
+                  ? /*html*/ `
 
                     ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
 
@@ -10170,23 +12706,20 @@
                       ${svg('folder')} Add to Folder</a>
 
                     `  : `
-                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
-                      template.ID
-                    })">${svg('Edit')} Edit</a>`: ""}
+                    ${this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${template.ID
+                    })">${svg('Edit')} Edit</a>` : ""}
 
-                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
-                      template.promptID
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${template.promptID
                     }')">${svg('export')} Download</a>` : ""}
 
-                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+                    ${this.features.copy?.allow ? `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>` : ""}
 
-                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
-                      template.ID
-                    })">${svg('trash')} Delete</a>`: ""}
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${template.ID
+                    })">${svg('trash')} Delete</a>` : ""}
                     
                     ` }`
-                    : ''
+                  : ''
                 }
               </div>
             </div>      
@@ -10197,99 +12730,93 @@
 
         </button>
       `
-          )
-          .join('')
-      }
+            )
+            .join('')
+        }
       
       </div>` : ""}
 
 
       
       <div class="${css`ul`} grid grid-cols-1 list-group" id="promptsContainer" >
-        ${this.feedView === "list"? currentTemplates
-          ?.map(
-            (template) => /*html*/ `
-          <button ${ formatAgo(template.RevisionTime).indexOf('seconds') > -1 ? 'style="border: 1px gray solid; "' : ""}  data-id="${template.promptID}" class="${css`card`} relative group list-group-item  " >
+        ${this.feedView === "list" ? currentTemplates
+        ?.map(
+          (template) => /*html*/ `
+          <button ${formatAgo(template.RevisionTime).includes('second') ? 'style="border: 1px gray solid; "' : ""}  data-id="${template.promptID}" class="${css`card`} relative group list-group-item  " >
             <div class="flex items-center w-full justify-between">
 
             <div class="text-gray-500 text-xs flex  max-w-full">
 
             ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
-              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox` : svg`empty_checkbox`} </a>` : ""}
               
              
-              ${
-                template.AuthorURL && template.AuthorName
-                  ? /*html*/ `
+              ${template.AuthorURL && template.AuthorName
+              ? /*html*/ `
                     <a href="#" class="mx-1 overflow-hidden text-ellipsis flex-1"
                       style="white-space: nowrap;"
                       onclick="event.stopPropagation()"
                       rel="noopener noreferrer" 
                       title="${extensionText.authorTitle} ${sanitizeInput(template.AuthorName)} - ${sanitizeInput(template.AuthorURL)}">
-                      ${sanitizeInput(template.AuthorName).slice(0,15)}
+                      ${sanitizeInput(template.AuthorName).slice(0, 15)}
                     </a>`
-                  : ''
-              }            
+              : ''
+            }            
               · 
               <span title="${extensionText.timeTitle} ${formatDateTime(
-                template.RevisionTime
-              )}" class="mx-1">${formatAgo(template.RevisionTime)}</span>
+              template.RevisionTime
+            )}" class="mx-1">${formatAgo(template.RevisionTime)}</span>
 
             </div>
 
-            ${
-              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+            ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
               template.PromptTypeNo === 2
-                ?`
+              ? `
               
             ${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${ ""}
+            ${""}
 
-            ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID) ? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2]}" class="p-1 ${this.forkPromptTemplates.includes(template.promptID) ? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID) ? "" : `IN_BOUND.forkPrompt('${template.promptID}')`}"> ${this.forkPromptTemplates.includes(template.promptID) ? svg('fork-yellow') : svg('fork')}</a>` : ""}
 
                <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
-            </div>` : ""}`  : 
-          
-            `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+            </div>` : ""}` :
 
-            ${this.features.favourites?.allow ? `<a title="${template.favourite? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite? 'voteThumbsDown' :'voteThumbsUp'}('${
-              template.promptID
-            }')">${svg(template.favourite? 'star-yellow' : 'star-gray')}</a>`: ''}
+              `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${this.features.pin?.allow ? ` <a title="${template.pin? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin? 'removePin' :'addToPin'}('${
-              template.promptID
-            }')">${svg(template.pin? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+            ${this.features.favourites?.allow ? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' : 'voteThumbsUp'}('${template.promptID
+                }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ''}
+
+            ${this.features.pin?.allow ? ` <a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' : 'addToPin'}('${template.promptID
+                }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
 
                <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
             </div>`}
 
 
 
-            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-2 justify-center  mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute right-1 rounded shadow-lg px-1 py-1 flex-col bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1"} gap-2 justify-center  mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-                  template.PromptTypeNo === 2
-                    ? /*html*/ `
+                ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+              template.PromptTypeNo === 2
+              ? /*html*/ `
                     
-                    ${this.features.copy?.allow ?  `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a>` : ""}
+                    ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID) ? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2]}" class="p-1 ${this.forkPromptTemplates.includes(template.promptID) ? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID) ? "" : `IN_BOUND.forkPrompt('${template.promptID}')`}"> ${this.forkPromptTemplates.includes(template.promptID) ? svg('fork-yellow') : svg('fork')}</a>` : ""}
 
                     `
-                    : `
+              : `
                       
                       
 
                     `
-                }
+            }
                 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.OWN ||
-                  template.PromptTypeNo === 1 ||
-                  this.isAdminMode()
-                    ? /*html*/ `
+                ${this.PromptTemplatesType === PromptTemplatesType.OWN ||
+              template.PromptTypeNo === 1 ||
+              this.isAdminMode()
+              ? /*html*/ `
 
                     ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
 
@@ -10297,41 +12824,37 @@
                       ${svg('folder')} Add to Folder</a>
 
                     `  : `
-                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
-                      template.ID
-                    })">${svg('Edit')} Edit</a>`: ""}
+                    ${this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${template.ID
+                })">${svg('Edit')} Edit</a>` : ""}
 
-                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
-                      template.promptID
-                    }')">${svg('export')} Download</a>` : ""}
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${template.promptID
+                }')">${svg('export')} Download</a>` : ""}
 
-                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+                    ${this.features.copy?.allow ? `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>` : ""}
 
-                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
-                      template.ID
-                    })">${svg('trash')} Delete</a>`: ""}
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${template.ID
+                })">${svg('trash')} Delete</a>` : ""}
                     
                     ` }`
-                    : ''
-                }
+              : ''
+            }
 
 
               </div>
             </div>      
 
-            <div onclick="IN_BOUND.selectPromptTemplateByIndex(${
-              template.ID
+            <div onclick="IN_BOUND.selectPromptTemplateByIndex(${template.ID
             })" class="w-full">
 
             <div class=" flex flex-row gap-2 items-center " >
-            ${ this.PromptTemplatesType === PromptTemplatesType.OWN ? svg('drag-prompt') : ""}
+            ${this.PromptTemplatesType === PromptTemplatesType.OWN ? svg('drag-prompt') : ""}
 
             <h4 class="${css`h3`}" style="overflow-wrap: anywhere;">${sanitizeInput(
               template.Title
             )}</h4>
             </div>
-            
+          
             <p class="${css`p`} text-gray-600 dark:text-gray-200 overflow-hidden text-ellipsis" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;"
               title="${sanitizeInput(template.Teaser)}">
               ${sanitizeInput(template.Teaser)}
@@ -10341,8 +12864,8 @@
 
         </button>
       `
-          )
-          .join('')
+        )
+        .join('')
         :
         currentTemplates
           ?.map(
@@ -10351,71 +12874,65 @@
             <div   class="flex gap-2 items-center w-full justify-between">
 
             ${this.PromptTemplatesType === PromptTemplatesType.OWN?.length ? `<a title="Select/ Unselect" class=" rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="IN_BOUND.promptSelectionManager.manageId('${template.promptID}')">
-              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox`: svg`empty_checkbox`} </a>` : ""}
+              ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? svg`checked_checkbox` : svg`empty_checkbox`} </a>` : ""}
 
 
             <span class="w-5 h-5" >
-            ${ this.PromptTemplatesType === PromptTemplatesType.OWN ? svg('drag-prompt') : ""}
+            ${this.PromptTemplatesType === PromptTemplatesType.OWN ? svg('drag-prompt') : ""}
             </span>
 
-              <h4 onclick="IN_BOUND.selectPromptTemplateByIndex(${
-                template.ID
+              <h4 onclick="IN_BOUND.selectPromptTemplateByIndex(${template.ID
               })" class="${css`h3`}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:100%; ">${sanitizeInput(
                 template.Title
-            )}</h4>
+              )}</h4>
 
-            ${
-              this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-              template.PromptTypeNo === 2
+            ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                template.PromptTypeNo === 2
                 ?
-                    
-            `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${ ""}
+                `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID)? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2] }" class="p-1 ${this.forkPromptTemplates.includes(template.promptID)? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick=" ${this.forkPromptTemplates.includes(template.promptID)? "" : `IN_BOUND.forkPrompt('${ template.promptID }')` }"> ${this.forkPromptTemplates.includes(template.promptID)? svg('fork-yellow') : svg('fork')}</a> ` : ""}
+            ${""}
+
+            ${this.features.copy?.allow ? `<a title="${this.forkPromptTemplates.includes(template.promptID) ? extensionText.cardIconsTitle[3] : extensionText.cardIconsTitle[2]}" class="p-1 ${this.forkPromptTemplates.includes(template.promptID) ? "cursor-not-allowed" : ""} rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick=" ${this.forkPromptTemplates.includes(template.promptID) ? "" : `IN_BOUND.forkPrompt('${template.promptID}')`}"> ${this.forkPromptTemplates.includes(template.promptID) ? svg('fork-yellow') : svg('fork')}</a> ` : ""}
 
 
             <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" hidden p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
             </div>` : ""}`
-             : 
-             `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
+                :
+                `${this.access.cardMenuInDots ? `<div class="flex gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 right-2 text-gray-400   group-hover:visible">
 
-            ${ this.features.favourites?.allow? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' :'voteThumbsUp'}('${
-              template.promptID
-            }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ""}
+            ${this.features.favourites?.allow ? `<a title="${template.favourite ? extensionText.cardIconsTitle[1] : extensionText.cardIconsTitle[0]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.favourite ? 'voteThumbsDown' : 'voteThumbsUp'}('${template.promptID
+                    }')">${svg(template.favourite ? 'star-yellow' : 'star-gray')}</a>` : ""}
 
-            ${this.features.pin?.allow ? `<a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' :'addToPin'}('${
-              template.promptID
-            }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
+            ${this.features.pin?.allow ? `<a title="${template.pin ? extensionText.cardIconsTitle[5] : extensionText.cardIconsTitle[4]}" class="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.${template.pin ? 'removePin' : 'addToPin'}('${template.promptID
+                    }')">${svg(template.pin ? 'pin-yellow' : 'pin-gray')}</a>` : ""}
 
             <a title="Show Options" id="PromptCardOptionsBtn" onclick="IN_BOUND.toogleOptionsVisibility('PromptCardOptions-${template.ID}')" class=" p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" >${svg('horizontal-menu')}</a>
             </div>` : ""}`}
             
 
-            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute flex flex-col px-2 py-2 gap-1 right-9 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1" } gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
+            <div style="top:40px; z-index:99999; box-shadow:0 2px 5px 6px rgba(0, 0, 0, 0.1); " class="${this.access.cardMenuInDots ? "hidden absolute flex flex-col px-2 py-2 gap-1 right-9 rounded border bg-white dark:bg-gray-800  dark:border-bg-ray-700" : "flex right-1"} gap-4 justify-center lg:gap-1 lg:pl-2 mt-1 text-gray-600 group-hover:visible PromptCardOptions"  id="PromptCardOptions-${template.ID}">
 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
-                  template.PromptTypeNo === 2
-                    ? /*html*/ `
+                ${this.PromptTemplatesType === PromptTemplatesType.PUBLIC &&
+                template.PromptTypeNo === 2
+                ? /*html*/ `
                     
                      
                       
                     `
-                    : `
+                : `
 
                     
                     
                     `
-                }
+              }
                 
-                ${
-                  this.PromptTemplatesType === PromptTemplatesType.OWN ||
-                  template.PromptTypeNo === 1 ||
-                  this.isAdminMode()
-                    ? /*html*/ `
+                ${this.PromptTemplatesType === PromptTemplatesType.OWN ||
+                template.PromptTypeNo === 1 ||
+                this.isAdminMode()
+                ? /*html*/ `
 
                     ${this.promptSelectionManager.selectedIds.indexOf(template.promptID) > -1 ? `
 
@@ -10423,24 +12940,21 @@
                       ${svg('folder')} Add to Folder</a>
 
                     `  : `
-                    ${ this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${
-                      template.ID
-                    })">${svg('Edit')} Edit</a>`: ""}
+                    ${this.features.edit?.allow ? `<a title="${extensionText.editPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.editPromptTemplate(${template.ID
+                  })">${svg('Edit')} Edit</a>` : ""}
 
-                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${
-                      template.promptID
-                    }')">${svg('export')} Download</a>` : ""}
+                    ${this.features.import_export?.allow ? `<a title="${extensionText.cardIconsTitle[6]}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.exportPromptTemplate('${template.promptID
+                  }')">${svg('export')} Download</a>` : ""}
 
-                    ${ this.features.copy?.allow ?   `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>`: ""}
+                    ${this.features.copy?.allow ? `<a title="Copy Prompt" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
+                      onclick="event.stopPropagation(); IN_BOUND.copyPromptClipboard('${template.promptID}')">${svg('copy')} Copy</a>` : ""}
 
-                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${
-                      template.ID
-                    })">${svg('trash')} Delete</a>`: ""}
+                  ${this.features.delete?.allow ? `<a title="${extensionText.dltPrmptTitle}" class=" relative flex flex-row gap-2 p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" onclick="event.stopPropagation(); IN_BOUND.deletePromptTemplate(${template.ID
+                  })">${svg('trash')} Delete</a>` : ""}
                     
                     ` }`
-                    : ''
-                }
+                : ''
+              }
               </div>
             </div>      
 
@@ -10456,26 +12970,25 @@
       
       </div>
     
-      ${
-        templates.length > this.PromptTemplateSection.pageSize
-          ? paginationContainerBottom
-          : ''
+      ${templates.length > this.PromptTemplateSection.pageSize
+        ? paginationContainerBottom
+        : ''
       }
       
     </div>
    `;
 
-     let wrapper = document.createElement('div');
-     wrapper.id = 'templates-wrapper';
-     wrapper.className =
-       'mt-2 md:flex items-start text-center gap-2.5 md:max-w-2xl lg:max-w-3xl m-auto text-sm';
+      let wrapper = document.createElement('div');
+      wrapper.id = 'templates-wrapper';
+      wrapper.className =
+        'mt-2 md:flex items-start text-center gap-2.5 md:max-w-2xl lg:max-w-3xl m-auto text-sm';
 
-       let sideBarWrapper = document.querySelector('#nav');
+      let sideBarWrapper = document.querySelector('#nav');
       if (sideBarWrapper.querySelector('#templates-wrapper')) {
-       wrapper = sideBarWrapper.querySelector('#templates-wrapper');
-     } else {
-       sideBarWrapper.appendChild(wrapper);
-     }
+        wrapper = sideBarWrapper.querySelector('#templates-wrapper');
+      } else {
+        sideBarWrapper.appendChild(wrapper);
+      }
 
       wrapper.innerHTML = html;
 
@@ -10484,11 +12997,11 @@
 
 
       const promptsContainer = wrapper?.querySelector('#promptsContainer');
-      if(promptsContainer){
+      if (promptsContainer) {
         this.sortElems = Sortable.create(promptsContainer, {
           // forceFallback: true,
           // fallbackClass: "dragging-prompt",
-          animation: 200,  
+          animation: 200,
           easing: "cubic-bezier(0.37, 0, 0.63, 1)",
           handle: ".drag-icon-prompt",
           dataIdAttr: 'data-id',
@@ -10506,14 +13019,14 @@
             evt.clone; // the clone element
             evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
             let indexes = [];
-            Array.from(evt.target.children).forEach( (elem, index) => {
+            Array.from(evt.target.children).forEach((elem, index) => {
               let data_id = elem.attributes['data-id'].value;
               // console.log(data_id,index)
-              indexes.push([data_id,index]);
-            } );
-            const oldOrders = IN_BOUND.promptsOrderLocal?.filter( i => !(i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder ) ) || [];
+              indexes.push([data_id, index]);
+            });
+            const oldOrders = IN_BOUND.promptsOrderLocal?.filter(i => !(i.team === IN_BOUND.selectedTeam && i.company === IN_BOUND.selectedCompany && i.folder === IN_BOUND.folderManager.selectedFolder)) || [];
             // console.log("Old order: ",oldOrders)
-            localStorage.setItem('promptsOrderLocal',JSON.stringify([ ...oldOrders,  {index: indexes, company: IN_BOUND.selectedCompany, team: IN_BOUND.selectedTeam, folder: IN_BOUND.folderManager.selectedFolder} ]));
+            localStorage.setItem('promptsOrderLocal', JSON.stringify([...oldOrders, { index: indexes, company: IN_BOUND.selectedCompany, team: IN_BOUND.selectedTeam, folder: IN_BOUND.folderManager.selectedFolder }]));
             IN_BOUND.promptsOrderLocal = JSON.parse(localStorage.getItem('promptsOrderLocal'));
             // console.log("New Order: ",IN_BOUND.promptsOrderLocal)
             setTimeout(() => {
@@ -10522,15 +13035,15 @@
           },
         });
       }
-      
-      
-      
+
+
+
 
       wrapper
         ?.querySelector('#promptTypeSelect')
         ?.addEventListener('change', this.changePromptTemplatesType.bind(this));
 
-      
+
 
       wrapper
         ?.querySelector('#save_search')
@@ -10552,8 +13065,8 @@
       );
 
       // this.PromptTemplatesType === PromptTemplatesType.PUBLIC ? "" : this.dragSortPromptsList()
-      
-      
+
+
 
       // Remove event listener for the pagination buttons (if not needed/already added)
       document.removeEventListener('keydown', this.boundHandleArrowKey);
@@ -10569,68 +13082,68 @@
       }
     },
 
-    toogleOptionsVisibility(id){
+    toogleOptionsVisibility(id) {
       // ev.preventDefault();
       let options = document.getElementById(id);
       // console.log(options)
-      options.className.split(' ').includes('hidden')? options.className = options.className.replace('hidden ',"flex ") : options.className = options.className.replace('flex ',"hidden ");
-      
+      options.className.split(' ').includes('hidden') ? options.className = options.className.replace('hidden ', "flex ") : options.className = options.className.replace('flex ', "hidden ");
+
       // options.addEventListener('blur', () => {
       //   options.className.replace('flex ',"hidden ")
       // })
     },
 
-    hideOptionsVisibility(id){
-      setTimeout(function(){
+    hideOptionsVisibility(id) {
+      setTimeout(function () {
         let options = document.getElementById(id);
-        options.className = options.className.replace('flex ',"hidden ");
-      },500);
-      
+        options.className = options.className.replace('flex ', "hidden ");
+      }, 500);
+
     },
 
-    dragPromptIDOrder(current, before){
+    dragPromptIDOrder(current, before) {
       let promptIDs = window.localStorage.getItem('promptCardOrder')?.split(',');
       // console.log(promptIDs)
-      if(promptIDs){
-        let allEntries = this.OwnPrompts.map( p => p.ID);
-        let newItems = allEntries.filter(function(obj) { return promptIDs.indexOf(obj) === -1; });
+      if (promptIDs) {
+        let allEntries = this.OwnPrompts.map(p => p.ID);
+        let newItems = allEntries.filter(function (obj) { return promptIDs.indexOf(obj) === -1; });
         promptIDs = [...newItems, ...promptIDs];
         let curIndex = promptIDs.indexOf(current);
         let befIndex = promptIDs.indexOf(before);
-        promptIDs.splice(curIndex,1);
-        promptIDs.splice(befIndex,0,current);
-        window.localStorage.setItem('promptCardOrder',promptIDs);
-      }else {
-        let promptIDs = this.OwnPrompts.map( p => p.ID);
-        window.localStorage.setItem('promptCardOrder',promptIDs);
-        this.dragPromptIDOrder(current,before);
+        promptIDs.splice(curIndex, 1);
+        promptIDs.splice(befIndex, 0, current);
+        window.localStorage.setItem('promptCardOrder', promptIDs);
+      } else {
+        let promptIDs = this.OwnPrompts.map(p => p.ID);
+        window.localStorage.setItem('promptCardOrder', promptIDs);
+        this.dragPromptIDOrder(current, before);
       }
-      
-    },
-
-    dragSortPromptsList(){
-
-        // document.getElementsByClassName('PromptCardContainer')[0]?.addEventListener('mouseleave', function(event) {
-        //   if (dragItem !== null) {
-        //     mouseUp(event);
-        //   }
-        // });
-        
-
-        // document.querySelectorAll('.PromptCard')?.forEach(item => {
-        //   item.addEventListener('mousedown', mouseDown);
-        // });
-
-        // document?.addEventListener('mousemove', mouseMove);
-        // document?.addEventListener('mouseup', mouseUp);
-
-
 
     },
 
+    dragSortPromptsList() {
+
+      // document.getElementsByClassName('PromptCardContainer')[0]?.addEventListener('mouseleave', function(event) {
+      //   if (dragItem !== null) {
+      //     mouseUp(event);
+      //   }
+      // });
 
 
-    clickeFileInput(){
+      // document.querySelectorAll('.PromptCard')?.forEach(item => {
+      //   item.addEventListener('mousedown', mouseDown);
+      // });
+
+      // document?.addEventListener('mousemove', mouseMove);
+      // document?.addEventListener('mouseup', mouseUp);
+
+
+
+    },
+
+
+
+    clickeFileInput() {
       const inputFileDiv = document.getElementById('dropzone-file589');
       inputFileDiv.click();
 
@@ -10642,21 +13155,23 @@
         // console.log(fileList);
 
         var reader = new FileReader();
-        reader.onload = function() {
+        reader.onload = function () {
           var text = reader.result;
           let json = JSON.parse(text);
           // console.log(json);
           IN_BOUND.saveImportedPrompt(json);
-          
+
         };
         reader.readAsText(fileList[0]);
       };
     },
 
-     async saveImportedPrompt(data){
-      const {Title,PromptHint,Prompt,Tags,Teaser } = data;
-      let prompt = {Title,PromptHint,Prompt,Tags,Teaser };
-      if(prompt.Prompt === "" || prompt.Prompt === undefined){
+    async saveImportedPrompt(data) {
+      IN_BOUND.changeFeedToMyPrompts();
+
+      const { Title, PromptHint, Prompt, Tags, Teaser } = data;
+      let prompt = { Title, PromptHint, Prompt, Tags, Teaser };
+      if (prompt.Prompt === "" || prompt.Prompt === undefined) {
         IN_BOUND.showNotification(
           NotificationSeverity.ERROR,
           'Invalid Prompt!'
@@ -10667,7 +13182,7 @@
       prompt.AuthorName = this.Client.User.Name;
       prompt.AuthorURL = this.Client.User.Email;
       const idRandom = window.crypto.randomUUID() || (new Date()).getTime() + Math.random().toString(16).slice(2);
-      prompt.ID  = idRandom;
+      prompt.ID = idRandom;
       prompt.id = idRandom;
       prompt.CreationTime = "";
       prompt.RevisionTime = "";
@@ -10675,7 +13190,7 @@
       prompt.pin = false;
       prompt.OwnPrompt = true;
       prompt.favourite = false;
-      
+
       prompt.teamID = this.selectedTeam;
 
       // console.log("Saving json: ",prompt)
@@ -10684,21 +13199,21 @@
         NotificationSeverity.SUCCESS,
         'Sync..'
       );
-      
+
       await this.Client.savePrompt(prompt);
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt imported!'
-      );
-      
-      this.refreshData();
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt imported!'
+      // );
+
+      // this.refreshData();
 
     },
 
-    exportPromptTemplate(promptID){
+    exportPromptTemplate(promptID) {
       // console.log(promptID)
       let prompt_0 = this.DefaultPromptTemplates.filter(prompt => prompt.ID === promptID)[0] || this.OwnPrompts.filter(prompt => prompt.ID === promptID)[0];
-      let prompt = {...prompt_0};
+      let prompt = { ...prompt_0 };
       delete prompt['AuthorName'];
       delete prompt['AuthorURL'];
       delete prompt['User'];
@@ -10707,10 +13222,10 @@
       prompt.RevisionTime = "";
       prompt.ID = "";
       // console.log(prompt)
-      this.exportContent(prompt,prompt.Title.slice(0,20));
+      this.exportContent(prompt, prompt.Title.slice(0, 20));
     },
 
-    exportContent(content, name){
+    exportContent(content, name) {
       const blob = new Blob([JSON.stringify(content)], {
         type: 'text/plain',
       });
@@ -10721,18 +13236,19 @@
       a.click();
     },
 
-    showImport(){
+    showImport() {
       this.showNotification(
         NotificationSeverity.SUCCESS,
-        this.import? 'Going back to prompts...' : 'Getting import prompt templates...'
+        this.import ? 'Going back to prompts...' : 'Getting import prompt templates...'
       );
 
       this.import = !this.import;
       this.refreshData();
     },
 
-    async saveAsNewPromptTemplate(e){
+    async saveAsNewPromptTemplate(e) {
       // console.log(e)
+      IN_BOUND.changeFeedToMyPrompts();
 
       const prompt = {};
       const formData = new FormData(e.target);
@@ -10745,7 +13261,7 @@
       // let prompt = this.DefaultPromptTemplates.filter(prompt => prompt.ID === promptID)[0] || this.OwnPrompts.filter(prompt => prompt.ID === promptID)[0]
       prompt.AuthorName = this.Client.User.Name;
       prompt.AuthorURL = this.Client.User.Email;
-      prompt.Title =  prompt.Title;
+      prompt.Title = prompt.Title;
       prompt.forkID = prompt.ID;
       prompt.ID = window.crypto.randomUUID() || (new Date()).getTime() + Math.random().toString(16).slice(2);
       prompt.CreationTime = '';
@@ -10760,15 +13276,15 @@
         'Sync..'
       );
       await this.Client.savePrompt(prompt);
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt saved as new template!'
-      );
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt saved as new template!'
+      // );
       this.hideSavePromptModal();
-      this.refreshData();
+      // this.refreshData();
     },
 
-     async forkPrompt(id){
+    async forkPrompt(id) {
       let prompt = this.PromptTemplates.filter(template => template.ID === id)[0];
       prompt.AuthorName = this.Client.User.Name;
       prompt.AuthorURL = this.Client.User.Email;
@@ -10786,31 +13302,31 @@
         'Sync..'
       );
       await this.Client.savePrompt(prompt);
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt saved to My Prompts!'
-      );
-      
-      this.refreshData();
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt saved to My Prompts!'
+      // );
+
+      // this.refreshData();
     },
 
-    async removePin(id){
-      
+    async removePin(id) {
+
       this.showNotification(
         NotificationSeverity.SUCCESS,
         'Sync..'
       );
-      
-      await this.pinActionForPrompt(id,-1);
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt removed from pin!'
-      );
-      this.refreshData();
+
+      this.pinActionForPrompt(id, -1);
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt removed from pin!'
+      // );
+      // this.refreshData();
     },
 
-    async addToPin(id){
-      if(this.PinPromptTemplates.length>3){
+    async addToPin(id) {
+      if (this.PinPromptTemplates.length > 3) {
         this.showNotification(
           NotificationSeverity.ERROR,
           'You cannot pin more than 4 prompts!'
@@ -10822,15 +13338,15 @@
         NotificationSeverity.SUCCESS,
         'Sync..'
       );
-      await this.pinActionForPrompt(id,1);
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt added to pin!'
-      );
-      this.refreshData();
+      this.pinActionForPrompt(id, 1);
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt added to pin!'
+      // );
+      // this.refreshData();
     },
 
-    changeExtLanguage(e){
+    changeExtLanguage(e) {
       this.ExtLang = e.target.value;
       extensionText = extensionLanguages[e.target.value];
       // console.log(this.ExtLang,extensionText);
@@ -10838,17 +13354,17 @@
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
-    
 
-    changeFeedSelect(val){
+
+    changeFeedSelect(val) {
       this.feedSelected = val;
-      localStorage.setItem('feedSelected',val);
+      localStorage.setItem('feedSelected', val);
       this.insertPromptTemplatesSection();
     },
 
-    changeFeedView(val){
+    changeFeedView(val) {
       this.feedView = val;
-      window.localStorage.setItem('feedView',val);
+      window.localStorage.setItem('feedView', val);
       this.insertPromptTemplatesSection();
     },
 
@@ -10912,18 +13428,18 @@
       searchInput.selectionStart = searchInput.selectionEnd =
         searchInput.value.length;
       searchInput.focus();
-      
+
     },
 
-    savedSearch(){
+    savedSearch() {
       this.savedSearchList.push(this.PromptSearch);
-      localStorage.setItem('savedSearchList',JSON.stringify(this.savedSearchList));
+      localStorage.setItem('savedSearchList', JSON.stringify(this.savedSearchList));
       setTimeout(() => {
         IN_BOUND.insertPromptTemplatesSection();
       }, 200);
     },
 
-    searchIntoPrompts(keyword){
+    searchIntoPrompts(keyword) {
       this.PromptSearch = keyword;
 
       this.PromptTemplateSection.currentPage = 0;
@@ -10938,9 +13454,9 @@
       searchInput.focus();
 
       IN_BOUND.hideModal('savedSearchModal');
-      
+
     },
-    
+
     changePromptTemplatesType(e) {
       const type = e.target.value;
       if (this.PromptTemplatesType === type) {
@@ -10965,13 +13481,13 @@
       };
     },
 
-    showToneOptions(){
-      if(document.getElementsByClassName('tonesList')[0]){
+    showToneOptions() {
+      if (document.getElementsByClassName('tonesList')[0]) {
         let listContainer = document.getElementsByClassName('tonesList')[0];
         listContainer.style.display = 'flex';
         const position = document.getElementById('optionOpener').getBoundingClientRect();
-        listContainer.style.left = position.right  + 'px';
-      }else {
+        listContainer.style.left = position.right + 'px';
+      } else {
         var toolbarDiv = document.createElement("div");
         toolbarDiv.classList.add("chatgpt-all-in-one-toolbar2", "gap-3", "tonesList");
 
@@ -10989,10 +13505,10 @@
         listContainer.style.width = 'fit-content';
         listContainer.style.position = "absolute";
         const position = document.getElementById('optionOpener').getBoundingClientRect();
-        listContainer.style.left = ((position.x/2) - 40)  + 'px';
+        listContainer.style.left = ((position.x / 2) - 40) + 'px';
         // console.log(position)
         listContainer.style.bottom = '7vh';
-        listContainer.onmouseleave = function(){
+        listContainer.onmouseleave = function () {
           // console.log('leave')
           IN_BOUND.hideToneOptions();
         };
@@ -11009,19 +13525,19 @@
       this.insertToneOptionsInContainer();
     },
 
-    insertToneOptionsInContainer(){
+    insertToneOptionsInContainer() {
       let tonesContainer = document.querySelector('.tones-list-container');
 
       let tones = this.Tones;
 
       // console.log(tones)
 
-      const htmlForContainer = `<ul >${tones.map((item,index) => `
+      const htmlForContainer = `<ul >${tones.map((item, index) => `
     <li class="tonesLI" style="cursor:pointer; padding:1px; margin:1px;  flex-direction:row; display:flex; align-content:space-between; flex-wrap: wrap; justify-content: space-between; " >
 
     <p class="tonesLabel" onClick='IN_BOUND.setToneIndexAndRefresh("${item.ID}")' style="font-size:small; font-weight:light; padding:0px; margin:0px; line-height:normal; display:block;">${item.Label}</p>
 
-    ${ item.type === "user" ? `<div style="display:flex; flex-direction:row;">
+    ${item.type === "user" ? `<div style="display:flex; flex-direction:row;">
     <a style="margin-left:3px; display:block;" class="tonesEdit" onclick="IN_BOUND.editTone('${item.ID}')" > ${svg(`Edit`)} </a>
     <a style="margin-left:3px; display:block;" class="tonesCross" onclick="IN_BOUND.deleteTone('${item.ID}')" > ${svg(`Cross`)} </a>
     </div>` : ""}
@@ -11031,32 +13547,32 @@
       tonesContainer.innerHTML = htmlForContainer;
     },
 
-    setToneIndexAndRefresh(ID){
+    setToneIndexAndRefresh(ID) {
       this.hideToneOptions();
       // this.Tone = ID;
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
 
-    hideToneOptions(){
+    hideToneOptions() {
       document.getElementsByClassName('tonesList')[0].style.display = 'none';
     },
 
-    editTone(ID){
+    editTone(ID) {
       // console.log('edit',ID)
       // this.hideToneOptions();
       this.showeditToneModal(ID);
     },
 
-    async deleteTone(ID){
+    async deleteTone(ID) {
       // console.log('cross',ID)
       this.hideToneOptions();
       await this.Client.deleteTone(ID);
-      this.refreshData();
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Tone was deleted!'
-      );
+      // this.refreshData()
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Tone was deleted!'
+      // );
     },
 
     async showeditToneModal(ID) {
@@ -11129,7 +13645,7 @@
       </div>
     `;
 
-      
+
 
       editToneModal.style = 'display: block;';
 
@@ -11145,7 +13661,7 @@
       });
     },
 
-    async saveEditedTone(e){
+    async saveEditedTone(e) {
       e.preventDefault();
 
       const tone = {};
@@ -11156,7 +13672,7 @@
       }
 
       // console.log(formData,tone)
-      const selectedCategory = this.ToneCategories.filter( d => d.Label === tone['Category'])[0];
+      const selectedCategory = this.ToneCategories.filter(d => d.Label === tone['Category'])[0];
       // console.log(selectedCategory)
       tone['CategoryID'] = selectedCategory.ID;
       tone['Category'] = selectedCategory.Label;
@@ -11171,16 +13687,16 @@
 
       this.hideModal('editToneModal');
 
-      const toneNew = {id: tone.ID, label:tone.Label, prompt:tone.Description, user:IN_BOUND.Client.User.Email, company:IN_BOUND.Company};
-            
+      const toneNew = { id: tone.ID, label: tone.Label, prompt: tone.Description, user: IN_BOUND.Client.User.Email, company: IN_BOUND.Company };
+
       await this.Client.saveEditTone(toneNew);
 
-      this.refreshData();
+      // this.refreshData();
 
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Tone changes was saved!'
-      );
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Tone changes was saved!'
+      // );
 
     },
 
@@ -11232,11 +13748,11 @@
                         <input name="Category" list="InputToneCategory" class="w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-700 rounded mb-3 mt-2 p-2 w-full" />
                         <datalist id="InputToneCategory" class="mt-2 mb-3 dark:bg-gray-700 dark:border-gray-700 dark:hover:bg-gray-900 rounded w-full">
                           ${this.ToneCategories?.map(
-                            (category) => `
+      (category) => `
                             <option value="${category.Label}" >
                               </option> 
                           `
-                          ).join('')}
+    ).join('')}
                         </datalist >
                       </div>
 
@@ -11261,7 +13777,7 @@
       </div>
     `;
 
-      
+
 
       newToneModal.style = 'display: block;';
 
@@ -11277,7 +13793,7 @@
       });
     },
 
-    async saveNewTone(e){
+    async saveNewTone(e) {
       e.preventDefault();
 
       this.hideModal('newToneModal');
@@ -11289,7 +13805,7 @@
         tone[key] = value;
       }
 
-      const selectedCategory = this.ToneCategories.filter( d => d.Label === tone['Category'])[0];
+      const selectedCategory = this.ToneCategories.filter(d => d.Label === tone['Category'])[0];
       // console.log(selectedCategory)
       tone['CategoryID'] = selectedCategory.ID;
       tone['Category'] = selectedCategory.Label;
@@ -11304,53 +13820,57 @@
 
       await this.Client.saveNewTone(tone);
 
-      this.refreshData();
+      // this.refreshData();
 
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Tone was added!'
-      );
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Tone was added!'
+      // );
 
     },
 
-    changeInputToneCategory(e){
+    changeInputToneCategory(e) {
       this.InputToneCategorySelected = e.target.value;
     },
 
     // Insert language select and continue button above the prompt textarea input
+    
     insertLanguageToneWritingStyleContinueActions() {
 
 
       this.tonesOrderLocal = JSON.parse(localStorage.getItem('tonesOrderLocal'))?.index || [];
 
+
+
+
       const arrayIndxes = this.tonesOrderLocal;
-      if(arrayIndxes.length < this.userTones.length){
-        const newTones = this.userTones.filter( tone => !arrayIndxes.map( i => i[0] ).includes( tone.ID) );
-        newTones.map( t => {
+      if (arrayIndxes.length < this.userTones.length) {
+        const newTones = this.userTones.filter(tone => !arrayIndxes.map(i => i[0]).includes(tone.ID));
+        newTones.map(t => {
           arrayIndxes.push([t.ID, arrayIndxes.length]);
-        } );
+        });
       }
-      
+
       // Create a new array to store the rearranged items
-        const rearrangedArray = [];
+      const rearrangedArray = [];
 
-        // Iterate over the arrayIndxes array
-        for (const [id, index] of arrayIndxes) {
-          // console.log("ss-  ",id, index)
-          // Find the item in userTones array with matching ID
-          const item = this.userTones.find((tone) => tone.ID === id);
+      // Iterate over the arrayIndxes array
+      for (const [id, index] of arrayIndxes) {
+        // console.log("ss-  ",id, index)
+        // Find the item in userTones array with matching ID
+        const item = this.userTones.find((tone) => tone.ID === id);
 
-          // If the item is found, add it to the rearranged array at the specified index
-          if (item) {
-            rearrangedArray[index] = item;
-          }
+        // If the item is found, add it to the rearranged array at the specified index
+        if (item) {
+          rearrangedArray[index] = item;
         }
+      }
 
-        // Remove any undefined elements from the rearranged array
-        const sortedUserTones = rearrangedArray.filter((item) => item !== undefined);
+      // Remove any undefined elements from the rearranged array
+      const sortedUserTones = rearrangedArray.filter((item) => item !== undefined);
 
-        // Print the rearranged array
-        // console.log(sortedUserTones);
+      // Print the rearranged array
+      // console.log(sortedUserTones);
 
 
       // this.tone === undefined ? this.tone = this.SelectedPromptTemplate?.Tone : ""
@@ -11391,10 +13911,10 @@
       if (!parent) return;
 
       // Add padding to the parent element
-      parent.classList.add('pr-4');
+      parent.classList.add('px-4');
 
       // this.Tone = this.Tone?.filter(t => t !== '')
-      
+
 
       // Get existing language select wrapper or create a new one
       if (parent.querySelector(`#${wrapper.id}`)) {
@@ -11405,59 +13925,54 @@
 
       // Create the HTML for the language select section
       wrapper.innerHTML = /*html*/ `
-    <div class="flex w-full justify-between">
+    <div class="flex w-full ">
      ${this.features.languages?.allow ? `<div>
         <select id="languageSelect" class="${css('select')} pr-10">
-          <option value ${
-            !this.TargetLanguage ? ' selected' : ''
-          }>Default language</option>  
+          <option value ${!this.TargetLanguage ? ' selected' : ''
+        }>Default language</option>  
 
           ${this.Languages.map(
-            (language) => `
-            <option value="${language.languageEnglish}" ${
-              this.TargetLanguage === language.languageEnglish
-                ? ' selected'
-                : ''
+          (language) => `
+            <option value="${language.languageEnglish}" ${this.TargetLanguage === language.languageEnglish
+              ? ' selected'
+              : ''
             }>
               ${language.languageLabel}
               </option> 
           `
-          ).join('')}
+        ).join('')}
         </select>
-      </div>`:""}
+      </div>`: ""}
       
 
-      ${ this.features.writing_styles?.allow ? `<div class="ml-2">
+      ${this.features.writing_styles?.allow ? `<div class="ml-2">
         <select id="writingStyleSelect" class="${css('select')} pr-10">
-          <option value ${
-            !this.WritingStyle ? ' selected' : ''
-          }>Default style</option>
+          <option value ${!this.WritingStyle ? ' selected' : ''
+        }>Default style</option>
 
           ${this.WritingStyles.map(
-            (writingStyle) => `
-            <option value="${writingStyle.ID}" ${
-              this.WritingStyle === writingStyle.ID ? ' selected' : ''
+          (writingStyle) => `
+            <option value="${writingStyle.ID}" ${this.WritingStyle === writingStyle.ID ? ' selected' : ''
             }>
-              ${this.WritingStyle === writingStyle.ID? writingStyle.Label + ' style' : writingStyle.Label }
+              ${this.WritingStyle === writingStyle.ID ? writingStyle.Label + ' style' : writingStyle.Label}
               </option> 
           `
-          ).join('')}
+        ).join('')}
         </select>
       </div>` : ""}
 
-      ${ ""}
+      ${""}
 
-      ${ this.features.variations.allow ? `<div class="ml-2">
+      ${this.features.variations.allow ? `<div class="ml-2">
         <select id="toneSelect" class="${css('select')} pr-10">
 
         <option value="" selected > No Variation</option>
 
-          ${sortedUserTones.filter(d => !IN_BOUND.hiddenVariations.includes(d.ID) ).map(
+          ${sortedUserTones.filter(d => !IN_BOUND.hiddenVariations.includes(d.ID)).map(
             (tone) => `
-            <option value="${tone.ID}" ${
-              this.Tone === tone.ID ? ' selected' : ''
-            }>
-              ${this.Tone === tone.ID? tone.Label + ' variation' : tone.Label }
+            <option value="${tone.ID}" ${this.Tone === tone.ID ? ' selected' : ''
+              }>
+              ${this.Tone === tone.ID ? tone.Label + ' variation' : tone.Label}
               </option> 
           `
           ).join('')}
@@ -11466,23 +13981,7 @@
 
     </div>
 
-    <div class="inline-flex invisible" role="group" id="continueActionsGroup">
-      <button id="continueWritingButton" title="Continue writing please" class="${css(
-        'continueButton'
-      )}" onclick="event.stopPropagation(); IN_BOUND.continueWriting()" type="button">
-        Continue
-      </button>
-
-      <select id="continueActionSelect" class="${css('continueActionSelect')}">
-        <option value selected disabled>-- Select an action --</option>
-
-        ${this.ContinueActions.map(
-          (action) => `
-          <option value="${action.ID}">${action.Label}</option>
-        `
-        ).join('')}
-      </select>
-    </div>
+    ${""}
   `;
 
       // Add event listener to language select to update the target language on change
@@ -11495,8 +13994,8 @@
         ?.querySelector('#toneSelect')
         ?.addEventListener('change', this.changeTone.bind(this));
 
-        
-      wrapper.querySelector('#variationButton')?.addEventListener('click', function() {
+
+      wrapper.querySelector('#variationButton')?.addEventListener('click', function () {
         wrapper.querySelector('#variationButtonContent')?.classList.toggle('hidden');
       });
 
@@ -11531,7 +14030,7 @@
         ?.addEventListener('change', this.changeContinueAction.bind(this));
     },
 
-    hideLanguageToneWritingStyleContinueActions(){
+    hideLanguageToneWritingStyleContinueActions() {
       // document.querySelector('#language-select-wrapper')?.remove()
     },
 
@@ -11548,16 +14047,18 @@
       const tone = ev.target.value;
       // this.Tone?.indexOf(selectedTones) > -1 ? this.Tone = this.Tone?.filter(d => d !== selectedTones) : this.Tone?.push(selectedTones)
       this.Tone = tone;
+
+      window.localStorage.setItem("selectedTone", tone);
       // console.log(tone)
       // this.insertLanguageToneWritingStyleContinueActions()
     },
-    changeToneCategory(ev){
+    changeToneCategory(ev) {
       const value = ev.target.value;
       // console.log(value)
       this.ToneCategorySelected = value;
-      const allTones = this.companyTonesState? [...this.DefaultTones, ...this.userTones] : this.userTones;
+      const allTones = this.companyTonesState ? [...this.DefaultTones, ...this.userTones] : this.userTones;
       this.Tones = allTones.filter(d => d.CategoryID === this.ToneCategorySelected);
-      
+
       this.Tones.sort((a, b) => a.Label.localeCompare(b.Label));
       // this.Tone = this.Tones[0].ID
 
@@ -11567,6 +14068,7 @@
     // Change the WritingStyle on selection change
     changeWritingStyle(event) {
       this.WritingStyle = event.target.value;
+      window.localStorage.setItem("selectedWritingStyle", this.WritingStyle);
       this.insertLanguageToneWritingStyleContinueActions();
     },
 
@@ -11630,7 +14132,7 @@
       // Click the "Submit" button
       button.click();
 
-       const enterKeyEvent = new KeyboardEvent("keydown", {
+      const enterKeyEvent = new KeyboardEvent("keydown", {
         bubbles: true,
         cancelable: true,
         keyCode: 13,
@@ -11681,7 +14183,7 @@
 
       if (!templates || !Array.isArray(templates)) return;
 
-      
+
       // Filter templates based on selected activity and search query
       templates = this.filterPromptTemplates(templates);
 
@@ -11728,11 +14230,10 @@
             .map((node) => {
               switch (node.nodeName) {
                 case 'PRE':
-                  return `\`\`\`${
-                  node
-                    .getElementsByTagName('code')[0]
-                    .classList[2].split('-')[1]
-                }\n${node.innerText.replace(/^Copy code/g, '').trim()}\n\`\`\``;
+                  return `\`\`\`${node
+                  .getElementsByTagName('code')[0]
+                  .classList[2].split('-')[1]
+                  }\n${node.innerText.replace(/^Copy code/g, '').trim()}\n\`\`\``;
                 default:
                   return `${node.innerHTML}`;
               }
@@ -11779,7 +14280,7 @@
           ? this.OwnPrompts[idx]
           : this.PromptTemplates[idx];
 
-          // console.log(prompt)
+      // console.log(prompt)
 
       // Only allow editing of own prompt templates
       if (
@@ -11790,31 +14291,38 @@
         return;
       }
 
-      await this.showSavePromptModal(new CustomEvent(editPromptTemplateEvent), prompt.ID,prompt);
+      await this.showSavePromptModal(new CustomEvent(editPromptTemplateEvent), prompt.ID, prompt);
 
       // Pre-fill the prompt template modal with the prompt template
       const form = document.getElementById('savePromptForm');
 
       // console.log(prompt)
+      IN_BOUND.hidePromptCardOptions();
 
       form.elements['Prompt'].value = prompt.Prompt;
       form.elements['Teaser'].value = prompt.Teaser;
       form.elements['PromptHint'].value = prompt.PromptHint;
       form.elements['Title'].value = prompt.Title;
+      form.elements['Tags'].value = prompt.Tags;
       // form.elements['Community'].value = prompt.Community;
       form.elements['ID'].value = prompt.ID;
       prompt.Tone ? form.elements['Tone'].value = prompt.Tone : "";
-      
+
       // form.elements['AuthorName'].value = prompt.AuthorName;
       // form.elements['AuthorURL'].value = prompt.AuthorURL;
       // form.elements['Views'].value = prompt.Views;
       // form.elements['Usages'].value = prompt.Usages;
       // form.elements['Votes'].value = prompt.Votes;
-      form.elements['companyTonesState'].checked = prompt.companyTonesState;
+      if (form.elements['companyTonesState']) {
+        form.elements['companyTonesState'].checked = prompt.companyTonesState;
+      }
+
 
       // Check the "Share as public" checkbox if the prompt template is public
       if (prompt.PromptTypeNo === PromptTypeNo.PUBLIC) {
-        form.elements['Public'].checked = true;
+        if (form.elements['Public']) {
+          form.elements['Public'].checked = true;
+        }
       }
 
       // Trigger onchange event on Topics to update available Activities
@@ -11822,7 +14330,7 @@
 
       // Set the selected Activity (category)
       // form.elements['Category'].value = prompt.Category;
-      form.elements['Tags'].value = prompt.Tags;
+
     },
 
     // Delete a prompt template
@@ -11856,19 +14364,19 @@
           'Sync..'
         );
         await this.Client.deletePrompt(prompt.ID, this.Company);
-        this.refreshData();
+        // this.refreshData();
 
         // remove template using ID
-        this.OwnPrompts = this.OwnPrompts.filter(
-          (ownPrompt) => ownPrompt.ID !== prompt.ID
-        );
+        // this.OwnPrompts = this.OwnPrompts.filter(
+        //   (ownPrompt) => ownPrompt.ID !== prompt.ID
+        // );
 
         // remove template using ID from the public prompt templates if it's public
-        if (prompt.PromptTypeNo === PromptTypeNo.PUBLIC) {
-          this.PromptTemplates = this.PromptTemplates.filter(
-            (promptTemplate) => promptTemplate.ID !== prompt.ID
-          );
-        }
+        // if (prompt.PromptTypeNo === PromptTypeNo.PUBLIC) {
+        //   this.PromptTemplates = this.PromptTemplates.filter(
+        //     (promptTemplate) => promptTemplate.ID !== prompt.ID
+        //   );
+        // }
       } catch (error) {
         this.showNotification(
           NotificationSeverity.ERROR,
@@ -11889,7 +14397,7 @@
       );
       try {
         await this.Client.voteForPrompt(promptID, 1);
-        this.refreshData();
+        // this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
       } catch (error) {
         this.showNotification(
           NotificationSeverity.ERROR,
@@ -11898,33 +14406,10 @@
         return;
       }
 
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt added to favorites!'
-      );
-    },
-
-    // like for a prompt template with a thumbs up
-    async likeForPrompt(promptID) {
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Sync..'
-      );
-      try {
-        await this.Client.likeForPrompt(promptID);
-        this.refreshData();
-      } catch (error) {
-        this.showNotification(
-          NotificationSeverity.ERROR,
-          'Something went wrong. Please try again.'
-        );
-        return;
-      }
-
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Thanks for your like!'
-      );
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt added to favorites!'
+      // );
     },
 
     // Vote for a prompt template with a thumbs down
@@ -11935,7 +14420,7 @@
       );
       try {
         await this.Client.voteForPrompt(promptID, -1);
-        this.refreshData();
+        // this.fetchPrivatePromptsEvent(this.Company, this.selectedTeam);
       } catch (error) {
         this.showNotification(
           NotificationSeverity.ERROR,
@@ -11944,10 +14429,10 @@
         return;
       }
 
-      this.showNotification(
-        NotificationSeverity.SUCCESS,
-        'Prompt removed from favorites!'
-      );
+      // this.showNotification(
+      //   NotificationSeverity.SUCCESS,
+      //   'Prompt removed from favorites!'
+      // );
     },
 
     // Report the prompt template as inappropriate
@@ -12031,7 +14516,7 @@
 
     // This function selects a prompt template using the index
     selectPromptTemplateByIndex(idx) {
-      
+
       const templates =
         this.PromptTemplatesType === PromptTemplatesType.OWN
           ? this.OwnPrompts
@@ -12045,29 +14530,29 @@
 
       // Hide the "Continue Writing" button (prompt selected/new chat)
       this.hideContinueActionsButton();
-      setTimeout(function(){
+      setTimeout(function () {
         IN_BOUND.insertLanguageToneWritingStyleContinueActions();
-      },300);
-      
+      }, 300);
+
     },
 
-    addToOwnPrompts(promptID){
+    addToOwnPrompts(promptID) {
       // console.log(this.OwnPrompts.map(t => t.ID ).includes(promptID))
       this.forkPrompt(promptID);
     },
 
-     isObserverExist(element) {
+    isObserverExist(element) {
       const observerEntries = window.performance.getEntriesByType('layout-shift');
-      
+
       for (const entry of observerEntries) {
         if (entry.source && entry.source.node === element) {
           return true;
         }
       }
-      
+
       return false;
     },
-    
+
 
     /**
      * Select a prompt template and show it in the prompt input field
@@ -12076,7 +14561,7 @@
      */
     selectPromptTemplate(template) {
       const textarea = document.querySelector('textarea');
-      if(!textarea)
+      if (!textarea)
         return
       const parent = textarea.parentElement;
       let wrapper = document.createElement('div');
@@ -12091,7 +14576,9 @@
 
       if (template) {
 
-        
+        this.SelectedPromptTemplateID = template.ID;
+        localStorage.setItem('SelectedPromptTemplateID', template.ID);
+
         this.Tone = template?.Tone ? template?.Tone : this.Tone;
         this.companyTonesState = template.companyTonesState || false;
         // console.log(template, this.Tone)
@@ -12101,18 +14588,19 @@
         this.activePromptID = template.ID;
         // console.log(this.activePromptID)
         wrapper.innerHTML = /*html*/ `
-        <span class="${css`tag`}" title="${sanitizeInput(template.Prompt)}">
-
-        <span class="items-center">
+        <span class="${css`tag`}">
+        
+        <span class="flex items-center">
           ${sanitizeInput(template.Title)}
 
-          ${this.OwnPrompts.map(t => t.ID ).includes(template.ID)? '' : `<span class="inline-flex items-center ml-2" >
-              <a title="${extensionText.plusOnTextarea}" class="px-1 rounded-md cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" 
-                onclick="IN_BOUND.addToOwnPrompts('${template.ID}')">${svg('add-go')}</a> </span>` }
+
+          <span class="inline-flex items-center ml-2" >
+              <a title="close prompt" style=" margin-left:10px; margin-top:auto; " class=" cursor-pointer" 
+                onclick="IN_BOUND.selectPromptTemplate(null)">${svg('Cross_Round_h4')}</a> </span>
                 </span>
 
               <span style="font-weight:normal;" class="text-xs font-thin ">
-              ${ extensionText.textareaPlaceholderIdentifier}  ${sanitizeInput(template.PromptHint)}
+              ${extensionText.textareaPlaceholderIdentifier}  ${sanitizeInput(template.PromptHint)}
               </span>
 
         </span>
@@ -12122,7 +14610,7 @@
         // textarea.placeholder = template.PromptHint;
         textarea.placeholder = "Enter your prompt";
         this.SelectedPromptTemplate = template;
-        if( template.Prompt.indexOf(PromptPlaceholder) > -1 ){
+        if (template.Prompt.indexOf(PromptPlaceholder) > -1) {
           textarea.value = ' ';
           textarea.nextElementSibling.disabled = false;
         }
@@ -12134,10 +14622,13 @@
         }
 
         url.searchParams.set(queryParamPromptID, template.ID);
+        url.searchParams.set("inbound_o_id", this.selectedCompany);
       } else {
         wrapper.innerHTML = '';
         // textarea.placeholder = '';
         this.SelectedPromptTemplate = null;
+        this.SelectedPromptTemplateID = null;
+        localStorage.setItem('SelectedPromptTemplateID', '');
 
         // Remove query param IN_BOUND_PromptID
         if (!url.searchParams.get(queryParamPromptID)) {
@@ -12145,6 +14636,7 @@
         }
 
         url.searchParams.delete(queryParamPromptID);
+        url.searchParams.delete("inbound_o_id", this.selectedCompany);
       }
 
       // Push new URL to browser history
@@ -12155,12 +14647,12 @@
       strDelimiter = strDelimiter || ',';
       var pattern = new RegExp(
         '(\\' +
-          strDelimiter +
-          '|\\r?\\n|\\r|^)' +
-          '(?:"([^"]*(?:""[^"]*)*)"|' +
-          '([^"\\' +
-          strDelimiter +
-          '\\r\\n]*))',
+        strDelimiter +
+        '|\\r?\\n|\\r|^)' +
+        '(?:"([^"]*(?:""[^"]*)*)"|' +
+        '([^"\\' +
+        strDelimiter +
+        '\\r\\n]*))',
         'gi'
       );
       var data = [[]];
@@ -12267,36 +14759,78 @@
         false
       );
     },
+
+    showPrivactTermsBanner() {
+      const showBanner = window.localStorage.getItem("showPrivactTermsBanner") === "true";
+      if (showBanner) return
+
+      const dialog = `
+    <div class="bg-gray-100 flex justify-center items-center h-screen z-50" style="z-index=999999999999999;">
+        <div class="bg-white rounded-lg p-8 max-w-md shadow-md">
+            <button id="showDialogButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4">Show Terms and Conditions</button>
+            <div class="dialog hidden">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold mb-4">Terms and Conditions</h2>
+                    <p>Your terms and conditions content goes here.</p>
+                </div>
+                <div class="flex justify-center mt-6">
+                    <button id="closeDialogButton" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+      const elem = document.createElement('div');
+      elem.innerHTML = dialog;
+
+      document.body.appendChild(elem);
+
+      // window.localStorage.setItem("showPrivactTermsBanner", "true") 
+    }
   };
 
 
 
-    if(window.location.hostname === "chat.openai.com"){
-      setTimeout(function(){
-        // fetch(`${APIEndpoint}/user?user=${window.__NEXT_DATA__.props.pageProps.user.email}`)
-        // .then(res => res.json())
-        // .then( usr => {
-        //   // console.log(usr)
-        //   usr ? window.IN_BOUND.init() : ""
-        // })
-        window.IN_BOUND.init();
-      },200);
-    }
-    
-    // else if(window.location.hostname === "bard.google.com"){
-    //   setTimeout(function(){
-    //       const profile = document.querySelector('header').querySelectorAll('a')
-    //       const email_username = profile[profile.length-1].attributes['aria-label'].value
-    //       const email = email_username.split('(')[1].replace(')','')
-          // console.log(email)
-    //     fetch(`${APIEndpoint}/user?user=${email}`)
-    //     .then(res => res.json())
-    //     .then( usr => {
-          // console.log(usr)
-    //       window.IN_BOUND = IN_BOUND_BARD
-    //       usr ? window.IN_BOUND.init() : ""
-    //     })
-    //   },500)
-    // }
+  if (window.location.hostname === "chat.openai.com") {
+    setTimeout(async function () {
+      // fetch(`${APIEndpoint}/user?user=${window.__NEXT_DATA__.props.pageProps.user.email}`)
+      // .then(res => res.json())
+      // .then( usr => {
+      //   // console.log(usr)
+      //   usr ? window.IN_BOUND.init() : ""
+      // })
+      if (window.location.href.includes("/auth/")) {
+        return
+      }
+      window.IN_BOUND.init();
+
+
+
+      // if(window.location.href.includes("workflow=true")){
+      //   const prompt_0 = window.localStorage.getItem('activeWorkflowPrompt')
+      //   if(prompt_0){
+      //     const chatgptRes = await chatgpt.askAndGetReply(prompt_0)
+      // console.log(chatgptRes)
+      //   }
+      // }
+    }, 200);
+  }
+
+  // else if(window.location.hostname === "bard.google.com"){
+  //   setTimeout(function(){
+  //       const profile = document.querySelector('header').querySelectorAll('a')
+  //       const email_username = profile[profile.length-1].attributes['aria-label'].value
+  //       const email = email_username.split('(')[1].replace(')','')
+  // console.log(email)
+  //     fetch(`${APIEndpoint}/user?user=${email}`)
+  //     .then(res => res.json())
+  //     .then( usr => {
+  // console.log(usr)
+  //       window.IN_BOUND = IN_BOUND_BARD
+  //       usr ? window.IN_BOUND.init() : ""
+  //     })
+  //   },500)
+  // }
 
 })();

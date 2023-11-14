@@ -6,12 +6,14 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
 })
 
+
+
 chrome.action.onClicked.addListener(() => {
-    chrome.tabs.query({url: "https://chat.openai.com/chat"}, function([ tab ]) {
+    chrome.tabs.query({ url: "https://chat.openai.com/chat" }, function ([tab]) {
         if (tab) {
-        chrome.tabs.update(tab.id, {active: true})
+            chrome.tabs.update(tab.id, { active: true })
         } else {
-        chrome.tabs.create({url: "https://chat.openai.com/chat"})
+            chrome.tabs.create({ url: "https://chat.openai.com/chat" })
         }
     })
 })
@@ -19,7 +21,6 @@ chrome.action.onClicked.addListener(() => {
 
 
 
-// listen for messages
 chrome.runtime.onMessage.addListener( function ( request, sender, sendResponse ) {
     console.log(request)
 
@@ -65,5 +66,3 @@ chrome.runtime.onMessage.addListener( function ( request, sender, sendResponse )
   
     return true
   });
-
-  
